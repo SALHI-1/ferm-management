@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, usePage, useForm } from '@inertiajs/react';
+import { Head, usePage, useForm, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 
 interface Client {
@@ -38,6 +38,8 @@ interface Vache {
     numero_ticket: string;
     image: string | null;
     statut_sante: string;
+    statut_vente: string;
+    sexe: 'male' | 'female';
     date_naissance: string | null;
     age: number | null;
     clients: Client[];
@@ -56,6 +58,9 @@ interface Props {
 export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Props) {
     const [showHealthModal, setShowHealthModal] = useState(false);
     const [showFinancialModal, setShowFinancialModal] = useState(false);
+    const [showAddChildModal, setShowAddChildModal] = useState(false);
+
+    const isSold = vache.statut_vente === 'vendue';
 
     const { data: finData, setData: setFinData, post: postFin, processing: finProcessing, reset: resetFin, errors: finErrors } = useForm({
         annee: new Date().getFullYear(),
@@ -68,6 +73,15 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
         type: 'checkup',
         date_debut: new Date().toISOString().split('T')[0],
         date_fin: ''
+    });
+
+    const { data: childData, setData: setChildData, post: postChild, processing: childProcessing, reset: resetChild, errors: childErrors } = useForm({
+        numero_ticket: '',
+        sexe: 'female',
+        origine: 'ne_sur_ferme',
+        date_naissance: '',
+        date_entree: new Date().toISOString().split('T')[0],
+        mother_id: vache.id
     });
 
     const handleFinancialSubmit = (e: React.FormEvent) => {
@@ -84,18 +98,31 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
         });
     };
 
+    const handleChildSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        postChild(`/${coordonneesEspace}/cheptel`, {
+            onSuccess: () => {
+                setShowAddChildModal(false);
+                resetChild('numero_ticket', 'date_naissance');
+            }
+        });
+    };
+
+    const toggleVente = () => {
+        const newStatus = isSold ? 'non_vendue' : 'vendue';
+        if (confirm(`Voulez-vous vraiment marquer cet animal comme ${isSold ? 'non vendu' : 'vendu'} ?`)) {
+            router.put(`/${coordonneesEspace}/cheptel/${vache.id}/vente`, { statut_vente: newStatus });
+        }
+    };
+
     return (
-
-
-
-
         <AppLayout title={`Détails du bovin ${vache.numero_ticket}`}>
             <Head title={`Bovin ${vache.numero_ticket}`} />
 
             <div className="space-y-6">
                 {/* Header Section */}
 
-                <div className="bg-white p-6 rounded-lg shadow-sm flex items-start space-x-6">
+                <div className="bg-white p-6 rounded-lg shadow-sm flex items-start space-x-6 relative">
                     <div className="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
                         {vache.image ? (
                             <img src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" />
@@ -104,33 +131,53 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                         )}
                     </div>
                     <div className="flex-1">
-                        <h1 className="text-2xl font-bold mb-2">Ticket: {vache.numero_ticket}</h1>
-                        <div className="mb-2 space-y-1">
+                        <div className="flex justify-between items-start">
                             <div>
-                                <span className={`px-2 py-1 rounded text-sm text-white inline-block ${vache.statut_sante === 'healthy' ? 'bg-green-500' :
-                                        vache.statut_sante === 'pregnancy' ? 'bg-blue-500' : 'bg-red-500'
-                                    }`}>
-                                    {vache.statut_sante === 'healthy' ? 'En bonne santé' :
-                                        vache.statut_sante === 'pregnancy' ? 'Gestation' : 'Malade'}
-                                </span>
-                            </div>
-                            {vache.date_naissance && (
-                                <div className="text-gray-600 text-sm">
-                                    <strong>Date de naissance:</strong> {new Date(vache.date_naissance).toLocaleDateString('fr-FR')} 
-                                    {vache.age !== null ? ` (${vache.age} ans)` : ''}
+                                <h1 className="text-2xl font-bold mb-2 flex items-center space-x-3">
+                                    <span>Ticket: {vache.numero_ticket}</span>
+                                    {isSold && (
+                                        <span className="px-3 py-1 bg-red-600 text-white text-sm font-bold rounded-full">VENDUE</span>
+                                    )}
+                                </h1>
+                                <div className="mb-2 space-y-1">
+                                    <div>
+                                        <span className={`px-2 py-1 rounded text-sm text-white inline-block ${vache.statut_sante === 'healthy' ? 'bg-green-500' :
+                                                vache.statut_sante === 'pregnancy' ? 'bg-blue-500' : 'bg-red-500'
+                                            }`}>
+                                            {vache.statut_sante === 'healthy' ? 'En bonne santé' :
+                                                vache.statut_sante === 'pregnancy' ? 'Gestation' : 'Malade'}
+                                        </span>
+                                    </div>
+                                    {vache.date_naissance && (
+                                        <div className="text-gray-600 text-sm">
+                                            <strong>Date de naissance:</strong> {new Date(vache.date_naissance).toLocaleDateString('fr-FR')} 
+                                            {vache.age !== null ? ` (${vache.age} ans)` : ''}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-gray-700">Propriétaire(s) :</h3>
-                            {vache.clients.length > 0 ? (
-                                <ul className="list-disc pl-5">
-                                    {vache.clients.map(client => (
-                                        <li key={client.id}>{client.user?.nom} {client.user?.prenom} ({(client.pivot.part_possedee * 100).toFixed(0)}%)</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p className="text-gray-500 text-sm">Appartient à la ferme</p>
+                                <div>
+                                    <h3 className="font-semibold text-gray-700">Propriétaire(s) :</h3>
+                                    {vache.clients.length > 0 ? (
+                                        <ul className="list-disc pl-5">
+                                            {vache.clients.map(client => (
+                                                <li key={client.id}>{client.user?.nom} {client.user?.prenom} ({(client.pivot.part_possedee * 100).toFixed(0)}%)</li>
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p className="text-gray-500 text-sm">Appartient à la ferme</p>
+                                    )}
+                                </div>
+                            </div>
+                            
+                            {canEdit && (
+                                <button 
+                                    onClick={toggleVente} 
+                                    className={`px-4 py-2 text-sm font-semibold rounded-md border ${
+                                        isSold ? 'border-gray-400 text-gray-600 hover:bg-gray-100' : 'border-red-600 text-red-600 hover:bg-red-50'
+                                    }`}
+                                >
+                                    {isSold ? 'Annuler la vente' : 'Marquer comme vendue'}
+                                </button>
                             )}
                         </div>
                     </div>
@@ -144,7 +191,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                             <button onClick={() => setShowFinancialModal(true)} className="text-indigo-600 hover:underline text-sm">Voir l'archive</button>
                         </div>
 
-                        {canEdit ? (
+                        {canEdit && !isSold ? (
                             <form onSubmit={handleFinancialSubmit} className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
@@ -164,7 +211,9 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                         <option value="food">Coût: Nourriture</option>
                                         <option value="veterinaire">Coût: Vétérinaire</option>
                                         <option value="autre">Coût: Autre</option>
-                                        <option value="gain">Gain: Production lait (L)</option>
+                                        {vache.sexe !== 'male' && (
+                                            <option value="gain">Gain: Production lait (L)</option>
+                                        )}
                                     </select>
                                 </div>
                                 <div>
@@ -177,7 +226,9 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                 </button>
                             </form>
                         ) : (
-                            <p className="text-gray-500 italic text-sm">Vous n'avez pas les droits pour ajouter des données financières.</p>
+                            <p className="text-gray-500 italic text-sm">
+                                {isSold ? 'Les actions sont désactivées pour les animaux vendus.' : 'Vous n\'avez pas les droits pour ajouter des données financières.'}
+                            </p>
                         )}
                     </div>
 
@@ -188,14 +239,16 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                             <button onClick={() => setShowHealthModal(true)} className="text-indigo-600 hover:underline text-sm">Voir l'archive</button>
                         </div>
 
-                        {canEdit ? (
+                        {canEdit && !isSold ? (
                             <form onSubmit={handleHealthSubmit} className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Statut</label>
                                     <select value={healthData.type} onChange={e => setHealthData('type', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                                         <option value="checkup">Visite de routine</option>
                                         <option value="sickness">Maladie</option>
-                                        <option value="pregnancy">Gestation</option>
+                                        {vache.sexe !== 'male' && (
+                                            <option value="pregnancy">Gestation</option>
+                                        )}
                                     </select>
                                 </div>
                                 <div>
@@ -212,37 +265,48 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                 </button>
                             </form>
                         ) : (
-                            <p className="text-gray-500 italic text-sm">Vous n'avez pas les droits pour ajouter des données de santé.</p>
+                            <p className="text-gray-500 italic text-sm">
+                                {isSold ? 'Les actions sont désactivées pour les animaux vendus.' : 'Vous n\'avez pas les droits pour ajouter des données de santé.'}
+                            </p>
                         )}
                     </div>
                 </div>
 
                 {/* Lineage Section */}
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h2 className="text-xl font-bold mb-4">Descendance ({vache.enfants.length})</h2>
-                    {vache.enfants.length > 0 ? (
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="bg-gray-100">
-                                    <th className="p-2 border">Ticket Enfant</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {vache.enfants.map(enfant => (
-                                    <tr key={enfant.id}>
-                                        <td className="p-2 border">
-                                            <a href={`/${coordonneesEspace}/cheptel/${enfant.id}`} className="text-indigo-600 hover:underline">
-                                                {enfant.numero_ticket}
-                                            </a>
-                                        </td>
+                {vache.sexe !== 'male' && (
+                    <div className="bg-white p-6 rounded-lg shadow-sm">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-bold">Descendance ({vache.enfants.length})</h2>
+                            {canEdit && !isSold && (
+                                <button onClick={() => setShowAddChildModal(true)} className="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 text-sm">
+                                    + Ajouter une descendance
+                                </button>
+                            )}
+                        </div>
+                        {vache.enfants.length > 0 ? (
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="bg-gray-100">
+                                        <th className="p-2 border">Ticket Enfant</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <p className="text-gray-500 italic">Aucune descendance enregistrée.</p>
-                    )}
-                </div>
+                                </thead>
+                                <tbody>
+                                    {vache.enfants.map(enfant => (
+                                        <tr key={enfant.id}>
+                                            <td className="p-2 border">
+                                                <a href={`/${coordonneesEspace}/cheptel/${enfant.id}`} className="text-indigo-600 hover:underline">
+                                                    {enfant.numero_ticket}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : (
+                            <p className="text-gray-500 italic">Aucune descendance enregistrée.</p>
+                        )}
+                    </div>
+                )}
             </div>
 
             {/* Modals */}
@@ -298,6 +362,59 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            )}
+
+            {showAddChildModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-6 w-11/12 max-w-md max-h-[90vh] overflow-y-auto">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-xl font-bold">Ajouter une descendance</h3>
+                            <button onClick={() => setShowAddChildModal(false)} className="text-gray-500 hover:text-gray-700">&times;</button>
+                        </div>
+                        
+                        <form onSubmit={handleChildSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Numéro de boucle (Ticket)</label>
+                                <input type="text" value={childData.numero_ticket} onChange={e => setChildData('numero_ticket', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
+                                {childErrors.numero_ticket && <p className="text-red-500 text-xs mt-1">{childErrors.numero_ticket}</p>}
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Sexe</label>
+                                <select value={childData.sexe} onChange={e => setChildData('sexe', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                    <option value="female">Femelle (Génisse/Vache)</option>
+                                    <option value="male">Mâle (Veau/Taureau)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Origine</label>
+                                <select value={childData.origine} onChange={e => setChildData('origine', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" disabled>
+                                    <option value="ne_sur_ferme">Né sur la ferme</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Date de naissance</label>
+                                <input type="date" value={childData.date_naissance} onChange={e => setChildData('date_naissance', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
+                                {childErrors.date_naissance && <p className="text-red-500 text-xs mt-1">{childErrors.date_naissance}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Date d'entrée dans le cheptel</label>
+                                <input type="date" value={childData.date_entree} onChange={e => setChildData('date_entree', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
+                                {childErrors.date_entree && <p className="text-red-500 text-xs mt-1">{childErrors.date_entree}</p>}
+                            </div>
+
+                            <div className="pt-4 flex justify-end space-x-2">
+                                <button type="button" onClick={() => setShowAddChildModal(false)} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Annuler</button>
+                                <button type="submit" disabled={childProcessing} className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50">
+                                    Ajouter
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}

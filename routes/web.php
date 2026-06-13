@@ -30,19 +30,23 @@ Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name(
 
 
 // 💼 Espace unique : Admins & Super-Admins
-Route::middleware(['auth', 'role:admin,super_admin'])->prefix('admin')->as('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role:admin,super_admin'])->as('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/cheptel', [\App\Http\Controllers\Admin\CheptelController::class, 'index'])->name('cheptel.index');
     Route::get('/cheptel/{id}', [\App\Http\Controllers\Admin\CheptelController::class, 'show'])->name('cheptel.show');
+    Route::put('/cheptel/{id}/vente', [\App\Http\Controllers\Admin\CheptelController::class, 'updateVente'])->name('cheptel.vente.update');
+    Route::post('/cheptel', [\App\Http\Controllers\Admin\CheptelController::class, 'store'])->name('cheptel.store');
     Route::post('/cheptel/{id}/financial', [\App\Http\Controllers\Admin\CheptelController::class, 'storeFinancial'])->name('cheptel.financial.store');
     Route::post('/cheptel/{id}/health', [\App\Http\Controllers\Admin\CheptelController::class, 'storeHealth'])->name('cheptel.health.store');
 });
 
 // 🚜 Espace unique : Managers
-Route::middleware(['auth', 'role:manager'])->prefix('manager')->as('manager.')->group(function () {
+Route::prefix('manager')->middleware(['auth', 'role:manager'])->as('manager.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Manager\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/cheptel', [\App\Http\Controllers\Manager\CheptelController::class, 'index'])->name('cheptel.index');
     Route::get('/cheptel/{id}', [\App\Http\Controllers\Manager\CheptelController::class, 'show'])->name('cheptel.show');
+    Route::put('/cheptel/{id}/vente', [\App\Http\Controllers\Manager\CheptelController::class, 'updateVente'])->name('cheptel.vente.update');
+    Route::post('/cheptel', [\App\Http\Controllers\Manager\CheptelController::class, 'store'])->name('cheptel.store');
     Route::post('/cheptel/{id}/financial', [\App\Http\Controllers\Manager\CheptelController::class, 'storeFinancial'])->name('cheptel.financial.store');
     Route::post('/cheptel/{id}/health', [\App\Http\Controllers\Manager\CheptelController::class, 'storeHealth'])->name('cheptel.health.store');
 });
