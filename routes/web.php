@@ -54,6 +54,10 @@ Route::prefix('manager')->middleware(['auth', 'role:manager'])->as('manager.')->
 // 📉 Espace unique : Clients / Investisseurs
 Route::middleware(['auth', 'role:client'])->prefix('investisseur')->as('client.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Client\DashboardController::class, 'index'])->name('dashboard');
+    
+    // Cheptel pour les clients (en lecture seule)
+    Route::get('/cheptel', [\App\Http\Controllers\Client\CheptelController::class, 'index'])->name('cheptel.index');
+    Route::get('/cheptel/{id}', [\App\Http\Controllers\Client\CheptelController::class, 'show'])->name('cheptel.show');
 });
 
 

@@ -15,29 +15,29 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
     };
 
     return (
-        <div className="flex h-screen bg-gray-100 dark:bg-gray-900 overflow-hidden">
+        <div className="flex h-screen bg-background overflow-hidden font-sans text-slate-700">
             {/* SIDEBAR */}
-            <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col justify-between">
-                <div className="p-5">
-                    <div className="text-xl font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
-                        <Milestone className="h-6 w-6" />
-                        <span>Ferm Project</span>
+            <aside className="w-72 bg-surface border-r border-slate-100 shadow-premium z-10 flex flex-col justify-between">
+                <div className="p-8">
+                    <div className="text-2xl font-bold text-brand-600 flex items-center gap-3">
+                        <Milestone className="h-8 w-8 text-brand-500" />
+                        <span className="font-display tracking-tight">Ferm Project</span>
                     </div>
 
-                    <nav className="mt-8 space-y-2">
-                        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menu</div>
-                        <div className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-md">
-                            <LayoutDashboard className="h-4 w-4" />
+                    <nav className="mt-12 space-y-3">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Menu</div>
+                        <div className="flex items-center gap-4 px-4 py-3 text-sm font-semibold text-brand-700 bg-brand-50 rounded-xl transition-all duration-300">
+                            <LayoutDashboard className="h-5 w-5" />
                             <span>Dashboard</span>
                         </div>
                     </nav>
                 </div>
 
                 {/* BAS DE LA SIDEBAR : PROFIL & DECONNEXION */}
-                <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="mb-4">
-                        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{auth.user.prenom} {auth.user.nom}</p>
-                        <span className="text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 px-2 py-0.5 rounded-full font-medium">
+                <div className="p-6 border-t border-slate-100 bg-slate-50/50">
+                    <div className="mb-6">
+                        <p className="text-base font-bold text-slate-800">{auth.user.prenom} {auth.user.nom}</p>
+                        <span className="inline-block mt-1 text-xs bg-brand-100 text-brand-700 px-3 py-1 rounded-full font-semibold tracking-wide">
                             {getRoleName()}
                         </span>
                     </div>
@@ -45,9 +45,9 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                         href={route('logout')}
                         method="post"
                         as="button"
-                        className="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-300 group"
                     >
-                        <LogOut className="h-4 w-4" />
+                        <LogOut className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
                         <span>Déconnexion</span>
                     </Link>
                 </div>
@@ -55,12 +55,14 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
 
             {/* CONTENU PRINCIPAL */}
             <div className="flex-1 flex flex-col overflow-hidden">
-                <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
-                    <h1 className="text-lg font-semibold text-gray-800 dark:text-white">{title}</h1>
+                <header className="h-20 bg-surface/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-10 z-0">
+                    <h1 className="text-2xl font-bold text-slate-800 tracking-tight">{title}</h1>
                 </header>
 
-                <main className="flex-1 overflow-y-auto p-6">
-                    {children}
+                <main className="flex-1 overflow-y-auto p-10">
+                    <div className="max-w-7xl mx-auto space-y-8">
+                        {children}
+                    </div>
                 </main>
             </div>
         </div>

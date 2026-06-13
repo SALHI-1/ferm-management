@@ -1,3 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-slate-700 antialiased;
+    line-height: 1.7;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    @apply text-slate-800 tracking-tight;
+  }
+}
+
+@layer components {
+  .btn-premium {
+    @apply inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-brand-600 rounded-lg shadow-premium hover:bg-brand-500 hover:shadow-premium-hover focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-premium:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn-premium-secondary {
+    @apply inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg shadow-premium hover:bg-slate-50 hover:shadow-premium-hover focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-premium-secondary:hover {
+    transform: translateY(-2px);
+  }
+
+  .card-premium {
+    @apply bg-surface rounded-xl shadow-premium border border-slate-100 p-8;
+  }
+}
