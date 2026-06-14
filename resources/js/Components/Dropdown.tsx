@@ -2,9 +2,9 @@ import { Transition } from '@headlessui/react';
 import { Link } from '@inertiajs/react';
 import { createContext, useContext, useState } from 'react';
 
-const DropDownContext = createContext();
+const DropDownContext = createContext<any>(null);
 
-const Dropdown = ({ children }) => {
+const Dropdown = ({ children }: any) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -18,7 +18,7 @@ const Dropdown = ({ children }) => {
     );
 };
 
-const Trigger = ({ children }) => {
+const Trigger = ({ children }: any) => {
     const { open, setOpen, toggleOpen } = useContext(DropDownContext);
 
     return (
@@ -38,9 +38,7 @@ const Trigger = ({ children }) => {
 const Content = ({
     align = 'right',
     width = '48',
-    contentClasses = 'py-1 bg-white',
-    children,
-}) => {
+    contentClasses = 'py-1.5 bg-white', children }: any) => {
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = 'origin-top';
@@ -62,19 +60,19 @@ const Content = ({
             <Transition
                 show={open}
                 enter="transition ease-out duration-200"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="transition ease-in duration-75"
+                enterFrom="opacity-0 scale-95 -translate-y-1"
+                enterTo="opacity-100 scale-100 translate-y-0"
+                leave="transition ease-in duration-100"
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                    className={`absolute z-50 mt-2.5 rounded-xl shadow-premium-md border border-slate-100 ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
                     <div
                         className={
-                            `rounded-md ring-1 ring-black ring-opacity-5 ` +
+                            `rounded-xl overflow-hidden ` +
                             contentClasses
                         }
                     >
@@ -86,12 +84,12 @@ const Content = ({
     );
 };
 
-const DropdownLink = ({ className = '', children, ...props }) => {
+const DropdownLink = ({ className = '', children, ...props }: any) => {
     return (
         <Link
             {...props}
             className={
-                'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none ' +
+                'block w-full px-4 py-2.5 text-start text-sm font-medium leading-5 text-slate-600 transition-all duration-150 hover:bg-slate-50 hover:text-slate-800 focus:bg-slate-50 focus:outline-none ' +
                 className
             }
         >

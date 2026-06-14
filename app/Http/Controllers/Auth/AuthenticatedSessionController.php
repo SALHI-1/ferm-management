@@ -18,11 +18,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        // return Inertia::render('Auth/Login', [
-        //     'canResetPassword' => Route::has('password.request'),
-        //     'status' => session('status'),
-        // ]);
-        return Inertia::render('Auth/Login');
+        return Inertia::render('Welcome', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'laravelVersion' => \Illuminate\Foundation\Application::VERSION,
+            'phpVersion' => PHP_VERSION,
+        ]);
     }
 
     public function createAdmin(): Response
@@ -87,11 +90,17 @@ switch ($user->userable_type) {
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $userType = Auth::user()?->userable_type;
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        if ($userType === \App\Models\Admin::class || $userType === \App\Models\Manager::class) {
+            return redirect()->route('admin.login');
+        }
 
         return redirect('/');
     }

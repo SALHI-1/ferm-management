@@ -4,7 +4,7 @@ export default function InputError({ message, className = '', ...props }: HTMLAt
     return message ? (
         <p
             {...props}
-            className={'text-sm text-red-600 ' + className}
+            className={'text-sm text-rose-500 font-medium animate-slide-down ' + className}
         >
             {message}
         </p>

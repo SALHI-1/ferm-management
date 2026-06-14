@@ -1,338 +1,135 @@
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
+import { X, Heart, DollarSign, Baby, TrendingUp } from 'lucide-react';
 
-interface Client {
-    id: number;
-    user: {
-        nom: string;
-        prenom: string;
-    };
-    pivot: {
-        part_possedee: number;
-    };
-}
-
-interface Cost {
-    id: number;
-    type: string;
-    price: number;
-    date_facture: string;
-}
-
-interface Production {
-    id: number;
-    quantite_litres: number;
-    periode_mois: string;
-}
-
-interface HealthStatus {
-    id: number;
-    type: string;
-    date_debut: string;
-    date_fin: string | null;
-}
-
-interface Vache {
-    id: number;
-    numero_ticket: string;
-    image: string | null;
-    statut_sante: string;
-    statut_vente: string;
-    sexe: 'male' | 'female';
-    date_naissance: string | null;
-    age: number | null;
-    clients: Client[];
-    costs: Cost[];
-    productions: Production[];
-    health_statuses: HealthStatus[];
-    enfants: Vache[];
-    pivot?: {
-        part_possedee: number;
-    };
-}
-
-interface Props {
-    vache: Vache;
-}
+interface Client { id: number; user: { nom: string; prenom: string; }; pivot: { part_possedee: number; }; }
+interface Cost { id: number; type: string; price: number; date_facture: string; }
+interface Production { id: number; quantite_litres: number; periode_mois: string; }
+interface HealthStatus { id: number; type: string; date_debut: string; date_fin: string | null; }
+interface Vache { id: number; numero_ticket: string; image: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; pivot?: { part_possedee: number; }; }
+interface Props { vache: Vache; }
 
 export default function CheptelDetails({ vache }: Props) {
     const [showHealthModal, setShowHealthModal] = useState(false);
     const [showFinancialModal, setShowFinancialModal] = useState(false);
-    // const [prixLitre, setPrixLitre] = useState(0.80);
-
     const isSold = vache.statut_vente === 'vendue';
     const partPossedee = vache.pivot?.part_possedee || 0;
 
-    // Calculate monthly statistics
     const months = new Set<string>();
     vache.costs.forEach(c => months.add(c.date_facture.substring(0, 7)));
     vache.productions.forEach(p => months.add(p.periode_mois.substring(0, 7)));
-
     const monthlyStats = Array.from(months).sort((a, b) => b.localeCompare(a)).map(month => {
-        const monthCosts = vache.costs.filter(c => c.date_facture.startsWith(month)).reduce((sum, c) => sum + parseFloat(c.price.toString()), 0);
-        const monthProd = vache.productions.filter(p => p.periode_mois.startsWith(month)).reduce((sum, p) => sum + parseFloat(p.quantite_litres.toString()), 0);
-
-        return {
-            month,
-            costs: monthCosts,
-            production: monthProd
-        };
+        const costs = vache.costs.filter(c => c.date_facture.startsWith(month)).reduce((s, c) => s + parseFloat(c.price.toString()), 0);
+        const production = vache.productions.filter(p => p.periode_mois.startsWith(month)).reduce((s, p) => s + parseFloat(p.quantite_litres.toString()), 0);
+        return { month, costs, production };
     });
+
+    const healthBadge = (s: string) => { if (s === 'healthy') return <span className="badge-success">En bonne santé</span>; if (s === 'pregnancy') return <span className="badge-info">Gestation</span>; return <span className="badge-danger">Malade</span>; };
 
     return (
         <AppLayout title={`Détails du bovin ${vache.numero_ticket}`}>
             <Head title={`Bovin ${vache.numero_ticket}`} />
-
             <div className="space-y-8">
-                {/* Header Section */}
-                <div className="card-premium flex items-start space-x-8 relative">
-                    <div className="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-                        {vache.image ? (
-                            <img src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" />
-                        ) : (
-                            <span className="text-gray-400">Pas de photo</span>
-                        )}
+                {/* Header */}
+                <div className="card-premium flex flex-col md:flex-row items-start gap-6">
+                    <div className="w-28 h-28 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
+                        {vache.image ? <img src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">Pas de photo</span>}
                     </div>
                     <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <h1 className="text-2xl font-bold mb-2 flex items-center space-x-3">
-                                    <span>Ticket: {vache.numero_ticket}</span>
-                                    {isSold && (
-                                        <span className="px-3 py-1 bg-red-600 text-white text-sm font-bold rounded-full">VENDUE</span>
-                                    )}
-                                </h1>
-                                <div className="mb-2 space-y-1">
-                                    <div>
-                                        <span className={`px-2 py-1 rounded text-sm text-white inline-block ${vache.statut_sante === 'healthy' ? 'bg-green-500' :
-                                            vache.statut_sante === 'pregnancy' ? 'bg-blue-500' : 'bg-red-500'
-                                            }`}>
-                                            {vache.statut_sante === 'healthy' ? 'En bonne santé' :
-                                                vache.statut_sante === 'pregnancy' ? 'Gestation' : 'Malade'}
-                                        </span>
-                                    </div>
-                                    {vache.date_naissance && (
-                                        <div className="text-gray-600 text-sm">
-                                            <strong>Date de naissance:</strong> {new Date(vache.date_naissance).toLocaleDateString('fr-FR')}
-                                            {vache.age !== null ? ` (${vache.age} ans)` : ''}
-                                        </div>
-                                    )}
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-gray-700">Propriétaire(s) :</h3>
-                                    {vache.clients.length > 0 ? (
-                                        <ul className="list-disc pl-5">
-                                            {vache.clients.map(client => (
-                                                <li key={client.id}>{client.user?.nom} {client.user?.prenom} ({(client.pivot.part_possedee * 100).toFixed(0)}%)</li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <p className="text-gray-500 text-sm">Appartient à la ferme</p>
-                                    )}
-                                </div>
-                            </div>
+                        <h1 className="text-xl font-bold text-slate-800 font-display flex items-center gap-3 mb-2">
+                            Ticket: {vache.numero_ticket}
+                            {isSold && <span className="badge-danger">VENDUE</span>}
+                        </h1>
+                        <div className="space-y-2 mb-3">{healthBadge(vache.statut_sante)}
+                            {vache.date_naissance && <p className="text-slate-500 text-sm"><strong>Née le :</strong> {new Date(vache.date_naissance).toLocaleDateString('fr-FR')}{vache.age !== null ? ` (${vache.age} ans)` : ''}</p>}
+                            <p className="text-slate-500 text-sm"><strong>Origine :</strong> {vache.origine === 'ne_sur_ferme' ? 'Née à la ferme' : 'Achetée'}</p>
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-semibold text-slate-600 mb-1">Propriétaire(s) :</h3>
+                            {vache.clients.length > 0 ? <ul className="text-sm text-slate-600 space-y-0.5">{vache.clients.map(c => <li key={c.id}>• {c.user?.nom} {c.user?.prenom} ({(c.pivot.part_possedee * 100).toFixed(0)}%)</li>)}</ul> : <p className="text-slate-400 text-sm">Appartient à la ferme</p>}
                         </div>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Monthly Benefits Section */}
-                    {vache.sexe !== 'male' && (
-                        <div className="card-premium md:col-span-2">
-                            <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-xl font-bold flex items-center space-x-2">
-                                    <span>💰 Rentabilité Mensuelle</span>
-                                </h2>
-                                <div className="flex items-center space-x-2 bg-gray-50 px-3 py-1 rounded-md border">
-
-                                    {/* //utiliser le prix de litre comme info et non comme valeur modifiable
-                                    // prix = 4 */}
-                                    <label className="text-sm font-semibold text-gray-700">Prix du litre :</label>
-                                    {/* <input
-                                        type="number"
-                                        // step="0.05"
-                                        value={4}
-                                        readOnly
-                                        // onChange={e => setPrixLitre(parseFloat(e.target.value) || 0)} 
-                                        className="w-20 text-sm border-gray-300 rounded-md py-1"
-                                    /> */}
-                                    <span className="text-sm text-gray-500"> 4 €/L</span>
-                                </div>
-                            </div>
-
-                            <p className="text-gray-500 italic text-sm mb-4">
-                                Ce tableau affiche vos bénéfices nets estimés par mois.
-                                <br />Calcul : <strong>(Production en L × 4€) - Coûts</strong>.
-                                Vos gains sont calculés selon votre part de possession (<strong>{(partPossedee * 100).toFixed(0)}%</strong>).
-                            </p>
-
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr className="bg-indigo-50 text-indigo-900 border-b-2 border-indigo-200">
-                                            <th className="p-3 font-semibold">Mois</th>
-                                            <th className="p-3 font-semibold text-right">Production (L)</th>
-                                            <th className="p-3 font-semibold text-right">Revenu Brut (€)</th>
-                                            <th className="p-3 font-semibold text-right">Coûts d'entretien (€)</th>
-                                            <th className="p-3 font-semibold text-right">Bénéfice Net Total (€)</th>
-                                            <th className="p-3 font-bold text-right bg-indigo-100 rounded-tr-lg">Votre Part ({(partPossedee * 100).toFixed(0)}%)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {monthlyStats.length > 0 ? monthlyStats.map((stat) => {
-                                            const revenuBrut = stat.production * 4;
-                                            const beneficeTotal = revenuBrut - stat.costs;
-                                            const partClient = beneficeTotal * partPossedee;
-
-                                            return (
-                                                <tr key={stat.month} className="border-b hover:bg-gray-50 transition-colors">
-                                                    <td className="p-3 font-medium text-gray-800">{new Date(stat.month + '-01').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</td>
-                                                    <td className="p-3 text-right text-gray-600">{stat.production} L</td>
-                                                    <td className="p-3 text-right text-green-600">+{revenuBrut.toFixed(2)} €</td>
-                                                    <td className="p-3 text-right text-red-600">-{stat.costs.toFixed(2)} €</td>
-                                                    <td className={`p-3 text-right font-semibold ${beneficeTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                                        {beneficeTotal > 0 ? '+' : ''}{beneficeTotal.toFixed(2)} €
-                                                    </td>
-                                                    <td className={`p-3 text-right font-bold bg-indigo-50/50 ${partClient >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                                                        {partClient > 0 ? '+' : ''}{partClient.toFixed(2)} €
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }) : (
-                                            <tr>
-                                                <td colSpan={6} className="p-4 text-center text-gray-500">Aucune donnée disponible pour calculer les bénéfices.</td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Financial Section */}
-                    <div className="card-premium">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-xl font-bold">Historique des Frais</h2>
-                            <button onClick={() => setShowFinancialModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Voir l'archive complète &rarr;</button>
-                        </div>
-                    </div>
-
-                    {/* Health Section */}
-                    <div className="card-premium">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-xl font-bold">Suivi Santé</h2>
-                            <button onClick={() => setShowHealthModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Voir l'archive complète &rarr;</button>
-                        </div>
-
-                        <div className="p-4 bg-gray-50 rounded-md">
-                            <h3 className="text-sm font-semibold text-gray-700 mb-2">Derniers Événements</h3>
-                            {vache.health_statuses.length > 0 ? (
-                                <ul className="text-sm">
-                                    {vache.health_statuses.slice(0, 4).map(h => (
-                                        <li key={h.id} className="flex justify-between border-b pb-1 mb-1">
-                                            <span>
-                                                {h.type === 'sickness' ? 'Maladie' : h.type === 'pregnancy' ? 'Gestation' : 'Visite de routine'}
-                                            </span>
-                                            <span className="text-gray-600">{h.date_debut}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : <p className="text-xs text-gray-500">Aucun événement de santé enregistré</p>}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Lineage Section */}
+                {/* Monthly Benefits */}
                 {vache.sexe !== 'male' && (
                     <div className="card-premium">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-xl font-bold">Descendance ({vache.enfants.length})</h2>
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><TrendingUp className="h-5 w-5 text-brand-500" /> Rentabilité Mensuelle</h2>
+                            <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
+                                <span className="text-sm font-semibold text-slate-600">Prix du litre :</span>
+                                <span className="text-sm font-bold text-brand-600">4 DH/L</span>
+                            </div>
                         </div>
-                        {vache.enfants.length > 0 ? (
-                            <table className="w-full text-left border-collapse">
-                                <thead>
-                                    <tr className="bg-gray-100">
-                                        <th className="p-2 border">Ticket Enfant</th>
-                                    </tr>
-                                </thead>
+                        <p className="text-slate-500 text-sm mb-4">Bénéfices nets estimés : <strong>(Production × 4 DH) - Coûts</strong>. Votre part : <strong>{(partPossedee * 100).toFixed(0)}%</strong>.</p>
+                        <div className="overflow-x-auto">
+                            <table className="table-premium">
+                                <thead><tr><th>Mois</th><th className="text-right">Production</th><th className="text-right">Revenu Brut</th><th className="text-right">Coûts</th><th className="text-right">Bénéfice Net</th><th className="text-right">Votre Part</th></tr></thead>
                                 <tbody>
-                                    {vache.enfants.map(enfant => (
-                                        <tr key={enfant.id}>
-                                            <td className="p-2 border">
-                                                <a href={`/investisseur/cheptel/${enfant.id}`} className="text-indigo-600 hover:underline">
-                                                    {enfant.numero_ticket}
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {monthlyStats.length > 0 ? monthlyStats.map(stat => {
+                                        const rev = stat.production * 4; const ben = rev - stat.costs; const part = ben * partPossedee;
+                                        return (<tr key={stat.month}><td className="font-medium text-slate-700">{new Date(stat.month + '-01').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</td><td className="text-right text-slate-600">{stat.production} L</td><td className="text-right text-emerald-600">+{rev.toFixed(2)} DH</td><td className="text-right text-rose-600">-{stat.costs.toFixed(2)} DH</td><td className={`text-right font-semibold ${ben >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{ben > 0 ? '+' : ''}{ben.toFixed(2)} DH</td><td className={`text-right font-bold ${part >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>{part > 0 ? '+' : ''}{part.toFixed(2)} DH</td></tr>);
+                                    }) : <tr><td colSpan={6} className="text-center text-slate-400 py-8">Aucune donnée disponible.</td></tr>}
                                 </tbody>
                             </table>
-                        ) : (
-                            <p className="text-gray-500 italic">Aucune descendance enregistrée.</p>
-                        )}
+                        </div>
+                    </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="card-premium">
+                        <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
+                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><DollarSign className="h-5 w-5 text-brand-500" /> Frais</h2>
+                            <button onClick={() => setShowFinancialModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Archive →</button>
+                        </div>
+                    </div>
+                    <div className="card-premium">
+                        <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
+                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><Heart className="h-5 w-5 text-rose-500" /> Santé</h2>
+                            <button onClick={() => setShowHealthModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Archive →</button>
+                        </div>
+                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                            <h3 className="text-sm font-semibold text-slate-600 mb-2">Derniers Événements</h3>
+                            {vache.health_statuses.length > 0 ? <ul className="text-sm space-y-2">{vache.health_statuses.slice(0, 4).map(h => <li key={h.id} className="flex justify-between border-b border-slate-100 pb-1.5"><span className="text-slate-700">{h.type === 'sickness' ? 'Maladie' : h.type === 'pregnancy' ? 'Gestation' : 'Visite routine'}</span><span className="text-slate-400 text-xs">{h.date_debut}</span></li>)}</ul> : <p className="text-xs text-slate-400">Aucun événement enregistré</p>}
+                        </div>
+                    </div>
+                </div>
+
+                {vache.sexe !== 'male' && (
+                    <div className="card-premium">
+                        <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
+                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><Baby className="h-5 w-5 text-brand-500" /> Descendance ({vache.enfants.length})</h2>
+                        </div>
+                        {vache.enfants.length > 0 ? <div className="space-y-2">{vache.enfants.map(e => <a key={e.id} href={`/investisseur/cheptel/${e.id}`} className="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-brand-600 font-semibold text-sm transition-colors">{e.numero_ticket}</a>)}</div> : <p className="text-slate-400 italic text-sm">Aucune descendance.</p>}
                     </div>
                 )}
             </div>
 
-            {/* Modals */}
-            {showFinancialModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-11/12 max-w-2xl max-h-[80vh] overflow-y-auto">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold">Archive Financière</h3>
-                            <button onClick={() => setShowFinancialModal(false)} className="text-gray-500 hover:text-gray-700">&times;</button>
-                        </div>
-                        <div className="mb-6">
-                            <h4 className="font-semibold mb-2">Coûts</h4>
-                            <table className="w-full text-sm text-left border">
-                                <thead><tr className="bg-gray-100"><th className="p-2 border">Date</th><th className="p-2 border">Type</th><th className="p-2 border">Montant</th></tr></thead>
-                                <tbody>
-                                    {vache.costs.map(c => (
-                                        <tr key={c.id}><td className="p-2 border">{c.date_facture}</td><td className="p-2 border">{c.type}</td><td className="p-2 border text-red-600 font-semibold">-{c.price} €</td></tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        {vache.sexe !== 'male' && (
-                            <div>
-                                <h4 className="font-semibold mb-2">Productions (Lait)</h4>
-                                <table className="w-full text-sm text-left border">
-                                    <thead><tr className="bg-gray-100"><th className="p-2 border">Période</th><th className="p-2 border">Quantité</th></tr></thead>
-                                    <tbody>
-                                        {vache.productions.map(p => (
-                                            <tr key={p.id}><td className="p-2 border">{p.periode_mois}</td><td className="p-2 border text-green-600 font-semibold">{p.quantite_litres} L</td></tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
+            {showFinancialModal && (() => {
+                // Grouping costs by month
+                const groupedCosts = vache.costs.reduce((acc, curr) => {
+                    const month = curr.date_facture.substring(0, 7); // YYYY-MM
+                    if (!acc[month]) acc[month] = { month, total: 0 };
+                    acc[month].total += Number(curr.price);
+                    return acc;
+                }, {} as Record<string, { month: string, total: number }>);
+                const costsArray = Object.values(groupedCosts).sort((a, b) => b.month.localeCompare(a.month));
 
-            {showHealthModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-11/12 max-w-2xl max-h-[80vh] overflow-y-auto">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold">Archive Santé</h3>
-                            <button onClick={() => setShowHealthModal(false)} className="text-gray-500 hover:text-gray-700">&times;</button>
-                        </div>
-                        <table className="w-full text-sm text-left border">
-                            <thead><tr className="bg-gray-100"><th className="p-2 border">Statut</th><th className="p-2 border">Date Début</th><th className="p-2 border">Date Fin</th></tr></thead>
-                            <tbody>
-                                {vache.health_statuses.map(h => (
-                                    <tr key={h.id}>
-                                        <td className="p-2 border">{h.type === 'sickness' ? 'Maladie' : h.type === 'pregnancy' ? 'Gestation' : 'Visite de routine'}</td>
-                                        <td className="p-2 border">{h.date_debut}</td>
-                                        <td className="p-2 border">{h.date_fin || 'En cours'}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
+                // Grouping productions by month
+                const groupedProds = vache.productions.reduce((acc, curr) => {
+                    const month = curr.periode_mois.substring(0, 7); // YYYY-MM
+                    if (!acc[month]) acc[month] = { month, total: 0 };
+                    acc[month].total += Number(curr.quantite_litres);
+                    return acc;
+                }, {} as Record<string, { month: string, total: number }>);
+                const prodsArray = Object.values(groupedProds).sort((a, b) => b.month.localeCompare(a.month));
+
+                return (
+                    <div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Archive Financière</h3><button onClick={() => setShowFinancialModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6 space-y-6"><div><h4 className="text-sm font-bold text-slate-700 mb-3">Coûts</h4><table className="table-premium"><thead><tr><th>Mois</th><th>Montant Total</th></tr></thead><tbody>{costsArray.map((c, i) => <tr key={i}><td>{c.month}</td><td className="text-rose-600 font-semibold">-{c.total.toFixed(2)} DH</td></tr>)}</tbody></table></div>{vache.sexe !== 'male' && <div><h4 className="text-sm font-bold text-slate-700 mb-3">Productions</h4><table className="table-premium"><thead><tr><th>Mois</th><th>Quantité Totale</th></tr></thead><tbody>{prodsArray.map((p, i) => <tr key={i}><td>{p.month}</td><td className="text-emerald-600 font-semibold">{p.total.toFixed(2)} L</td></tr>)}</tbody></table></div>}</div></div></div>
+                );
+            })()}
+            {showHealthModal && <div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Archive Santé</h3><button onClick={() => setShowHealthModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6"><table className="table-premium"><thead><tr><th>Statut</th><th>Début</th><th>Fin</th></tr></thead><tbody>{vache.health_statuses.map(h => <tr key={h.id}><td>{h.type === 'sickness' ? 'Maladie' : h.type === 'pregnancy' ? 'Gestation' : 'Visite routine'}</td><td>{h.date_debut}</td><td>{h.date_fin || 'En cours'}</td></tr>)}</tbody></table></div></div></div>}
         </AppLayout>
     );
 }

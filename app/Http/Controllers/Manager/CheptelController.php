@@ -27,6 +27,7 @@ class CheptelController extends Controller
             'type_investissement' => 'required_without:mother_id|in:complet,demi',
             'client_1_id' => 'required_if:type_investissement,complet,demi|nullable|exists:clients,id',
             'client_2_id' => 'required_if:type_investissement,demi|nullable|exists:clients,id|different:client_1_id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->mother_id) {
@@ -34,6 +35,11 @@ class CheptelController extends Controller
             if ($mother && $mother->statut_vente === 'vendue') {
                 abort(403, 'Impossible d\'ajouter une descendance à une vache vendue.');
             }
+        }
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = '/storage/' . $request->file('image')->store('vaches', 'public');
         }
 
         $vache = \App\Models\Vache::create([
@@ -44,7 +50,8 @@ class CheptelController extends Controller
             'date_entree' => $request->date_entree,
             'mother_id' => $request->mother_id,
             'statut_vente' => 'non_vendue',
-            'statut_sante' => 'healthy'
+            'statut_sante' => 'healthy',
+            'image' => $imagePath
         ]);
 
         if ($request->mother_id) {
@@ -78,6 +85,14 @@ class CheptelController extends Controller
             }
         }
 
+        \App\Models\Traceability::create([
+            'manager_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action_type' => 'CREATE',
+            'model_type' => \App\Models\Vache::class,
+            'model_id' => $vache->id,
+            'description' => 'A ajouté le bovin avec le ticket : ' . $vache->numero_ticket
+        ]);
+
         return redirect()->back()->with('success', 'Animal ajouté au cheptel avec succès.');
     }
 
@@ -91,6 +106,35 @@ class CheptelController extends Controller
         ]);
     }
 
+    public function update(Request $request, $id) {
+        $vache = \App\Models\Vache::findOrFail($id);
+
+        $request->validate([
+            'numero_ticket' => 'required|string|unique:vaches,numero_ticket,'.$id,
+            'sexe' => 'required|in:male,female',
+            'date_naissance' => 'required|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $data = $request->only(['numero_ticket', 'sexe', 'date_naissance']);
+        
+        if ($request->hasFile('image')) {
+            $data['image'] = '/storage/' . $request->file('image')->store('vaches', 'public');
+        }
+
+        $vache->update($data);
+
+        \App\Models\Traceability::create([
+            'manager_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action_type' => 'UPDATE',
+            'model_type' => \App\Models\Vache::class,
+            'model_id' => $vache->id,
+            'description' => 'A modifié les informations du bovin : ' . $vache->numero_ticket
+        ]);
+
+        return redirect()->back()->with('success', 'Informations mises à jour avec succès.');
+    }
+
     public function updateVente(Request $request, $id) {
         $vache = \App\Models\Vache::findOrFail($id);
         $request->validate([
@@ -98,6 +142,14 @@ class CheptelController extends Controller
         ]);
 
         $vache->update(['statut_vente' => $request->statut_vente]);
+
+        \App\Models\Traceability::create([
+            'manager_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action_type' => 'UPDATE',
+            'model_type' => \App\Models\Vache::class,
+            'model_id' => $vache->id,
+            'description' => 'A modifié le statut de vente du bovin ' . $vache->numero_ticket . ' à : ' . $request->statut_vente
+        ]);
 
         return redirect()->back()->with('success', 'Statut de vente mis à jour avec succès.');
     }
@@ -136,6 +188,14 @@ class CheptelController extends Controller
             ]);
         }
 
+        \App\Models\Traceability::create([
+            'manager_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action_type' => 'CREATE',
+            'model_type' => $request->type === 'gain' ? \App\Models\Production::class : \App\Models\Cost::class,
+            'model_id' => $id,
+            'description' => 'A ajouté des données financières (' . $request->type . ') pour le bovin ' . $vache->numero_ticket
+        ]);
+
         return redirect()->back()->with('success', 'Données financières ajoutées.');
     }
 
@@ -165,6 +225,14 @@ class CheptelController extends Controller
         if ($request->type === 'sickness' || $request->type === 'pregnancy') {
             $vache->update(['statut_sante' => $request->type]);
         }
+
+        \App\Models\Traceability::create([
+            'manager_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action_type' => 'CREATE',
+            'model_type' => \App\Models\HealthStatus::class,
+            'model_id' => $id,
+            'description' => 'A ajouté un suivi de santé (' . $request->type . ') pour le bovin ' . $vache->numero_ticket
+        ]);
 
         return redirect()->back()->with('success', 'Données de santé ajoutées.');
     }

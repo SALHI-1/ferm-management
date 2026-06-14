@@ -39,6 +39,7 @@ class CheptelController extends Controller
             'type_investissement' => 'required_without:mother_id|in:complet,demi',
             'client_1_id' => 'required_if:type_investissement,complet,demi|nullable|exists:clients,id',
             'client_2_id' => 'required_if:type_investissement,demi|nullable|exists:clients,id|different:client_1_id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->mother_id) {
@@ -46,6 +47,11 @@ class CheptelController extends Controller
             if ($mother && $mother->statut_vente === 'vendue') {
                 abort(403, 'Impossible d\'ajouter une descendance à une vache vendue.');
             }
+        }
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = '/storage/' . $request->file('image')->store('vaches', 'public');
         }
 
         $vache = \App\Models\Vache::create([
@@ -56,7 +62,8 @@ class CheptelController extends Controller
             'date_entree' => $request->date_entree,
             'mother_id' => $request->mother_id,
             'statut_vente' => 'non_vendue',
-            'statut_sante' => 'healthy'
+            'statut_sante' => 'healthy',
+            'image' => $imagePath
         ]);
 
         if ($request->mother_id) {
@@ -107,6 +114,32 @@ class CheptelController extends Controller
             'canEdit' => $canEdit,
             'coordonneesEspace' => 'admin'
         ]);
+    }
+
+    public function update(Request $request, $id) {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user->userable_type === \App\Models\Admin::class && $user->userable->role === 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $vache = \App\Models\Vache::findOrFail($id);
+
+        $request->validate([
+            'numero_ticket' => 'required|string|unique:vaches,numero_ticket,'.$id,
+            'sexe' => 'required|in:male,female',
+            'date_naissance' => 'required|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $data = $request->only(['numero_ticket', 'sexe', 'date_naissance']);
+        
+        if ($request->hasFile('image')) {
+            $data['image'] = '/storage/' . $request->file('image')->store('vaches', 'public');
+        }
+
+        $vache->update($data);
+
+        return redirect()->back()->with('success', 'Informations mises à jour avec succès.');
     }
 
     public function updateVente(Request $request, $id) {

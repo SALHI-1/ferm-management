@@ -1,423 +1,125 @@
 import React, { useState } from 'react';
-import { Head, usePage, useForm, router } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
+import { X, Heart, DollarSign, Baby, Edit2 } from 'lucide-react';
 
-interface Client {
-    id: number;
-    user: {
-        nom: string;
-        prenom: string;
-    };
-    pivot: {
-        part_possedee: number;
-    };
-}
-
-interface Cost {
-    id: number;
-    type: string;
-    price: number;
-    date_facture: string;
-}
-
-interface Production {
-    id: number;
-    quantite_litres: number;
-    periode_mois: string;
-}
-
-interface HealthStatus {
-    id: number;
-    type: string;
-    date_debut: string;
-    date_fin: string | null;
-}
-
-interface Vache {
-    id: number;
-    numero_ticket: string;
-    image: string | null;
-    statut_sante: string;
-    statut_vente: string;
-    sexe: 'male' | 'female';
-    date_naissance: string | null;
-    age: number | null;
-    clients: Client[];
-    costs: Cost[];
-    productions: Production[];
-    health_statuses: HealthStatus[];
-    enfants: Vache[];
-}
-
-interface Props {
-    vache: Vache;
-    canEdit: boolean;
-    coordonneesEspace: 'admin' | 'manager';
-}
+interface Client { id: number; user: { nom: string; prenom: string; }; pivot: { part_possedee: number; }; }
+interface Cost { id: number; type: string; price: number; date_facture: string; }
+interface Production { id: number; quantite_litres: number; periode_mois: string; }
+interface HealthStatus { id: number; type: string; date_debut: string; date_fin: string | null; }
+interface Vache { id: number; numero_ticket: string; image: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; }
+interface Props { vache: Vache; canEdit: boolean; coordonneesEspace: 'admin' | 'manager'; }
 
 export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Props) {
     const [showHealthModal, setShowHealthModal] = useState(false);
     const [showFinancialModal, setShowFinancialModal] = useState(false);
     const [showAddChildModal, setShowAddChildModal] = useState(false);
-
+    const [showEditModal, setShowEditModal] = useState(false);
     const isSold = vache.statut_vente === 'vendue';
 
-    const { data: finData, setData: setFinData, post: postFin, processing: finProcessing, reset: resetFin, errors: finErrors } = useForm({
-        annee: new Date().getFullYear(),
-        mois: new Date().getMonth() + 1,
-        price: '',
-        type: 'food'
-    });
+    const { data: finData, setData: setFinData, post: postFin, processing: finProcessing, reset: resetFin, errors: finErrors } = useForm({ annee: new Date().getFullYear(), mois: new Date().getMonth() + 1, price: '', type: 'food' });
+    const { data: healthData, setData: setHealthData, post: postHealth, processing: healthProcessing, reset: resetHealth, errors: healthErrors } = useForm({ type: 'checkup', date_debut: new Date().toISOString().split('T')[0], date_fin: '' });
+    const { data: childData, setData: setChildData, post: postChild, processing: childProcessing, reset: resetChild, errors: childErrors } = useForm({ numero_ticket: '', sexe: 'female', origine: 'ne_sur_ferme', date_naissance: '', date_entree: new Date().toISOString().split('T')[0], mother_id: vache.id, image: null as File | null });
+    const { data: editData, setData: setEditData, post: postEdit, processing: editProcessing, errors: editErrors } = useForm({ numero_ticket: vache.numero_ticket, sexe: vache.sexe, date_naissance: vache.date_naissance || '', image: null as File | null });
 
-    const { data: healthData, setData: setHealthData, post: postHealth, processing: healthProcessing, reset: resetHealth, errors: healthErrors } = useForm({
-        type: 'checkup',
-        date_debut: new Date().toISOString().split('T')[0],
-        date_fin: ''
-    });
+    const handleFinancialSubmit = (e: React.FormEvent) => { e.preventDefault(); postFin(`/${coordonneesEspace}/cheptel/${vache.id}/financial`, { onSuccess: () => resetFin('price') }); };
+    const handleHealthSubmit = (e: React.FormEvent) => { e.preventDefault(); postHealth(`/${coordonneesEspace}/cheptel/${vache.id}/health`, { onSuccess: () => resetHealth('date_fin') }); };
+    const handleChildSubmit = (e: React.FormEvent) => { e.preventDefault(); postChild(`/${coordonneesEspace}/cheptel`, { onSuccess: () => { setShowAddChildModal(false); resetChild('numero_ticket', 'date_naissance'); } }); };
+    const handleEditSubmit = (e: React.FormEvent) => { e.preventDefault(); postEdit(`/${coordonneesEspace}/cheptel/${vache.id}`, { onSuccess: () => setShowEditModal(false) }); };
+    const toggleVente = () => { const s = isSold ? 'non_vendue' : 'vendue'; if (confirm(`Marquer comme ${isSold ? 'non vendu' : 'vendu'} ?`)) router.put(`/${coordonneesEspace}/cheptel/${vache.id}/vente`, { statut_vente: s }); };
 
-    const { data: childData, setData: setChildData, post: postChild, processing: childProcessing, reset: resetChild, errors: childErrors } = useForm({
-        numero_ticket: '',
-        sexe: 'female',
-        origine: 'ne_sur_ferme',
-        date_naissance: '',
-        date_entree: new Date().toISOString().split('T')[0],
-        mother_id: vache.id
-    });
-
-    const handleFinancialSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        postFin(`/${coordonneesEspace}/cheptel/${vache.id}/financial`, {
-            onSuccess: () => resetFin('price')
-        });
-    };
-
-    const handleHealthSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        postHealth(`/${coordonneesEspace}/cheptel/${vache.id}/health`, {
-            onSuccess: () => resetHealth('date_fin')
-        });
-    };
-
-    const handleChildSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        postChild(`/${coordonneesEspace}/cheptel`, {
-            onSuccess: () => {
-                setShowAddChildModal(false);
-                resetChild('numero_ticket', 'date_naissance');
-            }
-        });
-    };
-
-    const toggleVente = () => {
-        const newStatus = isSold ? 'non_vendue' : 'vendue';
-        if (confirm(`Voulez-vous vraiment marquer cet animal comme ${isSold ? 'non vendu' : 'vendu'} ?`)) {
-            router.put(`/${coordonneesEspace}/cheptel/${vache.id}/vente`, { statut_vente: newStatus });
-        }
-    };
+    const healthBadge = (s: string) => { if (s === 'healthy') return <span className="badge-success">En bonne santé</span>; if (s === 'pregnancy') return <span className="badge-info">Gestation</span>; return <span className="badge-danger">Malade</span>; };
 
     return (
         <AppLayout title={`Détails du bovin ${vache.numero_ticket}`}>
             <Head title={`Bovin ${vache.numero_ticket}`} />
-
             <div className="space-y-6">
-                {/* Header Section */}
-
-                <div className="bg-white p-6 rounded-lg shadow-sm flex items-start space-x-6 relative">
-                    <div className="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
-                        {vache.image ? (
-                            <img src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" />
-                        ) : (
-                            <span className="text-gray-400">Pas de photo</span>
-                        )}
+                {/* Header */}
+                <div className="card-premium flex flex-col md:flex-row items-start gap-6">
+                    <div className="w-28 h-28 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
+                        {vache.image ? <img src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">Pas de photo</span>}
                     </div>
                     <div className="flex-1">
-                        <div className="flex justify-between items-start">
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                             <div>
-                                <h1 className="text-2xl font-bold mb-2 flex items-center space-x-3">
-                                    <span>Ticket: {vache.numero_ticket}</span>
-                                    {isSold && (
-                                        <span className="px-3 py-1 bg-red-600 text-white text-sm font-bold rounded-full">VENDUE</span>
-                                    )}
+                                <h1 className="text-xl font-bold text-slate-800 font-display flex items-center gap-3 mb-2">
+                                    Ticket: {vache.numero_ticket}
+                                    {isSold && <span className="badge-danger">VENDUE</span>}
                                 </h1>
-                                <div className="mb-2 space-y-1">
-                                    <div>
-                                        <span className={`px-2 py-1 rounded text-sm text-white inline-block ${vache.statut_sante === 'healthy' ? 'bg-green-500' :
-                                                vache.statut_sante === 'pregnancy' ? 'bg-blue-500' : 'bg-red-500'
-                                            }`}>
-                                            {vache.statut_sante === 'healthy' ? 'En bonne santé' :
-                                                vache.statut_sante === 'pregnancy' ? 'Gestation' : 'Malade'}
-                                        </span>
-                                    </div>
-                                    {vache.date_naissance && (
-                                        <div className="text-gray-600 text-sm">
-                                            <strong>Date de naissance:</strong> {new Date(vache.date_naissance).toLocaleDateString('fr-FR')} 
-                                            {vache.age !== null ? ` (${vache.age} ans)` : ''}
-                                        </div>
-                                    )}
+                                <div className="space-y-2 mb-3">{healthBadge(vache.statut_sante)}
+                                    {vache.date_naissance && <p className="text-slate-500 text-sm"><strong>Née le :</strong> {new Date(vache.date_naissance).toLocaleDateString('fr-FR')}{vache.age !== null ? ` (${vache.age} ans)` : ''}</p>}
+                                    <p className="text-slate-500 text-sm"><strong>Origine :</strong> {vache.origine === 'ne_sur_ferme' ? 'Née à la ferme' : 'Achetée'}</p>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-gray-700">Propriétaire(s) :</h3>
-                                    {vache.clients.length > 0 ? (
-                                        <ul className="list-disc pl-5">
-                                            {vache.clients.map(client => (
-                                                <li key={client.id}>{client.user?.nom} {client.user?.prenom} ({(client.pivot.part_possedee * 100).toFixed(0)}%)</li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <p className="text-gray-500 text-sm">Appartient à la ferme</p>
-                                    )}
+                                    <h3 className="text-sm font-semibold text-slate-600 mb-1">Propriétaire(s) :</h3>
+                                    {vache.clients.length > 0 ? <ul className="text-sm text-slate-600 space-y-0.5">{vache.clients.map(c => <li key={c.id}>• {c.user?.nom} {c.user?.prenom} ({(c.pivot.part_possedee * 100).toFixed(0)}%)</li>)}</ul> : <p className="text-slate-400 text-sm">Appartient à la ferme</p>}
                                 </div>
                             </div>
-                            
                             {canEdit && (
-                                <button 
-                                    onClick={toggleVente} 
-                                    className={`px-4 py-2 text-sm font-semibold rounded-md border ${
-                                        isSold ? 'border-gray-400 text-gray-600 hover:bg-gray-100' : 'border-red-600 text-red-600 hover:bg-red-50'
-                                    }`}
-                                >
-                                    {isSold ? 'Annuler la vente' : 'Marquer comme vendue'}
-                                </button>
+                                <div className="flex flex-col gap-2">
+                                    <button onClick={() => setShowEditModal(true)} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5"><Edit2 className="h-3.5 w-3.5" /> Modifier infos</button>
+                                    <button onClick={toggleVente} className={`btn-premium-secondary text-xs ${isSold ? '' : '!text-red-500 !border-red-200 hover:!bg-red-50'}`}>{isSold ? 'Annuler la vente' : 'Marquer comme vendue'}</button>
+                                </div>
                             )}
                         </div>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Financial Section */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold">Données Financières</h2>
-                            <button onClick={() => setShowFinancialModal(true)} className="text-indigo-600 hover:underline text-sm">Voir l'archive</button>
+                    {/* Financial */}
+                    <div className="card-premium">
+                        <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
+                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><DollarSign className="h-5 w-5 text-brand-500" /> Finances</h2>
+                            <button onClick={() => setShowFinancialModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Archive →</button>
                         </div>
-
                         {canEdit && !isSold ? (
-                            <form onSubmit={handleFinancialSubmit} className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Année</label>
-                                        <input type="number" value={finData.annee} onChange={e => setFinData('annee', parseInt(e.target.value))} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
-                                        {finErrors.annee && <p className="text-red-500 text-xs mt-1">{finErrors.annee}</p>}
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">Mois</label>
-                                        <input type="number" min="1" max="12" value={finData.mois} onChange={e => setFinData('mois', parseInt(e.target.value))} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
-                                        {finErrors.mois && <p className="text-red-500 text-xs mt-1">{finErrors.mois}</p>}
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Type</label>
-                                    <select value={finData.type} onChange={e => setFinData('type', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                        <option value="food">Coût: Nourriture</option>
-                                        <option value="veterinaire">Coût: Vétérinaire</option>
-                                        <option value="autre">Coût: Autre</option>
-                                        {vache.sexe !== 'male' && (
-                                            <option value="gain">Gain: Production lait (L)</option>
-                                        )}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">{finData.type === 'gain' ? 'Quantité (Litres)' : 'Montant (€)'}</label>
-                                    <input type="number" step="0.01" value={finData.price} onChange={e => setFinData('price', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
-                                    {finErrors.price && <p className="text-red-500 text-xs mt-1">{finErrors.price}</p>}
-                                </div>
-                                <button type="submit" disabled={finProcessing} className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50">
-                                    Enregistrer
-                                </button>
+                            <form onSubmit={handleFinancialSubmit} className="space-y-3">
+                                <div className="grid grid-cols-2 gap-3"><div><label className="label-premium">Année</label><input type="number" value={finData.annee} onChange={e => setFinData('annee', parseInt(e.target.value))} className="input-premium" required /></div><div><label className="label-premium">Mois</label><input type="number" min="1" max="12" value={finData.mois} onChange={e => setFinData('mois', parseInt(e.target.value))} className="input-premium" required /></div></div>
+                                <div><label className="label-premium">Type</label><select value={finData.type} onChange={e => setFinData('type', e.target.value)} className="select-premium"><option value="food">Nourriture</option><option value="veterinaire">Vétérinaire</option><option value="autre">Autre</option>{vache.sexe !== 'male' && <option value="gain">Production lait (L)</option>}</select></div>
+                                <div><label className="label-premium">{finData.type === 'gain' ? 'Quantité (L)' : 'Montant (DH)'}</label><input type="number" step="0.01" value={finData.price} onChange={e => setFinData('price', e.target.value)} className="input-premium" required /></div>
+                                <button type="submit" disabled={finProcessing} className="btn-premium w-full">Enregistrer</button>
                             </form>
-                        ) : (
-                            <p className="text-gray-500 italic text-sm">
-                                {isSold ? 'Les actions sont désactivées pour les animaux vendus.' : 'Vous n\'avez pas les droits pour ajouter des données financières.'}
-                            </p>
-                        )}
+                        ) : <p className="text-slate-400 italic text-sm">{isSold ? 'Actions désactivées (animal vendu).' : 'Droits insuffisants.'}</p>}
                     </div>
-
-                    {/* Health Section */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold">Suivi Santé</h2>
-                            <button onClick={() => setShowHealthModal(true)} className="text-indigo-600 hover:underline text-sm">Voir l'archive</button>
+                    {/* Health */}
+                    <div className="card-premium">
+                        <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
+                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><Heart className="h-5 w-5 text-rose-500" /> Santé</h2>
+                            <button onClick={() => setShowHealthModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Archive →</button>
                         </div>
-
                         {canEdit && !isSold ? (
-                            <form onSubmit={handleHealthSubmit} className="space-y-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Statut</label>
-                                    <select value={healthData.type} onChange={e => setHealthData('type', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                        <option value="checkup">Visite de routine</option>
-                                        <option value="sickness">Maladie</option>
-                                        {vache.sexe !== 'male' && (
-                                            <option value="pregnancy">Gestation</option>
-                                        )}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Date de début</label>
-                                    <input type="date" value={healthData.date_debut} onChange={e => setHealthData('date_debut', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
-                                    {healthErrors.date_debut && <p className="text-red-500 text-xs mt-1">{healthErrors.date_debut}</p>}
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Date de fin (optionnel)</label>
-                                    <input type="date" value={healthData.date_fin} onChange={e => setHealthData('date_fin', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
-                                </div>
-                                <button type="submit" disabled={healthProcessing} className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50">
-                                    Enregistrer
-                                </button>
+                            <form onSubmit={handleHealthSubmit} className="space-y-3">
+                                <div><label className="label-premium">Statut</label><select value={healthData.type} onChange={e => setHealthData('type', e.target.value)} className="select-premium"><option value="checkup">Visite routine</option><option value="sickness">Maladie</option>{vache.sexe !== 'male' && <option value="pregnancy">Gestation</option>}</select></div>
+                                <div><label className="label-premium">Date début</label><input type="date" value={healthData.date_debut} onChange={e => setHealthData('date_debut', e.target.value)} className="input-premium" required /></div>
+                                <div><label className="label-premium">Date fin (optionnel)</label><input type="date" value={healthData.date_fin} onChange={e => setHealthData('date_fin', e.target.value)} className="input-premium" /></div>
+                                <button type="submit" disabled={healthProcessing} className="btn-premium w-full">Enregistrer</button>
                             </form>
-                        ) : (
-                            <p className="text-gray-500 italic text-sm">
-                                {isSold ? 'Les actions sont désactivées pour les animaux vendus.' : 'Vous n\'avez pas les droits pour ajouter des données de santé.'}
-                            </p>
-                        )}
+                        ) : <p className="text-slate-400 italic text-sm">{isSold ? 'Actions désactivées (animal vendu).' : 'Droits insuffisants.'}</p>}
                     </div>
                 </div>
 
-                {/* Lineage Section */}
+                {/* Lineage */}
                 {vache.sexe !== 'male' && (
-                    <div className="bg-white p-6 rounded-lg shadow-sm">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold">Descendance ({vache.enfants.length})</h2>
-                            {canEdit && !isSold && (
-                                <button onClick={() => setShowAddChildModal(true)} className="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 text-sm">
-                                    + Ajouter une descendance
-                                </button>
-                            )}
+                    <div className="card-premium">
+                        <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
+                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><Baby className="h-5 w-5 text-brand-500" /> Descendance ({vache.enfants.length})</h2>
+                            {canEdit && !isSold && <button onClick={() => setShowAddChildModal(true)} className="btn-premium text-xs flex items-center gap-1.5">+ Descendance</button>}
                         </div>
                         {vache.enfants.length > 0 ? (
-                            <table className="w-full text-left border-collapse">
-                                <thead>
-                                    <tr className="bg-gray-100">
-                                        <th className="p-2 border">Ticket Enfant</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {vache.enfants.map(enfant => (
-                                        <tr key={enfant.id}>
-                                            <td className="p-2 border">
-                                                <a href={`/${coordonneesEspace}/cheptel/${enfant.id}`} className="text-indigo-600 hover:underline">
-                                                    {enfant.numero_ticket}
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        ) : (
-                            <p className="text-gray-500 italic">Aucune descendance enregistrée.</p>
-                        )}
+                            <div className="space-y-2">{vache.enfants.map(e => <a key={e.id} href={`/${coordonneesEspace}/cheptel/${e.id}`} className="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-brand-600 font-semibold text-sm transition-colors">{e.numero_ticket}</a>)}</div>
+                        ) : <p className="text-slate-400 italic text-sm">Aucune descendance enregistrée.</p>}
                     </div>
                 )}
             </div>
 
-            {/* Modals */}
-            {showFinancialModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-11/12 max-w-2xl max-h-[80vh] overflow-y-auto">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold">Archive Financière</h3>
-                            <button onClick={() => setShowFinancialModal(false)} className="text-gray-500 hover:text-gray-700">&times;</button>
-                        </div>
-                        <div className="mb-6">
-                            <h4 className="font-semibold mb-2">Coûts</h4>
-                            <table className="w-full text-sm text-left border">
-                                <thead><tr className="bg-gray-100"><th className="p-2 border">Date</th><th className="p-2 border">Type</th><th className="p-2 border">Montant</th></tr></thead>
-                                <tbody>
-                                    {vache.costs.map(c => (
-                                        <tr key={c.id}><td className="p-2 border">{c.date_facture}</td><td className="p-2 border">{c.type}</td><td className="p-2 border">{c.price} €</td></tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div>
-                            <h4 className="font-semibold mb-2">Productions (Lait)</h4>
-                            <table className="w-full text-sm text-left border">
-                                <thead><tr className="bg-gray-100"><th className="p-2 border">Période</th><th className="p-2 border">Quantité</th></tr></thead>
-                                <tbody>
-                                    {vache.productions.map(p => (
-                                        <tr key={p.id}><td className="p-2 border">{p.periode_mois}</td><td className="p-2 border">{p.quantite_litres} L</td></tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {showHealthModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-11/12 max-w-2xl max-h-[80vh] overflow-y-auto">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold">Archive Santé</h3>
-                            <button onClick={() => setShowHealthModal(false)} className="text-gray-500 hover:text-gray-700">&times;</button>
-                        </div>
-                        <table className="w-full text-sm text-left border">
-                            <thead><tr className="bg-gray-100"><th className="p-2 border">Statut</th><th className="p-2 border">Date Début</th><th className="p-2 border">Date Fin</th></tr></thead>
-                            <tbody>
-                                {vache.health_statuses.map(h => (
-                                    <tr key={h.id}>
-                                        <td className="p-2 border">{h.type === 'sickness' ? 'Maladie' : h.type === 'pregnancy' ? 'Gestation' : 'Visite de routine'}</td>
-                                        <td className="p-2 border">{h.date_debut}</td>
-                                        <td className="p-2 border">{h.date_fin || 'En cours'}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            )}
-
-            {showAddChildModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-11/12 max-w-md max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xl font-bold">Ajouter une descendance</h3>
-                            <button onClick={() => setShowAddChildModal(false)} className="text-gray-500 hover:text-gray-700">&times;</button>
-                        </div>
-                        
-                        <form onSubmit={handleChildSubmit} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Numéro de boucle (Ticket)</label>
-                                <input type="text" value={childData.numero_ticket} onChange={e => setChildData('numero_ticket', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
-                                {childErrors.numero_ticket && <p className="text-red-500 text-xs mt-1">{childErrors.numero_ticket}</p>}
-                            </div>
-                            
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Sexe</label>
-                                <select value={childData.sexe} onChange={e => setChildData('sexe', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="female">Femelle (Génisse/Vache)</option>
-                                    <option value="male">Mâle (Veau/Taureau)</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Origine</label>
-                                <select value={childData.origine} onChange={e => setChildData('origine', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" disabled>
-                                    <option value="ne_sur_ferme">Né sur la ferme</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Date de naissance</label>
-                                <input type="date" value={childData.date_naissance} onChange={e => setChildData('date_naissance', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
-                                {childErrors.date_naissance && <p className="text-red-500 text-xs mt-1">{childErrors.date_naissance}</p>}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Date d'entrée dans le cheptel</label>
-                                <input type="date" value={childData.date_entree} onChange={e => setChildData('date_entree', e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
-                                {childErrors.date_entree && <p className="text-red-500 text-xs mt-1">{childErrors.date_entree}</p>}
-                            </div>
-
-                            <div className="pt-4 flex justify-end space-x-2">
-                                <button type="button" onClick={() => setShowAddChildModal(false)} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Annuler</button>
-                                <button type="submit" disabled={childProcessing} className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+            {/* Financial Modal */}
+            {showFinancialModal && <div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Archive Financière</h3><button onClick={() => setShowFinancialModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6 space-y-6"><div><h4 className="text-sm font-bold text-slate-700 mb-3">Coûts</h4><table className="table-premium"><thead><tr><th>Date</th><th>Type</th><th>Montant</th></tr></thead><tbody>{vache.costs.map(c => <tr key={c.id}><td>{c.date_facture}</td><td>{c.type}</td><td>{c.price} DH</td></tr>)}</tbody></table></div><div><h4 className="text-sm font-bold text-slate-700 mb-3">Productions</h4><table className="table-premium"><thead><tr><th>Période</th><th>Quantité</th></tr></thead><tbody>{vache.productions.map(p => <tr key={p.id}><td>{p.periode_mois}</td><td>{p.quantite_litres} L</td></tr>)}</tbody></table></div></div></div></div>}
+            {/* Health Modal */}
+            {showHealthModal && <div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Archive Santé</h3><button onClick={() => setShowHealthModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6"><table className="table-premium"><thead><tr><th>Statut</th><th>Début</th><th>Fin</th></tr></thead><tbody>{vache.health_statuses.map(h => <tr key={h.id}><td>{h.type === 'sickness' ? 'Maladie' : h.type === 'pregnancy' ? 'Gestation' : 'Visite routine'}</td><td>{h.date_debut}</td><td>{h.date_fin || 'En cours'}</td></tr>)}</tbody></table></div></div></div>}
+            {/* Child Modal */}
+            {showAddChildModal && <div className="modal-overlay"><div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Ajouter une descendance</h3><button onClick={() => setShowAddChildModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><form onSubmit={handleChildSubmit} className="p-6 space-y-4"><div><label className="label-premium">Numéro de boucle</label><input type="text" value={childData.numero_ticket} onChange={e => setChildData('numero_ticket', e.target.value)} className="input-premium" required /></div><div><label className="label-premium">Sexe</label><select value={childData.sexe} onChange={e => setChildData('sexe', e.target.value as 'male' | 'female')} className="select-premium"><option value="female">Femelle</option><option value="male">Mâle</option></select></div><div><label className="label-premium">Date naissance</label><input type="date" value={childData.date_naissance} onChange={e => setChildData('date_naissance', e.target.value)} className="input-premium" required /></div><div><label className="label-premium">Date d'entrée</label><input type="date" value={childData.date_entree} onChange={e => setChildData('date_entree', e.target.value)} className="input-premium" required /></div><div><label className="label-premium">Photo (optionnel)</label><div onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files[0]) setChildData('image', e.dataTransfer.files[0]) }} className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer mt-1" onClick={() => document.getElementById('image-upload-child')?.click()}><input type="file" id="image-upload-child" className="hidden" accept="image/*" onChange={e => setChildData('image', e.target.files ? e.target.files[0] : null)} /><p className="text-sm text-slate-500 font-medium">{childData.image ? childData.image.name : 'Glissez-déposez une image ou cliquez ici'}</p></div>{childErrors.image && <p className="text-rose-500 text-xs mt-1">{childErrors.image}</p>}</div><div className="pt-4 flex justify-end gap-3 border-t border-slate-100"><button type="button" onClick={() => setShowAddChildModal(false)} className="btn-premium-secondary">Annuler</button><button type="submit" disabled={childProcessing} className="btn-premium">Ajouter</button></div></form></div></div>}
+            {/* Edit Modal */}
+            {showEditModal && <div className="modal-overlay"><div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Modifier les informations</h3><button onClick={() => setShowEditModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><form onSubmit={handleEditSubmit} className="p-6 space-y-4"><div><label className="label-premium">Numéro de boucle</label><input type="text" value={editData.numero_ticket} onChange={e => setEditData('numero_ticket', e.target.value)} className="input-premium" required />{editErrors.numero_ticket && <p className="text-rose-500 text-xs mt-1">{editErrors.numero_ticket}</p>}</div><div><label className="label-premium">Sexe</label><select value={editData.sexe} onChange={e => setEditData('sexe', e.target.value as 'male' | 'female')} className="select-premium"><option value="female">Femelle</option><option value="male">Mâle</option></select></div><div><label className="label-premium">Date naissance</label><input type="date" value={editData.date_naissance} onChange={e => setEditData('date_naissance', e.target.value)} className="input-premium" required /></div><div><label className="label-premium">Photo (optionnel)</label><div onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files[0]) setEditData('image', e.dataTransfer.files[0]) }} className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer mt-1" onClick={() => document.getElementById('image-upload-edit')?.click()}><input type="file" id="image-upload-edit" className="hidden" accept="image/*" onChange={e => setEditData('image', e.target.files ? e.target.files[0] : null)} /><p className="text-sm text-slate-500 font-medium">{editData.image ? editData.image.name : 'Glissez-déposez une image ou cliquez ici'}</p></div>{editErrors.image && <p className="text-rose-500 text-xs mt-1">{editErrors.image}</p>}</div><div className="pt-4 flex justify-end gap-3 border-t border-slate-100"><button type="button" onClick={() => setShowEditModal(false)} className="btn-premium-secondary">Annuler</button><button type="submit" disabled={editProcessing} className="btn-premium">Mettre à jour</button></div></form></div></div>}
         </AppLayout>
     );
 }

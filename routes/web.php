@@ -36,8 +36,23 @@ Route::prefix('admin')->middleware(['auth', 'role:admin,super_admin'])->as('admi
     Route::get('/cheptel/{id}', [\App\Http\Controllers\Admin\CheptelController::class, 'show'])->name('cheptel.show');
     Route::put('/cheptel/{id}/vente', [\App\Http\Controllers\Admin\CheptelController::class, 'updateVente'])->name('cheptel.vente.update');
     Route::post('/cheptel', [\App\Http\Controllers\Admin\CheptelController::class, 'store'])->name('cheptel.store');
+    Route::post('/cheptel/{id}', [\App\Http\Controllers\Admin\CheptelController::class, 'update'])->name('cheptel.update');
     Route::post('/cheptel/{id}/financial', [\App\Http\Controllers\Admin\CheptelController::class, 'storeFinancial'])->name('cheptel.financial.store');
     Route::post('/cheptel/{id}/health', [\App\Http\Controllers\Admin\CheptelController::class, 'storeHealth'])->name('cheptel.health.store');
+
+    Route::get('/traceabilite', [\App\Http\Controllers\Admin\TraceabilityController::class, 'index'])->name('traceabilite.index');
+
+    // Gestion des Clients
+    Route::get('/clients', [\App\Http\Controllers\Admin\ClientController::class, 'index'])->name('clients.index');
+    Route::post('/clients', [\App\Http\Controllers\Admin\ClientController::class, 'store'])->name('clients.store');
+    Route::put('/clients/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'update'])->name('clients.update');
+    Route::delete('/clients/{id}', [\App\Http\Controllers\Admin\ClientController::class, 'destroy'])->name('clients.destroy');
+
+    // Gestion du Personnel (Restreint au super_admin dans le controller)
+    Route::get('/staff', [\App\Http\Controllers\Admin\StaffController::class, 'index'])->name('staff.index');
+    Route::post('/staff', [\App\Http\Controllers\Admin\StaffController::class, 'store'])->name('staff.store');
+    Route::put('/staff/{id}', [\App\Http\Controllers\Admin\StaffController::class, 'update'])->name('staff.update');
+    Route::delete('/staff/{id}', [\App\Http\Controllers\Admin\StaffController::class, 'destroy'])->name('staff.destroy');
 });
 
 // 🚜 Espace unique : Managers
@@ -47,6 +62,7 @@ Route::prefix('manager')->middleware(['auth', 'role:manager'])->as('manager.')->
     Route::get('/cheptel/{id}', [\App\Http\Controllers\Manager\CheptelController::class, 'show'])->name('cheptel.show');
     Route::put('/cheptel/{id}/vente', [\App\Http\Controllers\Manager\CheptelController::class, 'updateVente'])->name('cheptel.vente.update');
     Route::post('/cheptel', [\App\Http\Controllers\Manager\CheptelController::class, 'store'])->name('cheptel.store');
+    Route::post('/cheptel/{id}', [\App\Http\Controllers\Manager\CheptelController::class, 'update'])->name('cheptel.update');
     Route::post('/cheptel/{id}/financial', [\App\Http\Controllers\Manager\CheptelController::class, 'storeFinancial'])->name('cheptel.financial.store');
     Route::post('/cheptel/{id}/health', [\App\Http\Controllers\Manager\CheptelController::class, 'storeHealth'])->name('cheptel.health.store');
 });
@@ -65,6 +81,7 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
+        'canResetPassword' => Route::has('password.request'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);

@@ -11,6 +11,8 @@ class DashboardController extends Controller
     return \Inertia\Inertia::render('Admin/Dashboard', [
         'stats' => [
             'total_users' => \App\Models\User::count(),
+            'total_vaches' => \App\Models\Vache::count(),
+            'total_investissements' => \Illuminate\Support\Facades\DB::table('investissements')->count(),
         ],
         'users' => \App\Models\User::select('id', 'nom', 'prenom', 'email', 'userable_type')->get()
     ]);
