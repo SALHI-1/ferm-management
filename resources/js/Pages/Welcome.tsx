@@ -22,91 +22,99 @@ export default function Welcome({ auth, status, canResetPassword }: any) {
         });
     };
 
+    const features = [
+        { icon: Shield, title: 'Sécurité & Traçabilité', desc: 'Données protégées et historisées' },
+        { icon: BarChart3, title: 'Rentabilité en temps réel', desc: 'Indicateurs financiers actualisés' },
+        { icon: Users, title: 'Multi-rôles sécurisés', desc: 'Accès adaptés à chaque utilisateur' },
+    ];
+
     return (
         <>
             <Head title="Bienvenue" />
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-brand-50/30 font-sans flex flex-col md:flex-row">
+            <div className="min-h-screen bg-slate-50 font-sans flex flex-col md:flex-row">
                 {/* Left Side - Info & Branding */}
-                <div className="w-full md:w-1/2 lg:w-7/12 relative overflow-hidden flex flex-col p-8 md:p-16 justify-between bg-white/40 border-r border-slate-100">
+                <div className="w-full md:w-1/2 lg:w-7/12 relative overflow-hidden flex flex-col p-8 md:p-16 justify-between bg-slate-900">
                     {/* Decorative */}
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-100/30 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-100/20 rounded-full filter blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/10 rounded-full filter blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
 
                     <div className="relative z-10 flex items-center gap-3 mb-12">
-                        <div className="p-2 bg-gradient-to-br from-brand-600 to-brand-500 rounded-xl shadow-sm">
+                        <div className="p-2 bg-indigo-600 rounded-lg shadow-sm">
                             <Milestone className="h-6 w-6 text-white" />
                         </div>
-                        <span className="font-display text-2xl font-bold text-slate-800 tracking-tight">Ferm Project</span>
+                        <span className="text-2xl font-semibold text-white tracking-tight">Ferm Project</span>
                     </div>
 
                     <div className="relative z-10 flex-1 flex flex-col justify-center">
-                        <div className="inline-flex items-center self-start gap-2 bg-brand-50 text-brand-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-6 ring-1 ring-brand-200/60">
-                            <span className="w-2 h-2 bg-brand-500 rounded-full animate-pulse" />
+                        <div className="inline-flex items-center self-start gap-2 bg-indigo-500/10 text-indigo-300 px-4 py-1.5 rounded-full text-sm font-medium mb-6 ring-1 ring-indigo-500/20">
+                            <span className="w-2 h-2 bg-indigo-400 rounded-full" />
                             Plateforme de gestion agricole
                         </div>
-                        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-display font-extrabold text-slate-900 leading-[1.1] tracking-tight mb-6">
-                            Gérez votre <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-brand-400">exploitation</span> avec précision
+                        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold text-white leading-[1.1] tracking-tight mb-6">
+                            Gérez votre <span className="text-indigo-400">exploitation</span> avec précision
                         </h1>
-                        <p className="text-lg text-slate-500 leading-relaxed mb-10 max-w-lg">
+                        <p className="text-lg text-slate-400 leading-relaxed mb-12 max-w-lg">
                             Suivi du cheptel, traçabilité, investissements et rentabilité — le tout dans une interface moderne et sécurisée.
                         </p>
-                        
+
                         {/* Features */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl">
-                            {[
-                                { icon: Shield, color: 'emerald', title: 'Sécurité & Traçabilité' },
-                                { icon: BarChart3, color: 'brand', title: 'Rentabilité en temps réel' },
-                                { icon: Users, color: 'violet', title: 'Multi-rôles sécurisés' },
-                            ].map((feature, i) => (
-                                <div key={i} className="flex items-center gap-4">
-                                    <div className={`p-3 bg-${feature.color === 'brand' ? 'brand' : feature.color}-50 rounded-xl ring-1 ring-${feature.color === 'brand' ? 'brand' : feature.color}-200/60`}>
-                                        <feature.icon className={`h-5 w-5 text-${feature.color === 'brand' ? 'brand' : feature.color}-600`} />
+                            {features.map((feature, i) => (
+                                <div key={i} className="flex items-start gap-4">
+                                    <div className="p-2.5 bg-slate-800/80 rounded-lg ring-1 ring-slate-700/60 shrink-0">
+                                        <feature.icon className="h-5 w-5 text-indigo-400" />
                                     </div>
-                                    <h3 className="text-sm font-bold text-slate-800 font-display">{feature.title}</h3>
+                                    <div>
+                                        <h3 className="text-sm font-semibold text-white">{feature.title}</h3>
+                                        <p className="text-sm text-slate-400 mt-0.5">{feature.desc}</p>
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     <footer className="relative z-10 mt-12">
-                        <p className="text-sm text-slate-400">
+                        <p className="text-sm text-slate-500">
                             © {new Date().getFullYear()} Ferm Project — Tous droits réservés.
                         </p>
                     </footer>
                 </div>
 
                 {/* Right Side - Login Form */}
-                <div className="w-full md:w-1/2 lg:w-5/12 flex items-center justify-center p-8 md:p-12 bg-white/60 backdrop-blur-sm relative z-10">
-                    <div className="w-full max-w-md card-premium shadow-xl shadow-brand-100/30 border-0 ring-1 ring-slate-100">
+                <div className="w-full md:w-1/2 lg:w-5/12 flex items-center justify-center p-8 md:p-12 bg-slate-50">
+                    <div className="w-full max-w-md bg-white border border-slate-100 shadow-sm rounded-xl p-8">
                         {auth.user ? (
-                            <div className="text-center py-8">
-                                <h2 className="text-2xl font-bold text-slate-800 font-display mb-4">Vous êtes déjà connecté</h2>
-                                <Link href={route('dashboard')} className="btn-premium w-full flex justify-center items-center gap-2">
+                            <div className="text-center py-8 space-y-6">
+                                <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">Vous êtes déjà connecté</h2>
+                                <Link
+                                    href={route('dashboard')}
+                                    className="inline-flex w-full justify-center items-center gap-2 px-4 py-3 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-200 active:scale-95"
+                                >
                                     Aller au Dashboard <ArrowRight className="h-5 w-5" />
                                 </Link>
                             </div>
                         ) : (
                             <>
-                                <div className="text-center mb-8">
-                                    <h2 className="text-2xl font-bold text-slate-800 font-display">Bon retour 👋</h2>
-                                    <p className="text-sm text-slate-500 mt-1">Connectez-vous à votre espace sécurisé</p>
+                                <div className="mb-8 space-y-1">
+                                    <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">Bon retour</h2>
+                                    <p className="text-sm text-slate-600">Connectez-vous à votre espace sécurisé</p>
                                 </div>
 
                                 {status && (
-                                    <div className="mb-6 text-sm font-medium text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-xl px-4 py-3">
+                                    <div className="mb-6 text-sm font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-lg px-4 py-3">
                                         {status}
                                     </div>
                                 )}
 
-                                <form onSubmit={submit} className="space-y-5">
+                                <form onSubmit={submit} className="space-y-6">
                                     <div>
-                                        <InputLabel htmlFor="email" value="Adresse email" />
+                                        <InputLabel htmlFor="email" value="Adresse email" className="text-slate-700" />
                                         <TextInput
                                             id="email"
                                             type="email"
                                             name="email"
                                             value={data.email}
-                                            className="mt-1.5 block w-full input-premium"
+                                            className="mt-1.5 block w-full rounded-lg border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all duration-200 ease-in-out"
                                             autoComplete="username"
                                             isFocused={true}
                                             onChange={(e) => setData('email', e.target.value)}
@@ -115,13 +123,13 @@ export default function Welcome({ auth, status, canResetPassword }: any) {
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="password" value="Mot de passe" />
+                                        <InputLabel htmlFor="password" value="Mot de passe" className="text-slate-700" />
                                         <TextInput
                                             id="password"
                                             type="password"
                                             name="password"
                                             value={data.password}
-                                            className="mt-1.5 block w-full input-premium"
+                                            className="mt-1.5 block w-full rounded-lg border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all duration-200 ease-in-out"
                                             autoComplete="current-password"
                                             onChange={(e) => setData('password', e.target.value)}
                                         />
@@ -137,7 +145,7 @@ export default function Welcome({ auth, status, canResetPassword }: any) {
                                                     setData('remember', e.target.checked)
                                                 }
                                             />
-                                            <span className="text-sm text-slate-500">
+                                            <span className="text-sm text-slate-600">
                                                 Se souvenir de moi
                                             </span>
                                         </label>
@@ -145,14 +153,17 @@ export default function Welcome({ auth, status, canResetPassword }: any) {
                                         {canResetPassword && (
                                             <Link
                                                 href={route('password.request')}
-                                                className="text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors duration-200"
+                                                className="text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-all duration-200"
                                             >
                                                 Mot de passe oublié ?
                                             </Link>
                                         )}
                                     </div>
 
-                                    <PrimaryButton className="w-full justify-center !py-3.5 !text-sm mt-2" disabled={processing}>
+                                    <PrimaryButton
+                                        className="w-full justify-center !py-3 !text-sm !rounded-lg !bg-indigo-600 hover:!bg-indigo-700 transition-all duration-200 active:scale-95"
+                                        disabled={processing}
+                                    >
                                         Se connecter
                                     </PrimaryButton>
                                 </form>
