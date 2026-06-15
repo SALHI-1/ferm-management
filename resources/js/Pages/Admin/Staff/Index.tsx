@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Head, useForm, router, usePage } from '@inertiajs/react';
+import { createPortal } from 'react-dom';
 import AppLayout from '@/Layouts/AppLayout';
 import { Shield, Plus, Edit2, Trash2, X } from 'lucide-react';
 
@@ -165,7 +166,7 @@ export default function StaffIndex({ staff }: Props) {
             </div>
 
             {/* Modal */}
-            {isModalOpen && (
+            {isModalOpen && createPortal(
                 <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
                     <div className="bg-surface rounded-xl shadow-premium w-full max-w-lg overflow-hidden">
                         <div className="flex justify-between items-center p-6 border-b border-slate-100">
@@ -266,7 +267,7 @@ export default function StaffIndex({ staff }: Props) {
                             </div>
                         </form>
                     </div>
-                </div>
+                </div>, document.body
             )}
         </AppLayout>
     );

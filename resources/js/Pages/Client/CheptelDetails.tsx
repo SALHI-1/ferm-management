@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
+import { createPortal } from 'react-dom';
 import AppLayout from '@/Layouts/AppLayout';
 import { X, Heart, DollarSign, Baby, TrendingUp } from 'lucide-react';
 
@@ -62,13 +63,13 @@ export default function CheptelDetails({ vache }: Props) {
                                 <span className="text-sm font-bold text-brand-600">4 DH/L</span>
                             </div>
                         </div>
-                        <p className="text-slate-500 text-sm mb-4">Bénéfices nets estimés : <strong>(Production × 4 DH) - Coûts</strong>. Votre part : <strong>{(partPossedee * 100).toFixed(0)}%</strong>.</p>
+                        <p className="text-slate-500 text-sm mb-4">Bénéfices nets estimés : <strong>(Production × 4 DH) - Coûts</strong>. Après 50% pour la ferme, votre part nette est de <strong>{((partPossedee * 0.5) * 100).toFixed(0)}%</strong> des bénéfices.</p>
                         <div className="overflow-x-auto">
                             <table className="table-premium">
                                 <thead><tr><th>Mois</th><th className="text-right">Production</th><th className="text-right">Revenu Brut</th><th className="text-right">Coûts</th><th className="text-right">Bénéfice Net</th><th className="text-right">Votre Part</th></tr></thead>
                                 <tbody>
                                     {monthlyStats.length > 0 ? monthlyStats.map(stat => {
-                                        const rev = stat.production * 4; const ben = rev - stat.costs; const part = ben * partPossedee;
+                                        const rev = stat.production * 4; const ben = rev - stat.costs; const part = ben > 0 ? ben * 0.5 * partPossedee : ben * partPossedee;
                                         return (<tr key={stat.month}><td className="font-medium text-slate-700">{new Date(stat.month + '-01').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</td><td className="text-right text-slate-600">{stat.production} L</td><td className="text-right text-emerald-600">+{rev.toFixed(2)} DH</td><td className="text-right text-rose-600">-{stat.costs.toFixed(2)} DH</td><td className={`text-right font-semibold ${ben >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{ben > 0 ? '+' : ''}{ben.toFixed(2)} DH</td><td className={`text-right font-bold ${part >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>{part > 0 ? '+' : ''}{part.toFixed(2)} DH</td></tr>);
                                     }) : <tr><td colSpan={6} className="text-center text-slate-400 py-8">Aucune donnée disponible.</td></tr>}
                                 </tbody>
@@ -125,11 +126,12 @@ export default function CheptelDetails({ vache }: Props) {
                 }, {} as Record<string, { month: string, total: number }>);
                 const prodsArray = Object.values(groupedProds).sort((a, b) => b.month.localeCompare(a.month));
 
-                return (
-                    <div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Archive Financière</h3><button onClick={() => setShowFinancialModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6 space-y-6"><div><h4 className="text-sm font-bold text-slate-700 mb-3">Coûts</h4><table className="table-premium"><thead><tr><th>Mois</th><th>Montant Total</th></tr></thead><tbody>{costsArray.map((c, i) => <tr key={i}><td>{c.month}</td><td className="text-rose-600 font-semibold">-{c.total.toFixed(2)} DH</td></tr>)}</tbody></table></div>{vache.sexe !== 'male' && <div><h4 className="text-sm font-bold text-slate-700 mb-3">Productions</h4><table className="table-premium"><thead><tr><th>Mois</th><th>Quantité Totale</th></tr></thead><tbody>{prodsArray.map((p, i) => <tr key={i}><td>{p.month}</td><td className="text-emerald-600 font-semibold">{p.total.toFixed(2)} L</td></tr>)}</tbody></table></div>}</div></div></div>
+                return createPortal(
+                    <div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Archive Financière</h3><button onClick={() => setShowFinancialModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6 space-y-6"><div><h4 className="text-sm font-bold text-slate-700 mb-3">Coûts</h4><table className="table-premium"><thead><tr><th>Mois</th><th>Montant Total</th></tr></thead><tbody>{costsArray.map((c, i) => <tr key={i}><td>{c.month}</td><td className="text-rose-600 font-semibold">-{c.total.toFixed(2)} DH</td></tr>)}</tbody></table></div>{vache.sexe !== 'male' && <div><h4 className="text-sm font-bold text-slate-700 mb-3">Productions</h4><table className="table-premium"><thead><tr><th>Mois</th><th>Quantité Totale</th></tr></thead><tbody>{prodsArray.map((p, i) => <tr key={i}><td>{p.month}</td><td className="text-emerald-600 font-semibold">{p.total.toFixed(2)} L</td></tr>)}</tbody></table></div>}</div></div></div>,
+                    document.body
                 );
             })()}
-            {showHealthModal && <div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Archive Santé</h3><button onClick={() => setShowHealthModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6"><table className="table-premium"><thead><tr><th>Statut</th><th>Début</th><th>Fin</th></tr></thead><tbody>{vache.health_statuses.map(h => <tr key={h.id}><td>{h.type === 'sickness' ? 'Maladie' : h.type === 'pregnancy' ? 'Gestation' : 'Visite routine'}</td><td>{h.date_debut}</td><td>{h.date_fin || 'En cours'}</td></tr>)}</tbody></table></div></div></div>}
+            {showHealthModal && createPortal(<div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">Archive Santé</h3><button onClick={() => setShowHealthModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6"><table className="table-premium"><thead><tr><th>Statut</th><th>Début</th><th>Fin</th></tr></thead><tbody>{vache.health_statuses.map(h => <tr key={h.id}><td>{h.type === 'sickness' ? 'Maladie' : h.type === 'pregnancy' ? 'Gestation' : 'Visite routine'}</td><td>{h.date_debut}</td><td>{h.date_fin || 'En cours'}</td></tr>)}</tbody></table></div></div></div>, document.body)}
         </AppLayout>
     );
 }

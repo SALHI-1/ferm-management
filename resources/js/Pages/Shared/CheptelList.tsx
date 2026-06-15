@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Head, usePage, useForm } from '@inertiajs/react';
+import { createPortal } from 'react-dom';
 import AppLayout from '@/Layouts/AppLayout';
 import { Plus, Eye, Scale, FileDown, X } from 'lucide-react';
 
@@ -39,8 +40,8 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                     <h2 className="text-lg font-bold text-slate-800 font-display">Suivi des Animaux</h2>
                     <div className="flex flex-wrap gap-2">
                         {canEdit && <button onClick={() => setShowAddModal(true)} className="btn-premium flex items-center gap-2 text-xs"><Plus className="h-4 w-4" /> Ajouter</button>}
-                        {coordonneesEspace === 'manager' && <button className="btn-premium-secondary flex items-center gap-2 text-xs"><Scale className="h-4 w-4" /> Peser</button>}
-                        {coordonneesEspace === 'admin' && <button className="btn-premium-secondary flex items-center gap-2 text-xs"><FileDown className="h-4 w-4" /> Exporter</button>}
+                        {/* {coordonneesEspace === 'manager' && <button className="btn-premium-secondary flex items-center gap-2 text-xs"><Scale className="h-4 w-4" /> Peser</button>} */}
+                        {/* {coordonneesEspace === 'admin' && <button className="btn-premium-secondary flex items-center gap-2 text-xs"><FileDown className="h-4 w-4" /> Exporter</button>} */}
                     </div>
                 </div>
                 <div className="overflow-x-auto">
@@ -62,7 +63,7 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                 </div>
             </div>
 
-            {showAddModal && (
+            {showAddModal && createPortal(
                 <div className="modal-overlay">
                     <div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto">
                         <div className="flex justify-between items-center p-6 border-b border-slate-100">
@@ -78,7 +79,7 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                             </div>
                             <div>
                                 <label className="label-premium">Photo (optionnel)</label>
-                                <div 
+                                <div
                                     onDragOver={(e) => e.preventDefault()}
                                     onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files[0]) setData('image', e.dataTransfer.files[0]) }}
                                     className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer mt-1"
@@ -97,7 +98,7 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                             <div className="pt-4 flex justify-end gap-3 border-t border-slate-100"><button type="button" onClick={() => setShowAddModal(false)} className="btn-premium-secondary">Annuler</button><button type="submit" disabled={processing} className="btn-premium">Ajouter</button></div>
                         </form>
                     </div>
-                </div>
+                </div>, document.body
             )}
         </AppLayout>
     );

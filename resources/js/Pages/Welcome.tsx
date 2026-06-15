@@ -34,6 +34,18 @@ export default function Welcome({ auth, status, canResetPassword }: any) {
             <div className="min-h-screen bg-slate-50 font-sans flex flex-col md:flex-row">
                 {/* Left Side - Info & Branding */}
                 <div className="w-full md:w-1/2 lg:w-7/12 relative overflow-hidden flex flex-col p-8 md:p-16 justify-between bg-slate-900">
+                    {/* Background Video */}
+                    <video
+                        className="absolute inset-0 w-full h-full object-cover"
+                        src="/videos/ferm-video.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                    />
+                    {/* Dark Overlay for readability */}
+                    <div className="absolute inset-0 bg-slate-900/75" />
+
                     {/* Decorative */}
                     <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
                     <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/10 rounded-full filter blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />

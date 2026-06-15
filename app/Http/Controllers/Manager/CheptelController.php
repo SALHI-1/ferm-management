@@ -222,8 +222,12 @@ class CheptelController extends Controller
             'date_fin' => $request->date_fin,
         ]);
 
+        // Mettre à jour le statut_sante de la vache si le jour d'entré est dans la durée
+        $today = now()->format('Y-m-d');
         if ($request->type === 'sickness' || $request->type === 'pregnancy') {
-            $vache->update(['statut_sante' => $request->type]);
+            if ($request->date_debut <= $today && (is_null($request->date_fin) || $request->date_fin >= $today)) {
+                $vache->update(['statut_sante' => $request->type]);
+            }
         }
 
         \App\Models\Traceability::create([
@@ -235,5 +239,24 @@ class CheptelController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Données de santé ajoutées.');
+    }
+
+    public function updateSante(Request $request, $id) {
+        $vache = \App\Models\Vache::findOrFail($id);
+        $request->validate([
+            'statut_sante' => 'required|in:healthy,sickness,pregnancy'
+        ]);
+
+        $vache->update(['statut_sante' => $request->statut_sante]);
+
+        \App\Models\Traceability::create([
+            'manager_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action_type' => 'UPDATE',
+            'model_type' => \App\Models\Vache::class,
+            'model_id' => $id,
+            'description' => 'A modifié manuellement le statut de santé du bovin ' . $vache->numero_ticket . ' à : ' . $request->statut_sante
+        ]);
+
+        return redirect()->back()->with('success', 'Statut de santé mis à jour directement.');
     }
 }

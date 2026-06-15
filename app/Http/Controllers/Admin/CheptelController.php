@@ -228,13 +228,32 @@ class CheptelController extends Controller
             'date_fin' => $request->date_fin,
         ]);
 
-        // Mettre à jour le statut_sante de la vache si nécessaire
+        // Mettre à jour le statut_sante de la vache si le jour d'entré est dans la durée
+        $today = now()->format('Y-m-d');
         if ($request->type === 'sickness' || $request->type === 'pregnancy') {
-            $vache->update(['statut_sante' => $request->type]);
+            if ($request->date_debut <= $today && (is_null($request->date_fin) || $request->date_fin >= $today)) {
+                $vache->update(['statut_sante' => $request->type]);
+            }
         } else if ($request->type === 'checkup') {
             // Optionnellement, on pourrait remettre à healthy, ou le laisser comme tel
         }
 
         return redirect()->back()->with('success', 'Données de santé ajoutées.');
+    }
+
+    public function updateSante(Request $request, $id) {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user->userable_type === \App\Models\Admin::class && $user->userable->role === 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $vache = \App\Models\Vache::findOrFail($id);
+        $request->validate([
+            'statut_sante' => 'required|in:healthy,sickness,pregnancy'
+        ]);
+
+        $vache->update(['statut_sante' => $request->statut_sante]);
+
+        return redirect()->back()->with('success', 'Statut de santé mis à jour directement.');
     }
 }

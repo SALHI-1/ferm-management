@@ -39,6 +39,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin,super_admin'])->as('admi
     Route::post('/cheptel/{id}', [\App\Http\Controllers\Admin\CheptelController::class, 'update'])->name('cheptel.update');
     Route::post('/cheptel/{id}/financial', [\App\Http\Controllers\Admin\CheptelController::class, 'storeFinancial'])->name('cheptel.financial.store');
     Route::post('/cheptel/{id}/health', [\App\Http\Controllers\Admin\CheptelController::class, 'storeHealth'])->name('cheptel.health.store');
+    Route::put('/cheptel/{id}/sante', [\App\Http\Controllers\Admin\CheptelController::class, 'updateSante'])->name('cheptel.sante.update');
 
     Route::get('/traceabilite', [\App\Http\Controllers\Admin\TraceabilityController::class, 'index'])->name('traceabilite.index');
 
@@ -65,6 +66,7 @@ Route::prefix('manager')->middleware(['auth', 'role:manager'])->as('manager.')->
     Route::post('/cheptel/{id}', [\App\Http\Controllers\Manager\CheptelController::class, 'update'])->name('cheptel.update');
     Route::post('/cheptel/{id}/financial', [\App\Http\Controllers\Manager\CheptelController::class, 'storeFinancial'])->name('cheptel.financial.store');
     Route::post('/cheptel/{id}/health', [\App\Http\Controllers\Manager\CheptelController::class, 'storeHealth'])->name('cheptel.health.store');
+    Route::put('/cheptel/{id}/sante', [\App\Http\Controllers\Manager\CheptelController::class, 'updateSante'])->name('cheptel.sante.update');
 });
 
 // 📉 Espace unique : Clients / Investisseurs

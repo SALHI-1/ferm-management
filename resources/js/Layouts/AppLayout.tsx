@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutDashboard, Users, ShieldAlert, LogOut, Milestone, ClipboardList, ChevronLeft, Menu } from 'lucide-react';
+import { LayoutDashboard, Users, ShieldAlert, LogOut, Milestone, ClipboardList, ChevronLeft, Menu, PawPrint } from 'lucide-react';
 
 interface NavItem {
     href: string;
@@ -42,7 +42,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
         {
             href: `${getBaseRoute()}/cheptel`,
             label: 'Cheptel',
-            icon: Users,
+            icon: PawPrint,
             show: true,
         },
         {
