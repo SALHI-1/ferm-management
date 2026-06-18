@@ -54,6 +54,11 @@ Route::prefix('admin')->middleware(['auth', 'role:admin,super_admin'])->as('admi
     Route::post('/staff', [\App\Http\Controllers\Admin\StaffController::class, 'store'])->name('staff.store');
     Route::put('/staff/{id}', [\App\Http\Controllers\Admin\StaffController::class, 'update'])->name('staff.update');
     Route::delete('/staff/{id}', [\App\Http\Controllers\Admin\StaffController::class, 'destroy'])->name('staff.destroy');
+
+    // Gestion des Visites (Restreint au super_admin dans le controller)
+    Route::get('/visites', [\App\Http\Controllers\Admin\VisiteController::class, 'index'])->name('visites.index');
+    Route::put('/visites/{id}/accept', [\App\Http\Controllers\Admin\VisiteController::class, 'accept'])->name('visites.accept');
+    Route::put('/visites/{id}/reject', [\App\Http\Controllers\Admin\VisiteController::class, 'reject'])->name('visites.reject');
 });
 
 // 🚜 Espace unique : Managers
@@ -76,6 +81,10 @@ Route::middleware(['auth', 'role:client'])->prefix('investisseur')->as('client.'
     // Cheptel pour les clients (en lecture seule)
     Route::get('/cheptel', [\App\Http\Controllers\Client\CheptelController::class, 'index'])->name('cheptel.index');
     Route::get('/cheptel/{id}', [\App\Http\Controllers\Client\CheptelController::class, 'show'])->name('cheptel.show');
+
+    // Réservation de visites
+    Route::get('/visites', [\App\Http\Controllers\Client\VisiteController::class, 'index'])->name('visites.index');
+    Route::post('/visites', [\App\Http\Controllers\Client\VisiteController::class, 'store'])->name('visites.store');
 });
 
 

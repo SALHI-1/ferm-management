@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutDashboard, Users, ShieldAlert, LogOut, Milestone, ClipboardList, ChevronLeft, Menu, PawPrint } from 'lucide-react';
+import { LayoutDashboard, Users, ShieldAlert, LogOut, Milestone, ClipboardList, ChevronLeft, Menu, PawPrint, Calendar } from 'lucide-react';
 
 interface NavItem {
     href: string;
@@ -62,6 +62,18 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
             label: 'Traçabilité',
             icon: ClipboardList,
             show: isSuperAdmin,
+        },
+        {
+            href: '/admin/visites',
+            label: 'Demandes de visites',
+            icon: Calendar,
+            show: isSuperAdmin,
+        },
+        {
+            href: '/investisseur/visites',
+            label: 'Visites',
+            icon: Calendar,
+            show: !isAdmin && !isManager,
         },
     ];
 

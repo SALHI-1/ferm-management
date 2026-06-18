@@ -29,4 +29,8 @@ class Client extends Model {
                     ->withPivot('type_investissement', 'part_possedee', 'date_investissement')
                     ->withTimestamps();
     }
+
+    public function visites() {
+        return $this->hasMany(Visite::class);
+    }
 }
