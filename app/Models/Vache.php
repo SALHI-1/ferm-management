@@ -5,12 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vache extends Model {
     protected $fillable = [
-        'mother_id', 'sexe', 'origine','statut_vente','statut_sante','numero_ticket', 'image', 'fichier_documents', 'date_naissance', 'date_entree'
+        'mother_id', 'sexe', 'origine','statut_vente','statut_sante','numero_ticket', 'image', 'fichier_documents', 'date_naissance', 'date_entree', 'prix_vente', 'date_vente'
     ];
 
     protected $casts = [
         'date_naissance' => 'date',
         'date_entree' => 'date',
+        'date_vente' => 'date',
     ];
 
     protected $appends = ['age'];

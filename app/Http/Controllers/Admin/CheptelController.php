@@ -150,10 +150,21 @@ class CheptelController extends Controller
 
         $vache = \App\Models\Vache::findOrFail($id);
         $request->validate([
-            'statut_vente' => 'required|in:vendue,non_vendue'
+            'statut_vente' => 'required|in:vendue,non_vendue',
+            'prix_vente' => 'required_if:statut_vente,vendue|numeric|min:0|nullable',
+            'date_vente' => 'required_if:statut_vente,vendue|date|nullable',
         ]);
 
-        $vache->update(['statut_vente' => $request->statut_vente]);
+        $updateData = ['statut_vente' => $request->statut_vente];
+        if ($request->statut_vente === 'vendue') {
+            $updateData['prix_vente'] = $request->prix_vente;
+            $updateData['date_vente'] = $request->date_vente;
+        } else {
+            $updateData['prix_vente'] = null;
+            $updateData['date_vente'] = null;
+        }
+
+        $vache->update($updateData);
 
         return redirect()->back()->with('success', 'Statut de vente mis à jour avec succès.');
     }
