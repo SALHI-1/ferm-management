@@ -40,6 +40,7 @@ class CheptelController extends Controller
             'client_1_id' => 'required_if:type_investissement,complet,demi|nullable|exists:clients,id',
             'client_2_id' => 'required_if:type_investissement,demi|nullable|exists:clients,id|different:client_1_id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'fichier_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
         ]);
 
         if ($request->mother_id) {
@@ -54,6 +55,11 @@ class CheptelController extends Controller
             $imagePath = '/storage/' . $request->file('image')->store('vaches', 'public');
         }
 
+        $fichierPath = null;
+        if ($request->hasFile('fichier_documents') && !$request->mother_id) {
+            $fichierPath = '/storage/' . $request->file('fichier_documents')->store('vaches_docs', 'public');
+        }
+
         $vache = \App\Models\Vache::create([
             'numero_ticket' => $request->numero_ticket,
             'sexe' => $request->sexe,
@@ -63,7 +69,8 @@ class CheptelController extends Controller
             'mother_id' => $request->mother_id,
             'statut_vente' => 'non_vendue',
             'statut_sante' => 'healthy',
-            'image' => $imagePath
+            'image' => $imagePath,
+            'fichier_documents' => $fichierPath
         ]);
 
         if ($request->mother_id) {
@@ -129,12 +136,17 @@ class CheptelController extends Controller
             'sexe' => 'required|in:male,female',
             'date_naissance' => 'required|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'fichier_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
         ]);
 
         $data = $request->only(['numero_ticket', 'sexe', 'date_naissance']);
         
         if ($request->hasFile('image')) {
             $data['image'] = '/storage/' . $request->file('image')->store('vaches', 'public');
+        }
+
+        if ($request->hasFile('fichier_documents')) {
+            $data['fichier_documents'] = '/storage/' . $request->file('fichier_documents')->store('vaches_docs', 'public');
         }
 
         $vache->update($data);

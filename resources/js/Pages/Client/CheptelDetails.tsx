@@ -8,7 +8,7 @@ interface Client { id: number; user: { nom: string; prenom: string; }; pivot: { 
 interface Cost { id: number; type: string; price: number; date_facture: string; }
 interface Production { id: number; quantite_litres: number; periode_mois: string; }
 interface HealthStatus { id: number; type: string; date_debut: string; date_fin: string | null; }
-interface Vache { id: number; numero_ticket: string; image: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; pivot?: { part_possedee: number; }; prix_vente?: number; date_vente?: string; }
+interface Vache { id: number; numero_ticket: string; image: string | null; fichier_documents: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; pivot?: { part_possedee: number; }; prix_vente?: number; date_vente?: string; }
 interface Props { vache: Vache; }
 
 export default function CheptelDetails({ vache }: Props) {
@@ -44,12 +44,18 @@ export default function CheptelDetails({ vache }: Props) {
                         </h1>
                         {isSold && vache.prix_vente && (
                             <div className="mb-2 text-sm text-slate-600 font-medium bg-red-50 text-red-700 px-3 py-1.5 rounded-lg inline-flex items-center gap-2">
-                                Vendu à {vache.prix_vente} DH le {new Date(vache.date_vente).toLocaleDateString('fr-FR')}
+                                Vendu à {vache.prix_vente} DH le {new Date(vache.date_vente!).toLocaleDateString('fr-FR')}
                             </div>
                         )}
                         <div className="space-y-2 mb-3">{healthBadge(vache.statut_sante)}
                             {vache.date_naissance && <p className="text-slate-500 text-sm"><strong>Née le :</strong> {new Date(vache.date_naissance).toLocaleDateString('fr-FR')}{vache.age !== null ? ` (${vache.age} ans)` : ''}</p>}
                             <p className="text-slate-500 text-sm"><strong>Origine :</strong> {vache.origine === 'ne_sur_ferme' ? 'Née à la ferme' : 'Achetée'}</p>
+                            {vache.fichier_documents && (
+                                <p className="text-slate-500 text-sm mt-2">
+                                    <strong>Fichier :</strong>{' '}
+                                    <a href={vache.fichier_documents} target="_blank" rel="noreferrer" className="text-brand-600 hover:text-brand-800 underline">Voir le document</a>
+                                </p>
+                            )}
                         </div>
                         <div>
                             <h3 className="text-sm font-semibold text-slate-600 mb-1">Propriétaire(s) :</h3>

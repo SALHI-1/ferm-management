@@ -18,7 +18,7 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
         numero_ticket: '', sexe: 'female', origine: 'achete', date_naissance: '',
         date_entree: new Date().toISOString().split('T')[0], mother_id: '',
         type_investissement: 'complet', client_1_id: '', client_2_id: '',
-        image: null as File | null
+        image: null as File | null, fichier_documents: null as File | null
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -91,6 +91,21 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                                     </p>
                                 </div>
                                 {errors.image && <p className="text-rose-500 text-xs mt-1">{errors.image}</p>}
+                            </div>
+                            <div>
+                                <label className="label-premium">Fichier Animal (optionnel)</label>
+                                <div
+                                    onDragOver={(e) => e.preventDefault()}
+                                    onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files[0]) setData('fichier_documents', e.dataTransfer.files[0]) }}
+                                    className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer mt-1"
+                                    onClick={() => document.getElementById('fichier-upload-add')?.click()}
+                                >
+                                    <input type="file" id="fichier-upload-add" className="hidden" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onChange={e => setData('fichier_documents', e.target.files ? e.target.files[0] : null)} />
+                                    <p className="text-sm text-slate-500 font-medium">
+                                        {data.fichier_documents ? data.fichier_documents.name : 'Glissez-déposez un fichier ou cliquez ici'}
+                                    </p>
+                                </div>
+                                {errors.fichier_documents && <p className="text-rose-500 text-xs mt-1">{errors.fichier_documents}</p>}
                             </div>
                             <div className="border-t border-slate-100 pt-4"><label className="label-premium">Type de Propriété</label><select value={data.type_investissement} onChange={e => setData('type_investissement', e.target.value)} className="select-premium"><option value="complet">Complet (1)</option><option value="demi">Demi (0.5)</option></select></div>
                             <div><label className="label-premium">Propriétaire 1</label><select value={data.client_1_id} onChange={e => setData('client_1_id', e.target.value)} className="select-premium" required><option value="">-- Choisir --</option>{clientsDisponibles?.map(c => <option key={c.id} value={c.id}>{c.user?.nom} {c.user?.prenom}</option>)}</select></div>
