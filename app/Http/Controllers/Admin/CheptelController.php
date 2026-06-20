@@ -29,6 +29,24 @@ class CheptelController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        if ($request->mother_id) {
+            $mother = \App\Models\Vache::with('clients')->find($request->mother_id);
+            if ($mother && $mother->statut_vente === 'vendue') {
+                abort(403, 'Impossible d\'ajouter une descendance à une vache vendue.');
+            }
+
+            $suffix = $request->sexe === 'female' ? '-f-' : '-m-';
+            $count = \App\Models\Vache::where('mother_id', $mother->id)->count();
+            $nextSequence = $count + 1;
+            
+            $numero_ticket = $mother->numero_ticket . $suffix . $nextSequence;
+            while (\App\Models\Vache::where('numero_ticket', $numero_ticket)->exists()) {
+                $nextSequence++;
+                $numero_ticket = $mother->numero_ticket . $suffix . $nextSequence;
+            }
+            $request->merge(['numero_ticket' => $numero_ticket]);
+        }
+
         $request->validate([
             'numero_ticket' => 'required|string|unique:vaches',
             'sexe' => 'required|in:male,female',
@@ -43,12 +61,7 @@ class CheptelController extends Controller
             'fichier_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
         ]);
 
-        if ($request->mother_id) {
-            $mother = \App\Models\Vache::with('clients')->find($request->mother_id);
-            if ($mother && $mother->statut_vente === 'vendue') {
-                abort(403, 'Impossible d\'ajouter une descendance à une vache vendue.');
-            }
-        }
+
 
         $imagePath = null;
         if ($request->hasFile('image')) {
@@ -196,7 +209,7 @@ class CheptelController extends Controller
             'annee' => 'required|integer',
             'mois' => 'required|integer|min:1|max:12',
             'price' => 'required|numeric',
-            'type' => 'required|in:food,veterinaire,autre,gain'
+            'type' => 'required|in:food,veterinaire,autre,gain,lait_consomme'
         ]);
 
         if ($request->type === 'gain' && $vache->sexe === 'male') {

@@ -23,7 +23,7 @@ export default function CheptelDetails({ vache }: Props) {
     vache.costs.forEach(c => months.add(c.date_facture.substring(0, 7)));
     vache.productions.forEach(p => months.add(p.periode_mois.substring(0, 7)));
     const monthlyStats = Array.from(months).sort((a, b) => b.localeCompare(a)).map(month => {
-        const costs = vache.costs.filter(c => c.date_facture.startsWith(month)).reduce((s, c) => s + parseFloat(c.price.toString()), 0);
+        const costs = vache.costs.filter(c => c.date_facture.startsWith(month) && c.type !== 'lait_consomme').reduce((s, c) => s + parseFloat(c.price.toString()), 0);
         const production = vache.productions.filter(p => p.periode_mois.startsWith(month)).reduce((s, p) => s + parseFloat(p.quantite_litres.toString()), 0);
         return { month, costs, production };
     });
@@ -122,13 +122,32 @@ export default function CheptelDetails({ vache }: Props) {
 
             {showFinancialModal && (() => {
                 // Grouping costs by month
-                const groupedCosts = vache.costs.reduce((acc, curr) => {
+                const groupedCosts = vache.costs.filter(c => c.type !== 'lait_consomme').reduce((acc, curr) => {
                     const month = curr.date_facture.substring(0, 7); // YYYY-MM
+                    if (!acc[month]) acc[month] = { month, total: 0, food: 0, health: 0, autre: 0 };
+                    
+                    const price = Number(curr.price);
+                    acc[month].total += price;
+                    
+                    if (curr.type === 'food') {
+                        acc[month].food += price;
+                    } else if (curr.type === 'veterinaire') {
+                        acc[month].health += price;
+                    } else {
+                        acc[month].autre += price;
+                    }
+                    
+                    return acc;
+                }, {} as Record<string, { month: string, total: number, food: number, health: number, autre: number }>);
+                const costsArray = Object.values(groupedCosts).sort((a, b) => b.month.localeCompare(a.month));
+
+                const groupedMilkConsumed = vache.costs.filter(c => c.type === 'lait_consomme').reduce((acc, curr) => {
+                    const month = curr.date_facture.substring(0, 7);
                     if (!acc[month]) acc[month] = { month, total: 0 };
                     acc[month].total += Number(curr.price);
                     return acc;
                 }, {} as Record<string, { month: string, total: number }>);
-                const costsArray = Object.values(groupedCosts).sort((a, b) => b.month.localeCompare(a.month));
+                const milkConsumedArray = Object.values(groupedMilkConsumed).sort((a, b) => b.month.localeCompare(a.month));
 
                 // Grouping productions by month
                 const groupedProds = vache.productions.reduce((acc, curr) => {
@@ -140,7 +159,7 @@ export default function CheptelDetails({ vache }: Props) {
                 const prodsArray = Object.values(groupedProds).sort((a, b) => b.month.localeCompare(a.month));
 
                 return createPortal(
-                    <div className="modal-overlay"><div className="modal-panel max-w-2xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">{__('Archive Financière')}</h3><button onClick={() => setShowFinancialModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6 space-y-6"><div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Coûts')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th>{__('Montant Total')}</th></tr></thead><tbody>{costsArray.map((c, i) => <tr key={i}><td>{c.month}</td><td className="text-rose-600 font-semibold">-{c.total.toFixed(2)} {__('DH')}</td></tr>)}</tbody></table></div>{vache.sexe !== 'male' && <div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Productions')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th>{__('Quantité Totale')}</th></tr></thead><tbody>{prodsArray.map((p, i) => <tr key={i}><td>{p.month}</td><td className="text-emerald-600 font-semibold">{p.total.toFixed(2)} {__('L')}</td></tr>)}</tbody></table></div>}</div></div></div>,
+                    <div className="modal-overlay"><div className="modal-panel max-w-4xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">{__('Archive Financière')}</h3><button onClick={() => setShowFinancialModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6 space-y-6"><div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Coûts')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Nourriture')}</th><th className="text-right">{__('Santé')}</th><th className="text-right">{__('Autre')}</th><th className="text-right">{__('Total')}</th></tr></thead><tbody>{costsArray.map((c, i) => <tr key={i}><td>{c.month}</td><td className="text-right text-rose-600 font-medium">-{c.food.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-medium">-{c.health.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-medium">-{c.autre.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-bold">-{c.total.toFixed(2)} {__('DH')}</td></tr>)}</tbody></table></div>{milkConsumedArray.length > 0 && <div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Lait Consommé')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Quantité Totale')}</th></tr></thead><tbody>{milkConsumedArray.map((m, i) => <tr key={i}><td>{m.month}</td><td className="text-right text-blue-600 font-semibold">{m.total.toFixed(2)} {__('L')}</td></tr>)}</tbody></table></div>}{vache.sexe !== 'male' && <div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Productions')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Quantité Totale')}</th></tr></thead><tbody>{prodsArray.map((p, i) => <tr key={i}><td>{p.month}</td><td className="text-right text-emerald-600 font-semibold">{p.total.toFixed(2)} {__('L')}</td></tr>)}</tbody></table></div>}</div></div></div>,
                     document.body
                 );
             })()}
