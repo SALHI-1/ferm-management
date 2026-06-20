@@ -16,16 +16,25 @@ export default function CheptelDetails({ vache }: Props) {
     const { t: __ } = useTranslation();
     const [showHealthModal, setShowHealthModal] = useState(false);
     const [showFinancialModal, setShowFinancialModal] = useState(false);
+    const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
     const isSold = vache.statut_vente === 'vendue';
     const partPossedee = vache.pivot?.part_possedee || 0;
+
+    const yearsSet = new Set<string>();
+    vache.costs.forEach(c => yearsSet.add(c.date_facture.substring(0, 4)));
+    vache.productions.forEach(p => yearsSet.add(p.periode_mois.substring(0, 4)));
+    if (yearsSet.size === 0) yearsSet.add(new Date().getFullYear().toString());
+    const availableYears = Array.from(yearsSet).sort((a, b) => b.localeCompare(a));
 
     const months = new Set<string>();
     vache.costs.forEach(c => months.add(c.date_facture.substring(0, 7)));
     vache.productions.forEach(p => months.add(p.periode_mois.substring(0, 7)));
-    const monthlyStats = Array.from(months).sort((a, b) => b.localeCompare(a)).map(month => {
+    const monthlyStats = Array.from(months).filter(month => month.startsWith(selectedYear)).sort((a, b) => b.localeCompare(a)).map(month => {
         const costs = vache.costs.filter(c => c.date_facture.startsWith(month) && c.type !== 'lait_consomme').reduce((s, c) => s + parseFloat(c.price.toString()), 0);
-        const production = vache.productions.filter(p => p.periode_mois.startsWith(month)).reduce((s, p) => s + parseFloat(p.quantite_litres.toString()), 0);
-        return { month, costs, production };
+        const rawProduction = vache.productions.filter(p => p.periode_mois.startsWith(month)).reduce((s, p) => s + parseFloat(p.quantite_litres.toString()), 0);
+        const consumedMilk = vache.costs.filter(c => c.date_facture.startsWith(month) && c.type === 'lait_consomme').reduce((s, c) => s + parseFloat(c.price.toString()), 0);
+        const production = Math.max(0, rawProduction - consumedMilk);
+        return { month, costs, production, rawProduction, consumedMilk };
     });
 
     const healthBadge = (s: string) => { if (s === 'healthy') return <span className="badge-success">{__('En bonne santé')}</span>; if (s === 'pregnancy') return <span className="badge-info">{__('Gestation')}</span>; return <span className="badge-danger">{__('Malade')}</span>; };
@@ -70,7 +79,18 @@ export default function CheptelDetails({ vache }: Props) {
                 {vache.sexe !== 'male' && (
                     <div className="card-premium">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><TrendingUp className="h-5 w-5 text-brand-500" /> {__('Rentabilité Mensuelle')}</h2>
+                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2">
+                                <TrendingUp className="h-5 w-5 text-brand-500" /> {__('Rentabilité Mensuelle')}
+                                <select 
+                                    value={selectedYear} 
+                                    onChange={(e) => setSelectedYear(e.target.value)}
+                                    className="ml-2 select-premium py-1 px-3 text-sm bg-white border-slate-200"
+                                >
+                                    {availableYears.map(year => (
+                                        <option key={year} value={year}>{year}</option>
+                                    ))}
+                                </select>
+                            </h2>
                             <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
                                 <span className="text-sm font-semibold text-slate-600">{__('Prix du litre :')}</span>
                                 <span className="text-sm font-bold text-brand-600">4 {__('DH/L')}</span>
@@ -79,12 +99,12 @@ export default function CheptelDetails({ vache }: Props) {
                         <p className="text-slate-500 text-sm mb-4">{__('Bénéfices nets estimés :')} <strong>{__('(Production × 4 DH) - Coûts')}</strong>. {__('Après 50% pour la ferme, votre part nette est de')} <strong>{((partPossedee * 0.5) * 100).toFixed(0)}%</strong> {__('des bénéfices.')}</p>
                         <div className="overflow-x-auto">
                             <table className="table-premium">
-                                <thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Production')}</th><th className="text-right">{__('Revenu Brut')}</th><th className="text-right">{__('Coûts')}</th><th className="text-right">{__('Bénéfice Net')}</th><th className="text-right">{__('Votre Part')}</th></tr></thead>
+                                <thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Lait Produit')}</th><th className="text-right">{__('Lait Consommé')}</th><th className="text-right">{__('Production Nette')}</th><th className="text-right">{__('Revenu Brut')}</th><th className="text-right">{__('Coûts')}</th><th className="text-right">{__('Bénéfice Net')}</th><th className="text-right">{__('Votre Part')}</th></tr></thead>
                                 <tbody>
                                     {monthlyStats.length > 0 ? monthlyStats.map(stat => {
                                         const rev = stat.production * 4; const ben = rev - stat.costs; const part = ben > 0 ? ben * 0.5 * partPossedee : ben * partPossedee;
-                                        return (<tr key={stat.month}><td className="font-medium text-slate-700">{new Date(stat.month + '-01').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</td><td className="text-right text-slate-600">{stat.production} {__('L')}</td><td className="text-right text-emerald-600">+{rev.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600">-{stat.costs.toFixed(2)} {__('DH')}</td><td className={`text-right font-semibold ${ben >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{ben > 0 ? '+' : ''}{ben.toFixed(2)} {__('DH')}</td><td className={`text-right font-bold ${part >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>{part > 0 ? '+' : ''}{part.toFixed(2)} {__('DH')}</td></tr>);
-                                    }) : <tr><td colSpan={6} className="text-center text-slate-400 py-8">{__('Aucune donnée disponible.')}</td></tr>}
+                                        return (<tr key={stat.month}><td className="font-medium text-slate-700">{new Date(stat.month + '-01').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</td><td className="text-right text-slate-600">{stat.rawProduction} {__('L')}</td><td className="text-right text-rose-500">-{stat.consumedMilk} {__('L')}</td><td className="text-right text-emerald-600 font-semibold">{stat.production} {__('L')}</td><td className="text-right text-emerald-600">+{rev.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600">-{stat.costs.toFixed(2)} {__('DH')}</td><td className={`text-right font-semibold ${ben >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{ben > 0 ? '+' : ''}{ben.toFixed(2)} {__('DH')}</td><td className={`text-right font-bold ${part >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>{part > 0 ? '+' : ''}{part.toFixed(2)} {__('DH')}</td></tr>);
+                                    }) : <tr><td colSpan={8} className="text-center text-slate-400 py-8">{__('Aucune donnée disponible.')}</td></tr>}
                                 </tbody>
                             </table>
                         </div>

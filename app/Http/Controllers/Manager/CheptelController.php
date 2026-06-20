@@ -207,7 +207,8 @@ class CheptelController extends Controller
             abort(403, 'Un mâle ne peut pas avoir de production de lait.');
         }
 
-        $date = $request->annee . '-' . str_pad($request->mois, 2, '0', STR_PAD_LEFT) . '-01';
+        $day = min(now()->day, \Carbon\Carbon::createFromDate($request->annee, $request->mois, 1)->daysInMonth);
+        $date = sprintf('%04d-%02d-%02d', $request->annee, $request->mois, $day);
 
         if ($request->type === 'gain') {
             \App\Models\Production::create([
