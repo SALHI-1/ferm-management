@@ -14,6 +14,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 // use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\InvestmentRequestController;
+use App\Http\Controllers\Admin\InvestmentRequestController as AdminInvestmentRequestController;
 
 
 
@@ -59,6 +61,10 @@ Route::prefix('admin')->middleware(['auth', 'role:admin,super_admin'])->as('admi
     Route::get('/visites', [\App\Http\Controllers\Admin\VisiteController::class, 'index'])->name('visites.index');
     Route::put('/visites/{id}/accept', [\App\Http\Controllers\Admin\VisiteController::class, 'accept'])->name('visites.accept');
     Route::put('/visites/{id}/reject', [\App\Http\Controllers\Admin\VisiteController::class, 'reject'])->name('visites.reject');
+
+    // Gestion des demandes d'investissement
+    Route::get('/investment-requests', [AdminInvestmentRequestController::class, 'index'])->name('investment-requests.index');
+    Route::patch('/investment-requests/{id}/status', [AdminInvestmentRequestController::class, 'updateStatus'])->name('investment-requests.status');
 });
 
 // 🚜 Espace unique : Managers
@@ -77,6 +83,7 @@ Route::prefix('manager')->middleware(['auth', 'role:manager'])->as('manager.')->
 // 📉 Espace unique : Clients / Investisseurs
 Route::middleware(['auth', 'role:client'])->prefix('investisseur')->as('client.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Client\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/bilan', [\App\Http\Controllers\Client\BilanController::class, 'index'])->name('bilan');
     
     // Cheptel pour les clients (en lecture seule)
     Route::get('/cheptel', [\App\Http\Controllers\Client\CheptelController::class, 'index'])->name('cheptel.index');
@@ -87,6 +94,8 @@ Route::middleware(['auth', 'role:client'])->prefix('investisseur')->as('client.'
     Route::post('/visites', [\App\Http\Controllers\Client\VisiteController::class, 'store'])->name('visites.store');
 });
 
+// Demande d'investissement publique
+Route::post('/investment-requests', [InvestmentRequestController::class, 'store'])->name('investment.store');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
