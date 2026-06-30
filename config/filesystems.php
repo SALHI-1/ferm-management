@@ -17,6 +17,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default Public Disk (images uploaded via the app)
+    |--------------------------------------------------------------------------
+    |
+    | In production (APP_ENV=production) the app stores files on Google Cloud
+    | Storage. Locally it falls back to the standard "public" disk.
+    |
+    */
+
+    'media_disk' => env('MEDIA_DISK', env('APP_ENV') === 'production' ? 'gcs' : 'public'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
@@ -24,7 +36,7 @@ return [
     | may even configure multiple disks for the same driver. Examples for
     | most supported storage drivers are configured here for reference.
     |
-    | Supported drivers: "local", "ftp", "sftp", "s3"
+    | Supported drivers: "local", "ftp", "sftp", "s3", "gcs"
     |
     */
 
@@ -58,6 +70,18 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
             'report' => false,
+        ],
+
+        'gcs' => [
+            'driver'         => 'gcs',
+            'key_file_path'  => env('GOOGLE_CLOUD_KEY_FILE', storage_path('app/google-credentials.json')),
+            'project_id'     => env('GOOGLE_CLOUD_PROJECT_ID'),
+            'bucket'         => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
+            'path_prefix'    => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
+            'storage_api_uri'=> env('GOOGLE_CLOUD_STORAGE_API_URI', null),
+            'apiEndpoint'    => env('GOOGLE_CLOUD_STORAGE_API_ENDPOINT', null),
+            'visibility'     => 'public',
+            'throw'          => true,
         ],
 
     ],

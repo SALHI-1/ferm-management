@@ -87,15 +87,15 @@ class BilanController extends Controller
 
                 if ($cowNetBenefit < 0) {
                     $yearlyData[$year]['has_error'] = true;
-                } else {
-                    $farmCut = $cowNetBenefit * 0.5; // Farm takes 50%
-                    $remaining = $cowNetBenefit - $farmCut; // 50% remaining
-                    $clientShare = $remaining * $part; // Client takes their part of the remaining
-                    $farmShare = $farmCut + ($remaining - $clientShare); // Farm keeps the rest
-
-                    $yearlyData[$year]['farm_part'] += $farmShare;
-                    $yearlyData[$year]['client_part'] += $clientShare;
                 }
+
+                $farmCut = $cowNetBenefit * 0.5; // Farm takes 50%
+                $remaining = $cowNetBenefit - $farmCut; // 50% remaining
+                $clientShare = $remaining * $part; // Client takes their part of the remaining
+                $farmShare = $farmCut + ($remaining - $clientShare); // Farm keeps the rest
+
+                $yearlyData[$year]['farm_part'] += $farmShare;
+                $yearlyData[$year]['client_part'] += $clientShare;
             }
         }
 

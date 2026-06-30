@@ -11,7 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        \Illuminate\Support\Facades\DB::statement("ALTER TABLE costs MODIFY type ENUM('food', 'veterinaire', 'autre', 'lait_consomme') NOT NULL");
+        // PostgreSQL does not support MySQL's MODIFY syntax.
+        // Laravel's enum columns are implemented as varchar + CHECK constraint in PostgreSQL.
+        // We drop the old CHECK constraint and add a new one with the extra value.
+        \Illuminate\Support\Facades\DB::statement(
+            "ALTER TABLE costs DROP CONSTRAINT IF EXISTS costs_type_check"
+        );
+        \Illuminate\Support\Facades\DB::statement(
+            "ALTER TABLE costs ADD CONSTRAINT costs_type_check CHECK (type IN ('food', 'veterinaire', 'autre', 'lait_consomme'))"
+        );
     }
 
     /**
@@ -19,6 +27,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        \Illuminate\Support\Facades\DB::statement("ALTER TABLE costs MODIFY type ENUM('food', 'veterinaire', 'autre') NOT NULL");
+        // Revert to the original three-value constraint.
+        \Illuminate\Support\Facades\DB::statement(
+            "ALTER TABLE costs DROP CONSTRAINT IF EXISTS costs_type_check"
+        );
+        \Illuminate\Support\Facades\DB::statement(
+            "ALTER TABLE costs ADD CONSTRAINT costs_type_check CHECK (type IN ('food', 'veterinaire', 'autre'))"
+        );
     }
 };

@@ -86,27 +86,16 @@ export default function BilanAnnuel({ bilans }: Props) {
                                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                                         <div className="text-center md:text-left">
                                             <p className="text-sm font-semibold text-slate-500 mb-1">Part de la Ferme (50%)</p>
-                                            {bilan.has_error ? (
-                                                <p className="text-xl font-bold text-slate-400">N/A</p>
-                                            ) : (
-                                                <p className="text-xl font-bold text-slate-700">{bilan.farm_part.toFixed(2)} DH</p>
-                                            )}
+                                            <p className="text-xl font-bold text-slate-700">{bilan.farm_part.toFixed(2)} DH</p>
                                         </div>
 
                                         <div className="hidden md:block h-12 w-px bg-brand-200"></div>
 
                                         <div className="text-center md:text-right">
                                             <p className="text-sm font-semibold text-brand-600 mb-1">Votre Part Nette</p>
-                                            {bilan.has_error ? (
-                                                <p className="text-2xl font-bold text-rose-500 flex items-center justify-center md:justify-end gap-2">
-                                                    <AlertTriangle className="h-5 w-5" />
-                                                    Erreur de calculs
-                                                </p>
-                                            ) : (
-                                                <p className={`text-2xl font-black ${bilan.client_part >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
-                                                    {bilan.client_part > 0 ? '+' : ''}{bilan.client_part.toFixed(2)} DH
-                                                </p>
-                                            )}
+                                            <p className={`text-2xl font-black ${bilan.client_part >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                                {bilan.client_part > 0 ? '+' : ''}{bilan.client_part.toFixed(2)} DH
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

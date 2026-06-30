@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 class CheptelController extends Controller
 {
@@ -63,14 +64,22 @@ class CheptelController extends Controller
 
 
 
+        $mediaDisk = config('filesystems.media_disk', 'public');
+
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = '/storage/' . $request->file('image')->store('vaches', 'public');
+            $path = $request->file('image')->store('vaches', $mediaDisk);
+            $imagePath = $mediaDisk === 'gcs'
+                ? Storage::disk($mediaDisk)->url($path)
+                : '/storage/' . $path;
         }
 
         $fichierPath = null;
         if ($request->hasFile('fichier_documents') && !$request->mother_id) {
-            $fichierPath = '/storage/' . $request->file('fichier_documents')->store('vaches_docs', 'public');
+            $path = $request->file('fichier_documents')->store('vaches_docs', $mediaDisk);
+            $fichierPath = $mediaDisk === 'gcs'
+                ? Storage::disk($mediaDisk)->url($path)
+                : '/storage/' . $path;
         }
 
         $vache = \App\Models\Vache::create([
@@ -153,13 +162,20 @@ class CheptelController extends Controller
         ]);
 
         $data = $request->only(['numero_ticket', 'sexe', 'date_naissance']);
-        
+        $mediaDisk = config('filesystems.media_disk', 'public');
+
         if ($request->hasFile('image')) {
-            $data['image'] = '/storage/' . $request->file('image')->store('vaches', 'public');
+            $path = $request->file('image')->store('vaches', $mediaDisk);
+            $data['image'] = $mediaDisk === 'gcs'
+                ? Storage::disk($mediaDisk)->url($path)
+                : '/storage/' . $path;
         }
 
         if ($request->hasFile('fichier_documents')) {
-            $data['fichier_documents'] = '/storage/' . $request->file('fichier_documents')->store('vaches_docs', 'public');
+            $path = $request->file('fichier_documents')->store('vaches_docs', $mediaDisk);
+            $data['fichier_documents'] = $mediaDisk === 'gcs'
+                ? Storage::disk($mediaDisk)->url($path)
+                : '/storage/' . $path;
         }
 
         $vache->update($data);

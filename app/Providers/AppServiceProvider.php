@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +22,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
+
+        // Cloud Run termine TLS au niveau du load balancer et transmet les
+        // requêtes en HTTP interne. On force HTTPS en production pour que
+        // Laravel génère des URLs d'assets en https://.
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
 
         \Illuminate\Auth\Notifications\ResetPassword::toMailUsing(function (object $notifiable, string $token) {
             $url = url(route('password.reset', [
