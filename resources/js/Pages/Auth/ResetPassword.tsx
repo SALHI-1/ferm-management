@@ -25,7 +25,7 @@ export default function ResetPassword({ token, email }: any) {
             <Head title="Réinitialiser le mot de passe" />
 
             <div className="text-center mb-8">
-                <h1 className="text-xl font-bold text-slate-800 font-display">Nouveau mot de passe</h1>
+                <h1 className="text-xl font-bold text-forest font-display">Nouveau mot de passe</h1>
                 <p className="text-sm text-slate-500 mt-1">Choisissez un mot de passe fort et sécurisé</p>
             </div>
 

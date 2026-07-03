@@ -13,7 +13,7 @@ export default function CheptelList({ vaches }: Props) {
 
             <div className="card-premium">
                 <div className="flex justify-between items-center mb-8 border-b border-slate-100 pb-4">
-                    <h2 className="text-2xl font-bold text-slate-800">Mon Cheptel</h2>
+                    <h2 className="text-2xl font-bold text-forest">Mon Cheptel</h2>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -33,7 +33,7 @@ export default function CheptelList({ vaches }: Props) {
                                     <td className="p-4 font-semibold text-slate-800">{vache.numero_ticket}</td>
                                     <td className="p-4 text-slate-600">{vache.poids || 'N/A'} kg</td>
                                     <td className="p-4">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-bold tracking-wide ${vache.statut_sante === 'healthy' ? 'bg-emerald-100 text-emerald-700' :
+                                        <span className={`px-3 py-1 rounded-full text-xs font-bold tracking-wide ${vache.statut_sante === 'healthy' ? 'bg-emerald-100 text-forest' :
                                                 vache.statut_sante === 'pregnancy' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'
                                             }`}>
                                             {vache.statut_sante === 'healthy' ? 'En bonne santé' :

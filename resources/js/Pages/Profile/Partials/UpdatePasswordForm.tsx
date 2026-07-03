@@ -33,7 +33,7 @@ export default function UpdatePasswordForm({ className = '' }: any) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-bold text-slate-800 font-display">Modifier le mot de passe</h2>
+                <h2 className="text-lg font-bold text-forest font-display">Modifier le mot de passe</h2>
                 <p className="mt-1 text-sm text-slate-500">Utilisez un mot de passe long et aléatoire pour rester en sécurité.</p>
             </header>
 
@@ -59,7 +59,7 @@ export default function UpdatePasswordForm({ className = '' }: any) {
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Sauvegarder</PrimaryButton>
                     <Transition show={recentlySuccessful} enter="transition ease-in-out" enterFrom="opacity-0" leave="transition ease-in-out" leaveTo="opacity-0">
-                        <p className="text-sm text-emerald-600 font-medium">✓ Enregistré</p>
+                        <p className="text-sm text-forest font-medium">✓ Enregistré</p>
                     </Transition>
                 </div>
             </form>

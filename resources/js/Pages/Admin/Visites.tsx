@@ -56,7 +56,7 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
                 );
             case 'acceptee':
                 return (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-forest/10 text-forest rounded-full border border-emerald-200">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         Acceptée
                     </span>
@@ -84,7 +84,7 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
-                    <h2 className="text-xl font-bold text-slate-800">Demandes de visites</h2>
+                    <h2 className="text-xl font-bold text-forest">Demandes de visites</h2>
                     <p className="text-sm text-slate-500">Gérez les demandes de visites des clients</p>
                 </div>
                 <div className="relative w-full sm:w-72">
@@ -102,7 +102,7 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
             </div>
 
             {flash?.success && (
-                <div className="mb-6 rounded-xl bg-emerald-50 p-4 border border-emerald-200">
+                <div className="mb-6 rounded-xl bg-forest/10 p-4 border border-emerald-200">
                     <div className="flex">
                         <div className="flex-shrink-0">
                             <CheckCircle2 className="h-5 w-5 text-emerald-400" aria-hidden="true" />
@@ -170,7 +170,7 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
                                                 <div className="flex items-center justify-end gap-2">
                                                     <button
                                                         onClick={() => handleAccept(visite.id)}
-                                                        className="inline-flex items-center justify-center p-1.5 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-colors"
+                                                        className="inline-flex items-center justify-center p-1.5 rounded-lg text-forest hover:bg-forest/10 transition-colors"
                                                         title="Accepter"
                                                     >
                                                         <CheckCircle2 className="w-5 h-5" />

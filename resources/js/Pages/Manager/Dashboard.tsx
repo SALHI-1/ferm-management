@@ -21,12 +21,12 @@ export default function ManagerDashboard({ totalVaches, productionDuMois, monthl
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="stat-card">
-                    <div className="stat-card-icon bg-emerald-50 ring-1 ring-emerald-200/60">
-                        <Milk className="h-6 w-6 text-emerald-600" />
+                    <div className="stat-card-icon bg-forest/10 ring-1 ring-emerald-200/60">
+                        <Milk className="h-6 w-6 text-forest" />
                     </div>
                     <div>
                         <p className="text-sm text-slate-500 font-medium">Production Laitière Globale</p>
-                        <p className="text-2xl font-bold text-emerald-600 mt-0.5">{productionDuMois} Litres</p>
+                        <p className="text-2xl font-bold text-forest mt-0.5">{productionDuMois} Litres</p>
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@ export default function ManagerDashboard({ totalVaches, productionDuMois, monthl
             </div>
 
             <div className="card-premium">
-                <h3 className="text-lg font-bold text-slate-800 font-display mb-6 flex items-center gap-2">
+                <h3 className="text-lg font-bold text-forest font-display mb-6 flex items-center gap-2">
                     <Activity className="h-5 w-5 text-emerald-500" /> Evolution de la Production (L)
                 </h3>
                 <div className="h-80">

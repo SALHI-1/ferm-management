@@ -14,6 +14,10 @@ FROM php:8.4-fpm-alpine
 RUN apk add --no-cache nginx curl libpq-dev netcat-openbsd \
     && docker-php-ext-install pdo pdo_pgsql
 
+# Configurer les limites d'upload de PHP
+RUN echo "upload_max_filesize = 50M" > /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "post_max_size = 50M" >> /usr/local/etc/php/conf.d/uploads.ini
+
 # Configurer Nginx
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
@@ -28,6 +32,13 @@ COPY --from=asset-builder /app/public/build ./public/build
 # Installer Composer et les dépendances PHP
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
+
+# Créer les répertoires nécessaires pour Laravel (au cas où ils sont exclus par .gcloudignore)
+RUN mkdir -p /var/www/html/storage/framework/views \
+    /var/www/html/storage/framework/cache \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/logs \
+    /var/www/html/bootstrap/cache
 
 # Donner les bons droits d'accès
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache

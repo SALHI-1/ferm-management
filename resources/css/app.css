@@ -13,7 +13,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Spectral', serif;
-    @apply text-ink-900 tracking-tight;
+    @apply text-forest tracking-tight;
   }
 
   /* Scrollbar styling */
@@ -44,7 +44,7 @@
   }
 
   .btn-premium-secondary {
-    @apply inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-ink bg-cream border border-ink/10 rounded-xl shadow-sm hover:bg-cream-50 hover:border-ink/20 focus:outline-none focus:ring-2 focus:ring-ink/10 focus:ring-offset-2 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-ink bg-white border border-ink/10 rounded-xl shadow-sm hover:bg-gray-50 hover:border-ink/20 focus:outline-none focus:ring-2 focus:ring-ink/10 focus:ring-offset-2 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
     transition: all 0.2s ease;
   }
   .btn-premium-secondary:hover:not(:disabled) {
@@ -58,7 +58,7 @@
 
   /* ─── CARDS ─── */
   .card-premium {
-    @apply bg-cream rounded-2xl shadow-sm border border-ink/5 p-8;
+    @apply bg-white rounded-2xl shadow-sm border border-ink/5 p-8;
     transition: box-shadow 0.2s ease;
   }
   .card-premium:hover {
@@ -67,19 +67,19 @@
 
   /* ─── FORM INPUTS ─── */
   .input-premium {
-    @apply w-full rounded-xl border-ink/10 bg-cream-50/50 text-ink text-sm placeholder-ink/40 shadow-sm;
+    @apply w-full rounded-xl border-ink/10 bg-gray-50/50 text-ink text-sm placeholder-ink/40 shadow-sm;
     transition: all 0.2s ease;
   }
   .input-premium:focus {
-    @apply border-forest ring-2 ring-forest/20 bg-cream;
+    @apply border-forest ring-2 ring-forest/20 bg-white;
   }
 
   .select-premium {
-    @apply w-full rounded-xl border-ink/10 bg-cream-50/50 text-ink text-sm shadow-sm;
+    @apply w-full rounded-xl border-ink/10 bg-gray-50/50 text-ink text-sm shadow-sm;
     transition: all 0.2s ease;
   }
   .select-premium:focus {
-    @apply border-forest ring-2 ring-forest/20 bg-cream;
+    @apply border-forest ring-2 ring-forest/20 bg-white;
   }
 
   .label-premium {
@@ -91,7 +91,7 @@
     @apply w-full text-left border-collapse;
   }
   .table-premium thead tr {
-    @apply bg-cream-50/80 border-y border-ink/10 text-muted uppercase tracking-wider text-xs font-bold;
+    @apply bg-gray-50/80 border-y border-ink/10 text-muted uppercase tracking-wider text-xs font-bold;
   }
   .table-premium thead th {
     @apply p-4 first:rounded-tl-xl last:rounded-tr-xl;
@@ -103,7 +103,7 @@
     transition: background-color 0.15s ease;
   }
   .table-premium tbody tr:hover {
-    @apply bg-cream-50/60;
+    @apply bg-gray-50/60;
   }
   .table-premium tbody td {
     @apply p-4 text-sm;
@@ -114,7 +114,7 @@
     @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wide;
   }
   .badge-success {
-    @apply badge bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/60;
+    @apply badge bg-forest/10 text-forest ring-1 ring-forest/20;
   }
   .badge-warning {
     @apply badge bg-amber-50 text-amber-700 ring-1 ring-amber-200/60;
@@ -138,13 +138,13 @@
     animation: fadeIn 0.2s ease;
   }
   .modal-panel {
-    @apply bg-cream rounded-2xl shadow-2xl w-full overflow-hidden border border-ink/5;
+    @apply bg-white rounded-2xl shadow-2xl w-full overflow-hidden border border-ink/5;
     animation: slideUp 0.25s ease;
   }
 
   /* ─── STAT CARD ─── */
   .stat-card {
-    @apply bg-cream rounded-2xl border border-ink/5 p-6 flex items-center gap-5 shadow-sm;
+    @apply bg-white rounded-2xl border border-ink/5 p-6 flex items-center gap-5 shadow-sm;
     transition: all 0.2s ease;
   }
   .stat-card:hover {
@@ -152,7 +152,7 @@
     transform: translateY(-2px);
   }
   .stat-card-icon {
-    @apply p-3.5 rounded-xl bg-cream-50;
+    @apply p-3.5 rounded-xl bg-gray-50;
   }
 }
 

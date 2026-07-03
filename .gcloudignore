@@ -1,0 +1,16 @@
+.git
+.gitignore
+node_modules/
+vendor/
+.env
+.agent/
+storage/app/public/vaches/
+storage/app/public/vaches_docs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+storage/logs/
+public/hot
+public/storage
+public/build/
+*.log

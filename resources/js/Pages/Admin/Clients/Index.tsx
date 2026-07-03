@@ -89,7 +89,7 @@ export default function ClientIndex({ clients }: Props) {
                             <div className="bg-brand-100 p-2 rounded-lg">
                                 <Users className="h-6 w-6 text-brand-600" />
                             </div>
-                            <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Liste des Clients</h2>
+                            <h2 className="text-2xl font-bold text-forest tracking-tight">Liste des Clients</h2>
                         </div>
                         <button onClick={() => openModal()} className="btn-premium flex items-center gap-2">
                             <Plus className="w-5 h-5" />
@@ -142,7 +142,7 @@ export default function ClientIndex({ clients }: Props) {
                 <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
                     <div className="bg-surface rounded-xl shadow-premium w-full max-w-lg overflow-hidden">
                         <div className="flex justify-between items-center p-6 border-b border-slate-100">
-                            <h3 className="text-xl font-bold text-slate-800">
+                            <h3 className="text-xl font-bold text-forest">
                                 {editingClient ? 'Modifier le Client' : 'Ajouter un Client'}
                             </h3>
                             <button onClick={closeModal} className="text-slate-400 hover:text-slate-600 transition-colors">
@@ -185,7 +185,7 @@ export default function ClientIndex({ clients }: Props) {
                             )}
 
                             <div className="pt-4 border-t border-slate-100">
-                                <h4 className="text-sm font-bold text-slate-800 mb-4">Mot de passe</h4>
+                                <h4 className="text-sm font-bold text-forest mb-4">Mot de passe</h4>
                                 
                                 {editingClient && (
                                     <p className="text-xs text-slate-500 mb-4">

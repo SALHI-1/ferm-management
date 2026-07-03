@@ -88,7 +88,7 @@ export default function ClientDashboard({ investissements }: Props) {
                     </div>
                     <div>
                         <p className="text-sm text-slate-500 font-medium">Contrats d'investissements actifs</p>
-                        <p className="text-2xl font-bold text-slate-800 mt-0.5">{investissements.length} Contrats</p>
+                        <p className="text-2xl font-bold text-forest mt-0.5">{investissements.length} Contrats</p>
                     </div>
                 </div>
             </div>
@@ -96,7 +96,7 @@ export default function ClientDashboard({ investissements }: Props) {
             {investissements.length > 0 && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="card-premium">
-                        <h3 className="text-lg font-bold text-slate-800 font-display mb-6">Répartition de votre portefeuille</h3>
+                        <h3 className="text-lg font-bold text-forest font-display mb-6">Répartition de votre portefeuille</h3>
                         <div className="h-80">
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
@@ -128,7 +128,7 @@ export default function ClientDashboard({ investissements }: Props) {
                     </div>
 
                     <div className="card-premium">
-                        <h3 className="text-lg font-bold text-slate-800 font-display mb-4">Évolution Financière (Gains vs Coûts)</h3>
+                        <h3 className="text-lg font-bold text-forest font-display mb-4">Évolution Financière (Gains vs Coûts)</h3>
                         
                         <div className="flex flex-wrap gap-2 mb-6">
                             <button 

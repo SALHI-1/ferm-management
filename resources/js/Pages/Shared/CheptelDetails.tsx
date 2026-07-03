@@ -49,7 +49,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                     <div className="flex-1">
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                             <div>
-                                <h1 className="text-xl font-bold text-slate-800 font-display flex items-center gap-3 mb-2">
+                                <h1 className="text-xl font-bold text-forest font-display flex items-center gap-3 mb-2">
                                     Ticket: {vache.numero_ticket}
                                     {isSold && <span className="badge-danger">VENDUE</span>}
                                 </h1>
@@ -98,7 +98,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                     {/* Financial */}
                     <div className="card-premium">
                         <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><DollarSign className="h-5 w-5 text-brand-500" /> Finances</h2>
+                            <h2 className="text-lg font-bold text-forest font-display flex items-center gap-2"><DollarSign className="h-5 w-5 text-brand-500" /> Finances</h2>
                             <button onClick={() => setShowFinancialModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Archive →</button>
                         </div>
                         {canEdit && !isSold ? (
@@ -113,7 +113,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                     {/* Health */}
                     <div className="card-premium">
                         <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><Heart className="h-5 w-5 text-rose-500" /> Santé</h2>
+                            <h2 className="text-lg font-bold text-forest font-display flex items-center gap-2"><Heart className="h-5 w-5 text-rose-500" /> Santé</h2>
                             <button onClick={() => setShowHealthModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">Archive →</button>
                         </div>
                         {canEdit && !isSold ? (
@@ -131,7 +131,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                 {vache.sexe !== 'male' && (
                     <div className="card-premium">
                         <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><Baby className="h-5 w-5 text-brand-500" /> Descendance ({vache.enfants.length})</h2>
+                            <h2 className="text-lg font-bold text-forest font-display flex items-center gap-2"><Baby className="h-5 w-5 text-brand-500" /> Descendance ({vache.enfants.length})</h2>
                             {canEdit && !isSold && <button onClick={() => setShowAddChildModal(true)} className="btn-premium text-xs flex items-center gap-1.5">+ Descendance</button>}
                         </div>
                         {vache.enfants.length > 0 ? (

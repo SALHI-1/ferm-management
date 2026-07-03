@@ -23,7 +23,7 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-bold text-slate-800 font-display">
+                <h2 className="text-lg font-bold text-forest font-display">
                     Informations du profil
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
@@ -75,7 +75,7 @@ export default function UpdateProfileInformation({
                         </p>
 
                         {status === 'verification-link-sent' && (
-                            <div className="mt-2 text-sm font-medium text-emerald-600">
+                            <div className="mt-2 text-sm font-medium text-forest">
                                 Un nouveau lien de vérification a été envoyé.
                             </div>
                         )}
@@ -92,7 +92,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-emerald-600 font-medium">
+                        <p className="text-sm text-forest font-medium">
                             ✓ Enregistré
                         </p>
                     </Transition>

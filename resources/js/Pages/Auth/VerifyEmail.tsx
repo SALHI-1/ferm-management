@@ -19,7 +19,7 @@ export default function VerifyEmail({ status }: any) {
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-50 ring-1 ring-brand-200/60 mb-4">
                     <MailCheck className="h-7 w-7 text-brand-600" />
                 </div>
-                <h1 className="text-xl font-bold text-slate-800 font-display">Vérifiez votre email</h1>
+                <h1 className="text-xl font-bold text-forest font-display">Vérifiez votre email</h1>
             </div>
 
             <p className="mb-6 text-sm text-slate-500 text-center leading-relaxed">
@@ -27,7 +27,7 @@ export default function VerifyEmail({ status }: any) {
             </p>
 
             {status === 'verification-link-sent' && (
-                <div className="mb-6 text-sm font-medium text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-xl px-4 py-3 text-center">
+                <div className="mb-6 text-sm font-medium text-forest bg-forest/10 border border-emerald-100 rounded-xl px-4 py-3 text-center">
                     Un nouveau lien de vérification a été envoyé.
                 </div>
             )}

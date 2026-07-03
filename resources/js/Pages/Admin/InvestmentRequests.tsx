@@ -41,7 +41,7 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
             case 'en attente':
                 return 'bg-amber-50 text-amber-700 border-amber-200';
             case 'confirmé':
-                return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                return 'bg-forest/10 text-forest border-emerald-200';
             case 'refusé':
                 return 'bg-red-50 text-red-700 border-red-200';
             case 'annulé':
@@ -66,7 +66,7 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
             <Head title="Demandes d'Investissement" />
 
             {flash?.success && (
-                <div className="mb-6 p-4 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl flex items-center shadow-sm">
+                <div className="mb-6 p-4 bg-forest/10 text-forest border border-emerald-200 rounded-xl flex items-center shadow-sm">
                     <CheckCircle className="w-5 h-5 mr-3" />
                     {flash.success}
                 </div>
@@ -75,7 +75,7 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
             {/* Header / Filters */}
             <div className="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-xl font-bold text-slate-800">Toutes les demandes</h2>
+                    <h2 className="text-xl font-bold text-forest">Toutes les demandes</h2>
                     <p className="text-sm text-slate-500 mt-1">Gérez les demandes de participation au programme CoFarm Dairy Partners.</p>
                 </div>
 
@@ -155,7 +155,7 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
                                                     <>
                                                         <button 
                                                             onClick={() => updateStatus(req.id, 'confirmé')}
-                                                            className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                                                            className="p-1.5 text-forest hover:bg-forest/10 rounded-lg transition-colors"
                                                             title="Confirmer"
                                                         >
                                                             <CheckCircle className="w-5 h-5" />

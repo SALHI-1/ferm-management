@@ -34,7 +34,7 @@ export default function Visites({ visites }: { visites: any[] }) {
                 );
             case 'acceptee':
                 return (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-forest/10 text-forest rounded-full border border-emerald-200">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         Acceptée
                     </span>
@@ -57,7 +57,7 @@ export default function Visites({ visites }: { visites: any[] }) {
 
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h2 className="text-xl font-bold text-slate-800">Historique de vos visites</h2>
+                    <h2 className="text-xl font-bold text-forest">Historique de vos visites</h2>
                     <p className="text-sm text-slate-500">Gérez vos demandes de visite à la ferme</p>
                 </div>
                 <button
@@ -70,7 +70,7 @@ export default function Visites({ visites }: { visites: any[] }) {
             </div>
 
             {flash?.success && (
-                <div className="mb-6 rounded-xl bg-emerald-50 p-4 border border-emerald-200">
+                <div className="mb-6 rounded-xl bg-forest/10 p-4 border border-emerald-200">
                     <div className="flex">
                         <div className="flex-shrink-0">
                             <CheckCircle2 className="h-5 w-5 text-emerald-400" aria-hidden="true" />

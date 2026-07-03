@@ -29,21 +29,21 @@ export default function AdminDashboard({ stats, users }: Props) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div className="stat-card">
                     <div className="stat-card-icon bg-amber-50 ring-1 ring-amber-200/60"><Users className="h-6 w-6 text-amber-600" /></div>
-                    <div><p className="text-sm text-slate-500 font-medium">Utilisateurs</p><p className="text-2xl font-bold text-slate-800 mt-0.5">{stats.total_users}</p></div>
+                    <div><p className="text-sm text-slate-500 font-medium">Utilisateurs</p><p className="text-2xl font-bold text-forest mt-0.5">{stats.total_users}</p></div>
                 </div>
                 <div className="stat-card">
-                    <div className="stat-card-icon bg-emerald-50 ring-1 ring-emerald-200/60"><Package className="h-6 w-6 text-emerald-600" /></div>
-                    <div><p className="text-sm text-slate-500 font-medium">Total bovins</p><p className="text-2xl font-bold text-slate-800 mt-0.5">{stats.total_vaches}</p></div>
+                    <div className="stat-card-icon bg-forest/10 ring-1 ring-emerald-200/60"><Package className="h-6 w-6 text-forest" /></div>
+                    <div><p className="text-sm text-slate-500 font-medium">Total bovins</p><p className="text-2xl font-bold text-forest mt-0.5">{stats.total_vaches}</p></div>
                 </div>
                 <div className="stat-card">
                     <div className="stat-card-icon bg-brand-50 ring-1 ring-brand-200/60"><TrendingUp className="h-6 w-6 text-brand-600" /></div>
-                    <div><p className="text-sm text-slate-500 font-medium">Investissements</p><p className="text-2xl font-bold text-slate-800 mt-0.5">{stats.total_investissements}</p></div>
+                    <div><p className="text-sm text-slate-500 font-medium">Investissements</p><p className="text-2xl font-bold text-forest mt-0.5">{stats.total_investissements}</p></div>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="card-premium">
-                    <h3 className="text-lg font-bold text-slate-800 font-display mb-6">Répartition des Utilisateurs</h3>
+                    <h3 className="text-lg font-bold text-forest font-display mb-6">Répartition des Utilisateurs</h3>
                     <div className="h-72">
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
@@ -62,7 +62,7 @@ export default function AdminDashboard({ stats, users }: Props) {
                 </div>
 
                 <div className="card-premium">
-                    <h3 className="text-lg font-bold text-slate-800 font-display mb-6">Vue d'ensemble de la plateforme</h3>
+                    <h3 className="text-lg font-bold text-forest font-display mb-6">Vue d'ensemble de la plateforme</h3>
                     <div className="h-72">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={platformStats} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>

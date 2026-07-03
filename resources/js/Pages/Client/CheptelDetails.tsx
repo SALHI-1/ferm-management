@@ -49,7 +49,7 @@ export default function CheptelDetails({ vache }: Props) {
                         {vache.image ? <img src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">{__('Pas de photo')}</span>}
                     </div>
                     <div className="flex-1">
-                        <h1 className="text-xl font-bold text-slate-800 font-display flex items-center gap-3 mb-2">
+                        <h1 className="text-xl font-bold text-forest font-display flex items-center gap-3 mb-2">
                             {__('Ticket:')} {vache.numero_ticket}
                             {isSold && <span className="badge-danger">{__('VENDUE')}</span>}
                         </h1>
@@ -79,7 +79,7 @@ export default function CheptelDetails({ vache }: Props) {
                 {vache.sexe !== 'male' && (
                     <div className="card-premium">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2">
+                            <h2 className="text-lg font-bold text-forest font-display flex items-center gap-2">
                                 <TrendingUp className="h-5 w-5 text-brand-500" /> {__('Rentabilité Mensuelle')}
                                 <select 
                                     value={selectedYear} 
@@ -103,7 +103,7 @@ export default function CheptelDetails({ vache }: Props) {
                                 <tbody>
                                     {monthlyStats.length > 0 ? monthlyStats.map(stat => {
                                         const rev = stat.production * 4; const ben = rev - stat.costs; const part = ben > 0 ? ben * 0.5 * partPossedee : ben * partPossedee;
-                                        return (<tr key={stat.month}><td className="font-medium text-slate-700">{new Date(stat.month + '-01').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</td><td className="text-right text-slate-600">{stat.rawProduction} {__('L')}</td><td className="text-right text-rose-500">-{stat.consumedMilk} {__('L')}</td><td className="text-right text-emerald-600 font-semibold">{stat.production} {__('L')}</td><td className="text-right text-emerald-600">+{rev.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600">-{stat.costs.toFixed(2)} {__('DH')}</td><td className={`text-right font-semibold ${ben >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>{ben > 0 ? '+' : ''}{ben.toFixed(2)} {__('DH')}</td><td className={`text-right font-bold ${part >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>{part > 0 ? '+' : ''}{part.toFixed(2)} {__('DH')}</td></tr>);
+                                        return (<tr key={stat.month}><td className="font-medium text-slate-700">{new Date(stat.month + '-01').toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</td><td className="text-right text-slate-600">{stat.rawProduction} {__('L')}</td><td className="text-right text-rose-500">-{stat.consumedMilk} {__('L')}</td><td className="text-right text-forest font-semibold">{stat.production} {__('L')}</td><td className="text-right text-forest">+{rev.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600">-{stat.costs.toFixed(2)} {__('DH')}</td><td className={`text-right font-semibold ${ben >= 0 ? 'text-forest' : 'text-rose-600'}`}>{ben > 0 ? '+' : ''}{ben.toFixed(2)} {__('DH')}</td><td className={`text-right font-bold ${part >= 0 ? 'text-forest' : 'text-rose-700'}`}>{part > 0 ? '+' : ''}{part.toFixed(2)} {__('DH')}</td></tr>);
                                     }) : <tr><td colSpan={8} className="text-center text-slate-400 py-8">{__('Aucune donnée disponible.')}</td></tr>}
                                 </tbody>
                             </table>
@@ -114,13 +114,13 @@ export default function CheptelDetails({ vache }: Props) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="card-premium">
                         <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><DollarSign className="h-5 w-5 text-brand-500" /> {__('Frais')}</h2>
+                            <h2 className="text-lg font-bold text-forest font-display flex items-center gap-2"><DollarSign className="h-5 w-5 text-brand-500" /> {__('Frais')}</h2>
                             <button onClick={() => setShowFinancialModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">{__('Archive →')}</button>
                         </div>
                     </div>
                     <div className="card-premium">
                         <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><Heart className="h-5 w-5 text-rose-500" /> {__('Santé')}</h2>
+                            <h2 className="text-lg font-bold text-forest font-display flex items-center gap-2"><Heart className="h-5 w-5 text-rose-500" /> {__('Santé')}</h2>
                             <button onClick={() => setShowHealthModal(true)} className="text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">{__('Archive →')}</button>
                         </div>
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
@@ -133,7 +133,7 @@ export default function CheptelDetails({ vache }: Props) {
                 {vache.sexe !== 'male' && (
                     <div className="card-premium">
                         <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-slate-800 font-display flex items-center gap-2"><Baby className="h-5 w-5 text-brand-500" /> {__('Descendance')} ({vache.enfants.length})</h2>
+                            <h2 className="text-lg font-bold text-forest font-display flex items-center gap-2"><Baby className="h-5 w-5 text-brand-500" /> {__('Descendance')} ({vache.enfants.length})</h2>
                         </div>
                         {vache.enfants.length > 0 ? <div className="space-y-2">{vache.enfants.map(e => <a key={e.id} href={`/investisseur/cheptel/${e.id}`} className="block p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-brand-600 font-semibold text-sm transition-colors">{e.numero_ticket}</a>)}</div> : <p className="text-slate-400 italic text-sm">{__('Aucune descendance.')}</p>}
                     </div>
@@ -179,7 +179,7 @@ export default function CheptelDetails({ vache }: Props) {
                 const prodsArray = Object.values(groupedProds).sort((a, b) => b.month.localeCompare(a.month));
 
                 return createPortal(
-                    <div className="modal-overlay"><div className="modal-panel max-w-4xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">{__('Archive Financière')}</h3><button onClick={() => setShowFinancialModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6 space-y-6"><div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Coûts')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Nourriture')}</th><th className="text-right">{__('Santé')}</th><th className="text-right">{__('Autre')}</th><th className="text-right">{__('Total')}</th></tr></thead><tbody>{costsArray.map((c, i) => <tr key={i}><td>{c.month}</td><td className="text-right text-rose-600 font-medium">-{c.food.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-medium">-{c.health.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-medium">-{c.autre.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-bold">-{c.total.toFixed(2)} {__('DH')}</td></tr>)}</tbody></table></div>{milkConsumedArray.length > 0 && <div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Lait Consommé')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Quantité Totale')}</th></tr></thead><tbody>{milkConsumedArray.map((m, i) => <tr key={i}><td>{m.month}</td><td className="text-right text-blue-600 font-semibold">{m.total.toFixed(2)} {__('L')}</td></tr>)}</tbody></table></div>}{vache.sexe !== 'male' && <div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Productions')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Quantité Totale')}</th></tr></thead><tbody>{prodsArray.map((p, i) => <tr key={i}><td>{p.month}</td><td className="text-right text-emerald-600 font-semibold">{p.total.toFixed(2)} {__('L')}</td></tr>)}</tbody></table></div>}</div></div></div>,
+                    <div className="modal-overlay"><div className="modal-panel max-w-4xl max-h-[80vh] overflow-y-auto"><div className="flex justify-between items-center p-6 border-b border-slate-100"><h3 className="text-lg font-bold font-display">{__('Archive Financière')}</h3><button onClick={() => setShowFinancialModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button></div><div className="p-6 space-y-6"><div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Coûts')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Nourriture')}</th><th className="text-right">{__('Santé')}</th><th className="text-right">{__('Autre')}</th><th className="text-right">{__('Total')}</th></tr></thead><tbody>{costsArray.map((c, i) => <tr key={i}><td>{c.month}</td><td className="text-right text-rose-600 font-medium">-{c.food.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-medium">-{c.health.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-medium">-{c.autre.toFixed(2)} {__('DH')}</td><td className="text-right text-rose-600 font-bold">-{c.total.toFixed(2)} {__('DH')}</td></tr>)}</tbody></table></div>{milkConsumedArray.length > 0 && <div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Lait Consommé')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Quantité Totale')}</th></tr></thead><tbody>{milkConsumedArray.map((m, i) => <tr key={i}><td>{m.month}</td><td className="text-right text-blue-600 font-semibold">{m.total.toFixed(2)} {__('L')}</td></tr>)}</tbody></table></div>}{vache.sexe !== 'male' && <div><h4 className="text-sm font-bold text-slate-700 mb-3">{__('Productions')}</h4><table className="table-premium"><thead><tr><th>{__('Mois')}</th><th className="text-right">{__('Quantité Totale')}</th></tr></thead><tbody>{prodsArray.map((p, i) => <tr key={i}><td>{p.month}</td><td className="text-right text-forest font-semibold">{p.total.toFixed(2)} {__('L')}</td></tr>)}</tbody></table></div>}</div></div></div>,
                     document.body
                 );
             })()}

@@ -92,7 +92,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
     const isActive = (href: string) => currentPath.startsWith(href);
 
     return (
-        <div className="flex h-screen bg-cream-50 overflow-hidden font-sans text-ink">
+        <div className="flex h-screen bg-gray-50 overflow-hidden font-sans text-ink">
             {/* Mobile overlay */}
             {mobileOpen && (
                 <div
@@ -145,12 +145,12 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                                     className={`flex items-center gap-3.5 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group ${
                                         active
                                             ? 'text-forest bg-forest/10 shadow-sm'
-                                            : 'text-ink/60 hover:text-ink hover:bg-cream-50'
+                                            : 'text-ink/80 hover:text-ink hover:bg-cream-50'
                                     } ${collapsed ? 'justify-center px-0' : ''}`}
                                     title={collapsed ? item.label : undefined}
                                 >
                                     <Icon className={`h-[18px] w-[18px] flex-shrink-0 transition-colors duration-200 ${
-                                        active ? 'text-forest' : 'text-ink/40 group-hover:text-ink/70'
+                                        active ? 'text-forest' : 'text-ink/60 group-hover:text-ink/80'
                                     }`} />
                                     {!collapsed && <span>{item.label}</span>}
                                 </Link>
@@ -189,7 +189,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
             {/* MAIN CONTENT */}
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Top Header */}
-                <header className="h-16 bg-cream/80 backdrop-blur-md border-b border-ink/10 flex items-center justify-between px-6 lg:px-10 z-10 flex-shrink-0">
+                <header className="h-16 bg-white/80 backdrop-blur-md border-b border-ink/10 flex items-center justify-between px-6 lg:px-10 z-10 flex-shrink-0">
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setMobileOpen(true)}
@@ -197,7 +197,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                         >
                             <Menu className="h-5 w-5" />
                         </button>
-                        <h1 className="text-lg lg:text-xl font-bold text-ink-900 tracking-tight font-display">
+                        <h1 className="text-lg lg:text-xl font-bold text-forest tracking-tight font-display">
                             {title}
                         </h1>
                     </div>

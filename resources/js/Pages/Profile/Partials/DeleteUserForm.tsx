@@ -45,7 +45,7 @@ export default function DeleteUserForm({ className = '' }: any) {
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-bold text-slate-800 font-display">
+                    <h2 className="text-lg font-bold text-forest font-display">
                         Êtes-vous sûr de vouloir supprimer votre compte ?
                     </h2>
                     <p className="mt-2 text-sm text-slate-500">

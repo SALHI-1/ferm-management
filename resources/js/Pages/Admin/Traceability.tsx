@@ -69,7 +69,7 @@ export default function Traceability({ initialLogs }: Props) {
                         <div className="bg-brand-100 p-2 rounded-lg">
                             <Activity className="h-6 w-6 text-brand-600" />
                         </div>
-                        <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Journal d'Activité des Managers</h2>
+                        <h2 className="text-2xl font-bold text-forest tracking-tight">Journal d'Activité des Managers</h2>
                     </div>
 
                     <div className="space-y-6">
@@ -80,7 +80,7 @@ export default function Traceability({ initialLogs }: Props) {
                                         <div key={log.id} className="relative pl-8">
                                             <div className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-brand-500 bg-white ring-4 ring-white"></div>
                                             <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
-                                                <h3 className="text-base font-bold text-slate-800">
+                                                <h3 className="text-base font-bold text-forest">
                                                     {log.manager?.nom} {log.manager?.prenom} 
                                                     <span className="text-sm font-normal text-slate-500 ml-2">({log.action_type})</span>
                                                 </h3>

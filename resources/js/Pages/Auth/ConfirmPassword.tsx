@@ -26,7 +26,7 @@ export default function ConfirmPassword() {
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-50 ring-1 ring-amber-200/60 mb-4">
                     <Lock className="h-7 w-7 text-amber-600" />
                 </div>
-                <h1 className="text-xl font-bold text-slate-800 font-display">Zone sécurisée</h1>
+                <h1 className="text-xl font-bold text-forest font-display">Zone sécurisée</h1>
             </div>
 
             <p className="mb-6 text-sm text-slate-500 text-center leading-relaxed">
