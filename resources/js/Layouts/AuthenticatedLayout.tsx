@@ -13,8 +13,8 @@ export default function AuthenticatedLayout({ header, children }: any) {
         useState(false);
 
     return (
-        <div className="min-h-screen bg-slate-50">
-            <nav className="border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-30">
+        <div className="min-h-screen bg-cream-50">
+            <nav className="border-b border-ink/10 bg-cream/80 backdrop-blur-md sticky top-0 z-30">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
@@ -41,12 +41,12 @@ export default function AuthenticatedLayout({ header, children }: any) {
                                         <span className="inline-flex rounded-xl">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 transition-all duration-200 hover:text-slate-800 hover:border-slate-300 hover:shadow-sm focus:outline-none"
+                                                className="inline-flex items-center rounded-xl border border-ink/10 bg-cream px-3.5 py-2 text-sm font-medium text-ink/70 transition-all duration-200 hover:text-ink-900 hover:border-ink/20 hover:shadow-sm focus:outline-none"
                                             >
                                                 {user.name}
 
                                                 <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4 text-slate-400"
+                                                    className="-me-0.5 ms-2 h-4 w-4 text-ink/50"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20"
                                                     fill="currentColor"
@@ -86,7 +86,7 @@ export default function AuthenticatedLayout({ header, children }: any) {
                                         (previousState) => !previousState,
                                     )
                                 }
-                                className="inline-flex items-center justify-center rounded-xl p-2 text-slate-400 transition-all duration-200 hover:bg-slate-100 hover:text-slate-600 focus:bg-slate-100 focus:text-slate-600 focus:outline-none"
+                                className="inline-flex items-center justify-center rounded-xl p-2 text-ink/50 transition-all duration-200 hover:bg-cream-50/50 hover:text-ink/70 focus:bg-cream-50/50 focus:text-ink/70 focus:outline-none"
                             >
                                 {showingNavigationDropdown ? (
                                     <X className="h-5 w-5" />
@@ -101,7 +101,7 @@ export default function AuthenticatedLayout({ header, children }: any) {
                 <div
                     className={
                         (showingNavigationDropdown ? 'block animate-slide-down' : 'hidden') +
-                        ' sm:hidden border-t border-slate-100'
+                        ' sm:hidden border-t border-ink/10'
                     }
                 >
                     <div className="space-y-1 pb-3 pt-2">
@@ -113,12 +113,12 @@ export default function AuthenticatedLayout({ header, children }: any) {
                         </ResponsiveNavLink>
                     </div>
 
-                    <div className="border-t border-slate-100 pb-1 pt-4">
+                    <div className="border-t border-ink/10 pb-1 pt-4">
                         <div className="px-4">
-                            <div className="text-base font-semibold text-slate-800">
+                            <div className="text-base font-semibold text-ink-900">
                                 {user.name}
                             </div>
-                            <div className="text-sm font-medium text-slate-500">
+                            <div className="text-sm font-medium text-ink/60">
                                 {user.email}
                             </div>
                         </div>
@@ -140,7 +140,7 @@ export default function AuthenticatedLayout({ header, children }: any) {
             </nav>
 
             {header && (
-                <header className="bg-white border-b border-slate-100">
+                <header className="bg-cream border-b border-ink/10">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>

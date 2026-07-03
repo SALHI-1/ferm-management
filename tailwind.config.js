@@ -16,24 +16,52 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', ...defaultTheme.fontFamily.sans],
-                display: ['Outfit', 'Inter', ...defaultTheme.fontFamily.sans],
+                sans: ['Hanken Grotesk', ...defaultTheme.fontFamily.sans],
+                serif: ['Spectral', ...defaultTheme.fontFamily.serif],
+                mono: ['Spline Sans Mono', ...defaultTheme.fontFamily.mono],
+                display: ['Spectral', ...defaultTheme.fontFamily.serif],
             },
             colors: {
-                brand: {
-                    50: '#eff6ff',
-                    100: '#dbeafe',
-                    200: '#bfdbfe',
-                    300: '#93c5fd',
-                    400: '#60a5fa',
-                    500: '#3b82f6',
-                    600: '#2563eb',
-                    700: '#1d4ed8',
-                    800: '#1e40af',
-                    900: '#1e3a8a',
+                cream: {
+                    DEFAULT: '#f4eddf',
+                    50: '#fbf6ec',
                 },
-                surface: '#ffffff',
-                background: '#f8fafc',
+                ink: {
+                    DEFAULT: '#2a2521',
+                    900: '#211d19',
+                },
+                forest: {
+                    DEFAULT: '#2d3f31',
+                    600: '#3e5641',
+                },
+                copper: {
+                    DEFAULT: '#bc6b43',
+                    300: '#c99360',
+                },
+                gold: '#d9a968',
+                muted: {
+                    DEFAULT: '#52493e',
+                    400: '#8a8174',
+                    500: '#6e6557',
+                },
+                onForest: {
+                    DEFAULT: '#c5cfc0',
+                    2: '#d8e0d4',
+                },
+                brand: {
+                    50: '#fbf6ec',
+                    100: '#f4eddf',
+                    200: '#d8e0d4',
+                    300: '#c5cfc0',
+                    400: '#8a8174',
+                    500: '#bc6b43',
+                    600: '#2d3f31',
+                    700: '#211d19',
+                    800: '#2a2521',
+                    900: '#2a2521',
+                },
+                surface: '#f4eddf',
+                background: '#fbf6ec',
             },
             boxShadow: {
                 'premium': '0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02)',

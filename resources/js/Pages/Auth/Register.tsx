@@ -26,8 +26,8 @@ export default function Register() {
             <Head title="Inscription" />
 
             <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold text-slate-800 font-display">Créer un compte</h1>
-                <p className="text-sm text-slate-500 mt-1">Rejoignez la plateforme Ferm Project</p>
+                <h1 className="text-2xl font-bold text-ink-900 font-display">Créer un compte</h1>
+                <p className="text-sm text-ink/60 mt-1">Rejoignez la plateforme Ferm Project</p>
             </div>
 
             <form onSubmit={submit} className="space-y-5">
@@ -103,9 +103,9 @@ export default function Register() {
                     Créer mon compte
                 </PrimaryButton>
 
-                <p className="text-center text-sm text-slate-500">
+                <p className="text-center text-sm text-ink/60">
                     Déjà inscrit ?{' '}
-                    <Link href={route('login')} className="font-semibold text-brand-600 hover:text-brand-700 transition-colors">
+                    <Link href={route('login')} className="font-semibold text-forest hover:text-forest-600 transition-colors">
                         Se connecter
                     </Link>
                 </p>

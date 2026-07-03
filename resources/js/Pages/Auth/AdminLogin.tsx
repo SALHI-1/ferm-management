@@ -30,13 +30,13 @@ export default function AdminLogin() {
             <Head title="Connexion Administration" />
 
             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-50 ring-1 ring-brand-200/60 mb-4">
-                    <ShieldCheck className="h-7 w-7 text-brand-600" />
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-forest/10 ring-1 ring-forest/20 mb-4">
+                    <ShieldCheck className="h-7 w-7 text-forest" />
                 </div>
-                <h1 className="text-2xl font-bold text-slate-800 font-display">
+                <h1 className="text-2xl font-bold text-ink-900 font-display">
                     Portail Staff
                 </h1>
-                <p className="text-sm text-slate-500 mt-1">
+                <p className="text-sm text-ink/60 mt-1">
                     Réservé aux Administrateurs et Managers
                 </p>
             </div>

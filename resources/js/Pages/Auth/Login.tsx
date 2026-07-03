@@ -31,9 +31,9 @@ export default function Login({ auth, status, canResetPassword }: any) {
     return (
         <>
             <Head title="Bienvenue" />
-            <div className="min-h-screen bg-slate-50 font-sans flex flex-col md:flex-row">
+            <div className="min-h-screen bg-cream-50 font-sans flex flex-col md:flex-row">
                 {/* Left Side - Info & Branding */}
-                <div className="w-full md:w-1/2 lg:w-7/12 relative overflow-hidden flex flex-col p-8 md:p-16 justify-between bg-slate-900">
+                <div className="w-full md:w-1/2 lg:w-7/12 relative overflow-hidden flex flex-col p-8 md:p-16 justify-between bg-ink">
                     {/* Background Video */}
                     <video
                         className="absolute inset-0 w-full h-full object-cover"
@@ -44,28 +44,28 @@ export default function Login({ auth, status, canResetPassword }: any) {
                         playsInline
                     />
                     {/* Dark Overlay for readability */}
-                    <div className="absolute inset-0 bg-slate-900/75" />
+                    <div className="absolute inset-0 bg-ink/75" />
 
                     {/* Decorative */}
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/10 rounded-full filter blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-forest/10 rounded-full filter blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-copper/10 rounded-full filter blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
 
                     <div className="relative z-10 flex items-center gap-3 mb-12">
-                        <div className="p-2 bg-indigo-600 rounded-lg shadow-sm">
-                            <Milestone className="h-6 w-6 text-white" />
+                        <div className="p-2 bg-forest rounded-lg shadow-sm">
+                            <Milestone className="h-6 w-6 text-cream" />
                         </div>
-                        <span className="text-2xl font-semibold text-white tracking-tight">Ferm Project</span>
+                        <span className="text-2xl font-semibold text-cream tracking-tight font-display">Ferm Project</span>
                     </div>
 
                     <div className="relative z-10 flex-1 flex flex-col justify-center">
-                        <div className="inline-flex items-center self-start gap-2 bg-indigo-500/10 text-indigo-300 px-4 py-1.5 rounded-full text-sm font-medium mb-6 ring-1 ring-indigo-500/20">
-                            <span className="w-2 h-2 bg-indigo-400 rounded-full" />
+                        <div className="inline-flex items-center self-start gap-2 bg-forest/10 text-onForest px-4 py-1.5 rounded-full text-sm font-medium mb-6 ring-1 ring-forest/20">
+                            <span className="w-2 h-2 bg-copper rounded-full" />
                             Plateforme de gestion agricole
                         </div>
-                        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold text-white leading-[1.1] tracking-tight mb-6">
-                            Gérez votre <span className="text-indigo-400">exploitation</span> avec précision
+                        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold text-cream leading-[1.1] tracking-tight mb-6 font-display">
+                            Gérez votre <span className="text-copper">exploitation</span> avec précision
                         </h1>
-                        <p className="text-lg text-slate-400 leading-relaxed mb-12 max-w-lg">
+                        <p className="text-lg text-onForest2 leading-relaxed mb-12 max-w-lg">
                             Suivi du cheptel, traçabilité, investissements et rentabilité — le tout dans une interface moderne et sécurisée.
                         </p>
 
@@ -73,12 +73,12 @@ export default function Login({ auth, status, canResetPassword }: any) {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl">
                             {features.map((feature, i) => (
                                 <div key={i} className="flex items-start gap-4">
-                                    <div className="p-2.5 bg-slate-800/80 rounded-lg ring-1 ring-slate-700/60 shrink-0">
-                                        <feature.icon className="h-5 w-5 text-indigo-400" />
+                                    <div className="p-2.5 bg-ink-900/80 rounded-lg ring-1 ring-ink/60 shrink-0">
+                                        <feature.icon className="h-5 w-5 text-copper" />
                                     </div>
                                     <div>
-                                        <h3 className="text-sm font-semibold text-white">{feature.title}</h3>
-                                        <p className="text-sm text-slate-400 mt-0.5">{feature.desc}</p>
+                                        <h3 className="text-sm font-semibold text-cream">{feature.title}</h3>
+                                        <p className="text-sm text-onForest mt-0.5">{feature.desc}</p>
                                     </div>
                                 </div>
                             ))}
@@ -86,21 +86,21 @@ export default function Login({ auth, status, canResetPassword }: any) {
                     </div>
 
                     <footer className="relative z-10 mt-12">
-                        <p className="text-sm text-slate-500">
+                        <p className="text-sm text-onForest">
                             © {new Date().getFullYear()} Ferm Project — Tous droits réservés.
                         </p>
                     </footer>
                 </div>
 
                 {/* Right Side - Login Form */}
-                <div className="w-full md:w-1/2 lg:w-5/12 flex items-center justify-center p-8 md:p-12 bg-slate-50">
-                    <div className="w-full max-w-md bg-white border border-slate-100 shadow-sm rounded-xl p-8">
+                <div className="w-full md:w-1/2 lg:w-5/12 flex items-center justify-center p-8 md:p-12 bg-cream-50">
+                    <div className="w-full max-w-md bg-cream border border-ink/10 shadow-sm rounded-xl p-8">
                         {auth.user ? (
                             <div className="text-center py-8 space-y-6">
-                                <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">Vous êtes déjà connecté</h2>
+                                <h2 className="text-2xl font-semibold text-ink-900 tracking-tight font-display">Vous êtes déjà connecté</h2>
                                 <Link
                                     href={route('dashboard')}
-                                    className="inline-flex w-full justify-center items-center gap-2 px-4 py-3 rounded-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-200 active:scale-95"
+                                    className="inline-flex w-full justify-center items-center gap-2 px-4 py-3 rounded-lg font-medium bg-forest text-cream hover:bg-forest-600 transition-all duration-200 active:scale-95"
                                 >
                                     Aller au Dashboard <ArrowRight className="h-5 w-5" />
                                 </Link>
@@ -108,8 +108,8 @@ export default function Login({ auth, status, canResetPassword }: any) {
                         ) : (
                             <>
                                 <div className="mb-8 space-y-1">
-                                    <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">Bon retour</h2>
-                                    <p className="text-sm text-slate-600">Connectez-vous à votre espace sécurisé</p>
+                                    <h2 className="text-2xl font-semibold text-ink-900 tracking-tight font-display">Bon retour</h2>
+                                    <p className="text-sm text-ink/70">Connectez-vous à votre espace sécurisé</p>
                                 </div>
 
                                 {status && (
@@ -120,13 +120,13 @@ export default function Login({ auth, status, canResetPassword }: any) {
 
                                 <form onSubmit={submit} className="space-y-6">
                                     <div>
-                                        <InputLabel htmlFor="email" value="Adresse email" className="text-slate-700" />
+                                        <InputLabel htmlFor="email" value="Adresse email" className="text-ink/80" />
                                         <TextInput
                                             id="email"
                                             type="email"
                                             name="email"
                                             value={data.email}
-                                            className="mt-1.5 block w-full rounded-lg border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all duration-200 ease-in-out"
+                                            className="mt-1.5 block w-full rounded-lg border-ink/20 text-ink-900 bg-cream-50/50 focus:ring-2 focus:ring-forest/20 focus:border-forest outline-none transition-all duration-200 ease-in-out"
                                             autoComplete="username"
                                             isFocused={true}
                                             onChange={(e) => setData('email', e.target.value)}
@@ -135,13 +135,13 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="password" value="Mot de passe" className="text-slate-700" />
+                                        <InputLabel htmlFor="password" value="Mot de passe" className="text-ink/80" />
                                         <TextInput
                                             id="password"
                                             type="password"
                                             name="password"
                                             value={data.password}
-                                            className="mt-1.5 block w-full rounded-lg border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all duration-200 ease-in-out"
+                                            className="mt-1.5 block w-full rounded-lg border-ink/20 text-ink-900 bg-cream-50/50 focus:ring-2 focus:ring-forest/20 focus:border-forest outline-none transition-all duration-200 ease-in-out"
                                             autoComplete="current-password"
                                             onChange={(e) => setData('password', e.target.value)}
                                         />
@@ -157,7 +157,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                                     setData('remember', e.target.checked)
                                                 }
                                             />
-                                            <span className="text-sm text-slate-600">
+                                            <span className="text-sm text-ink/70">
                                                 Se souvenir de moi
                                             </span>
                                         </label>
@@ -165,7 +165,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                         {canResetPassword && (
                                             <Link
                                                 href={route('password.request')}
-                                                className="text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-all duration-200"
+                                                className="text-sm font-medium text-copper hover:text-copper-300 transition-all duration-200"
                                             >
                                                 Mot de passe oublié ?
                                             </Link>
@@ -173,7 +173,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                     </div>
 
                                     <PrimaryButton
-                                        className="w-full justify-center !py-3 !text-sm !rounded-lg !bg-indigo-600 hover:!bg-indigo-700 transition-all duration-200 active:scale-95"
+                                        className="w-full justify-center !py-3 !text-sm !rounded-lg !bg-forest hover:!bg-forest-600 transition-all duration-200 active:scale-95"
                                         disabled={processing}
                                     >
                                         Se connecter
