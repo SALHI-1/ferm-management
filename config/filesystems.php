@@ -74,7 +74,9 @@ return [
 
         'gcs' => [
             'driver'         => 'gcs',
-            'key_file_path'  => env('GOOGLE_CLOUD_KEY_FILE') ?: null,
+            'key_file_path'  => env('GOOGLE_CLOUD_KEY_FILE') && file_exists(env('GOOGLE_CLOUD_KEY_FILE')) 
+                                    ? env('GOOGLE_CLOUD_KEY_FILE') 
+                                    : null,
             'project_id'     => env('GOOGLE_CLOUD_PROJECT_ID'),
             'bucket'         => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
             'path_prefix'    => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),

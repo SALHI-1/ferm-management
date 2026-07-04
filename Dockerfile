@@ -15,8 +15,8 @@ RUN apk add --no-cache nginx curl libpq-dev netcat-openbsd \
     && docker-php-ext-install pdo pdo_pgsql
 
 # Configurer les limites d'upload de PHP
-RUN echo "upload_max_filesize = 50M" > /usr/local/etc/php/conf.d/uploads.ini \
-    && echo "post_max_size = 50M" >> /usr/local/etc/php/conf.d/uploads.ini
+RUN echo "upload_max_filesize = 10M" > /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "post_max_size = 10M" >> /usr/local/etc/php/conf.d/uploads.ini
 
 # Configurer Nginx
 COPY docker/nginx.conf /etc/nginx/nginx.conf
@@ -43,12 +43,7 @@ RUN mkdir -p /var/www/html/storage/framework/views \
 # Donner les bons droits d'accès
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Créer le répertoire pour le fichier de credentials GCS
-# (Cloud Run le montera via Secret Manager volume mount)
-RUN mkdir -p /var/secrets/gcs && chown -R www-data:www-data /var/secrets/gcs
 
-# Variable d'environnement par défaut pour le fichier de clé GCS
-ENV GOOGLE_CLOUD_KEY_FILE=/var/secrets/gcs/key.json
 
 # Exposer le script de démarrage
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
