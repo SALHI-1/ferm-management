@@ -82,7 +82,6 @@ return [
             'path_prefix'    => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
             'storage_api_uri'=> env('GOOGLE_CLOUD_STORAGE_API_URI', null),
             'apiEndpoint'    => env('GOOGLE_CLOUD_STORAGE_API_ENDPOINT', null),
-            'visibility'     => 'public',
             'throw'          => true,
         ],
 

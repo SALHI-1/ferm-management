@@ -65,7 +65,8 @@ class AppServiceProvider extends ServiceProvider
             $bucket = $storageClient->bucket($config['bucket']);
             
             $pathPrefix = $config['path_prefix'] ?? '';
-            $adapter = new GoogleCloudStorageAdapter($bucket, $pathPrefix);
+            $visibilityHandler = new \League\Flysystem\GoogleCloudStorage\UniformBucketLevelAccessVisibility();
+            $adapter = new GoogleCloudStorageAdapter($bucket, $pathPrefix, $visibilityHandler);
 
             return new FilesystemAdapter(
                 new Filesystem($adapter),
