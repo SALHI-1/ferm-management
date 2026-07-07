@@ -68,7 +68,7 @@ class CheptelController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('vaches', $mediaDisk);
+            $path = $request->file('image')->store('images', $mediaDisk);
             $imagePath = $mediaDisk === 'gcs'
                 ? Storage::disk($mediaDisk)->url($path)
                 : '/storage/' . $path;
@@ -76,7 +76,7 @@ class CheptelController extends Controller
 
         $fichierPath = null;
         if ($request->hasFile('fichier_documents') && !$request->mother_id) {
-            $path = $request->file('fichier_documents')->store('vaches_docs', $mediaDisk);
+            $path = $request->file('fichier_documents')->store('fichiers', $mediaDisk);
             $fichierPath = $mediaDisk === 'gcs'
                 ? Storage::disk($mediaDisk)->url($path)
                 : '/storage/' . $path;
@@ -165,14 +165,14 @@ class CheptelController extends Controller
         $mediaDisk = config('filesystems.media_disk', 'public');
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('vaches', $mediaDisk);
+            $path = $request->file('image')->store('images', $mediaDisk);
             $data['image'] = $mediaDisk === 'gcs'
                 ? Storage::disk($mediaDisk)->url($path)
                 : '/storage/' . $path;
         }
 
         if ($request->hasFile('fichier_documents')) {
-            $path = $request->file('fichier_documents')->store('vaches_docs', $mediaDisk);
+            $path = $request->file('fichier_documents')->store('fichiers', $mediaDisk);
             $data['fichier_documents'] = $mediaDisk === 'gcs'
                 ? Storage::disk($mediaDisk)->url($path)
                 : '/storage/' . $path;

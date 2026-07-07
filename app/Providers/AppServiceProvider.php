@@ -5,11 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Filesystem;
-use League\Flysystem\GoogleCloudStorage\GoogleCloudStorageAdapter;
-use Google\Cloud\Storage\StorageClient;
-use Illuminate\Filesystem\FilesystemAdapter;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,30 +45,6 @@ class AppServiceProvider extends ServiceProvider
                 ->line('Ce lien de réinitialisation expirera dans ' . config('auth.passwords.'.config('auth.defaults.passwords').'.expire') . ' minutes.')
                 ->line('Si vous n\'avez pas demandé de réinitialisation de mot de passe, aucune action supplémentaire n\'est requise.')
                 ->salutation('Cordialement, L\'équipe Ferm Project');
-        });
-
-        // Enregistrement du driver GCS personnalisé
-        Storage::extend('gcs', function ($app, $config) {
-            $clientConfig = [
-                'projectId' => $config['project_id'],
-            ];
-
-            if (!empty($config['key_file_path'])) {
-                $clientConfig['keyFilePath'] = $config['key_file_path'];
-            }
-
-            $storageClient = new StorageClient($clientConfig);
-            $bucket = $storageClient->bucket($config['bucket']);
-            
-            $pathPrefix = $config['path_prefix'] ?? '';
-            $visibilityHandler = new \League\Flysystem\GoogleCloudStorage\UniformBucketLevelAccessVisibility();
-            $adapter = new GoogleCloudStorageAdapter($bucket, $pathPrefix, $visibilityHandler);
-
-            return new FilesystemAdapter(
-                new Filesystem($adapter),
-                $adapter,
-                $config
-            );
         });
     }
 }
