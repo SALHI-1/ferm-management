@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Head, usePage, useForm } from '@inertiajs/react';
+import imageCompression from 'browser-image-compression';
 import { createPortal } from 'react-dom';
 import AppLayout from '@/Layouts/AppLayout';
 import { Plus, Eye, Scale, FileDown, X } from 'lucide-react';
@@ -24,6 +25,21 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(`/${coordonneesEspace}/cheptel`, { onSuccess: () => { setShowAddModal(false); reset(); } });
+    };
+
+    const handleImageChange = async (file: File | null) => {
+        if (!file) {
+            setData('image', null);
+            return;
+        }
+        try {
+            const options = { maxSizeMB: 0.2, maxWidthOrHeight: 1200, useWebWorker: true, fileType: 'image/jpeg' };
+            const compressedFile = await imageCompression(file, options);
+            setData('image', compressedFile as File);
+        } catch (error) {
+            console.error('Erreur de compression:', error);
+            setData('image', file);
+        }
     };
 
     const healthBadge = (s: string) => {
@@ -81,11 +97,11 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                                 <label className="label-premium">Photo (optionnel)</label>
                                 <div
                                     onDragOver={(e) => e.preventDefault()}
-                                    onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files[0]) setData('image', e.dataTransfer.files[0]) }}
+                                    onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files[0]) handleImageChange(e.dataTransfer.files[0]); }}
                                     className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer mt-1"
                                     onClick={() => document.getElementById('image-upload-add')?.click()}
                                 >
-                                    <input type="file" id="image-upload-add" className="hidden" accept="image/*" onChange={e => setData('image', e.target.files ? e.target.files[0] : null)} />
+                                    <input type="file" id="image-upload-add" className="hidden" accept="image/*" onChange={e => handleImageChange(e.target.files ? e.target.files[0] : null)} />
                                     <p className="text-sm text-slate-500 font-medium">
                                         {data.image ? data.image.name : 'Glissez-déposez une image ou cliquez ici'}
                                     </p>

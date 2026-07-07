@@ -165,6 +165,16 @@ class CheptelController extends Controller
         $mediaDisk = config('filesystems.media_disk', 'public');
 
         if ($request->hasFile('image')) {
+            // Delete old image if it exists
+            if ($vache->image) {
+                $oldPath = $mediaDisk === 'gcs'
+                    ? str_replace(Storage::disk($mediaDisk)->url(''), '', $vache->image)
+                    : str_replace('/storage/', '', $vache->image);
+                if ($oldPath) {
+                    Storage::disk($mediaDisk)->delete($oldPath);
+                }
+            }
+
             $path = $request->file('image')->store('images', $mediaDisk);
             $data['image'] = $mediaDisk === 'gcs'
                 ? Storage::disk($mediaDisk)->url($path)
@@ -172,6 +182,16 @@ class CheptelController extends Controller
         }
 
         if ($request->hasFile('fichier_documents')) {
+            // Delete old document if it exists
+            if ($vache->fichier_documents) {
+                $oldPath = $mediaDisk === 'gcs'
+                    ? str_replace(Storage::disk($mediaDisk)->url(''), '', $vache->fichier_documents)
+                    : str_replace('/storage/', '', $vache->fichier_documents);
+                if ($oldPath) {
+                    Storage::disk($mediaDisk)->delete($oldPath);
+                }
+            }
+
             $path = $request->file('fichier_documents')->store('fichiers', $mediaDisk);
             $data['fichier_documents'] = $mediaDisk === 'gcs'
                 ? Storage::disk($mediaDisk)->url($path)
