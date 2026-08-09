@@ -111,9 +111,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                     {/* Logo */}
                     <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between'} mb-10`}>
                         <Link href={`${getBaseRoute()}/dashboard`} className="flex items-center gap-3">
-                            <div className="p-2 bg-gradient-to-br from-forest-600 to-forest rounded-xl shadow-sm flex-shrink-0">
-                                <Milestone className="h-5 w-5 text-cream" />
-                            </div>
+                            <img src="/images/logo.png" alt="Logo" className="w-9 h-9 object-contain flex-shrink-0" />
                             {!collapsed && (
                                 <span className="font-display text-xl font-bold text-ink-900 tracking-tight">
                                     Ferm Project

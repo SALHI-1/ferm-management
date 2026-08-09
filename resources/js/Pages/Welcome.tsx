@@ -89,8 +89,7 @@ export default function Welcome({ auth }: any) {
                     <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between px-7 py-5">
                         {/* Logo */}
                         <a href="#top" className="flex items-center gap-3">
-                            <span className="cf-serif flex h-9 w-9 items-center justify-center rounded-full text-lg font-bold"
-                                  style={{ background: C.forest, color: C.cream }}>C</span>
+                            <img src="/images/logo.png" alt="Logo" className="h-9 w-9 object-contain" />
                             <span className="cf-serif text-[20px] font-semibold tracking-tight" style={{ color: C.ink }}>
                                 CoFarm <span style={{ color: C.copper }}>&amp;</span> Partners
                             </span>
@@ -421,8 +420,7 @@ export default function Welcome({ auth }: any) {
                 <footer style={{ background: C.ink900, color: '#c9c1b4' }}>
                     <div className="mx-auto w-full max-w-[1180px] px-7 pb-12 pt-16">
                         <div className="mb-5 flex items-center gap-3">
-                            <span className="cf-serif flex h-9 w-9 items-center justify-center rounded-full text-lg font-bold"
-                                  style={{ background: C.copper, color: C.ink900 }}>C</span>
+                            <img src="/images/logo.png" alt="Logo" className="h-9 w-9 object-contain" />
                             <span className="cf-serif text-[20px] font-semibold tracking-tight" style={{ color: C.cream }}>
                                 CoFarm <span style={{ color: C.copper }}>&amp;</span> Partners
                             </span>
