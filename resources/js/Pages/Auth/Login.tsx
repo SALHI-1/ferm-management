@@ -1,6 +1,7 @@
-import { Head, Link, useForm } from '@inertiajs/react';
-import { Milestone, ArrowRight, Shield, BarChart3, Users } from 'lucide-react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { ArrowRight, Shield, BarChart3, Users } from 'lucide-react';
 import { FormEventHandler } from 'react';
+import { useTrans } from '@/Hooks/useTrans';
 
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
@@ -9,6 +10,12 @@ import Checkbox from '@/Components/Checkbox';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Login({ auth, status, canResetPassword }: any) {
+    const { locale } = usePage().props as any;
+    const { t } = useTrans();
+    
+    const toggleLocale = locale === 'en' ? 'fr' : 'en';
+    const toggleLabel = locale === 'en' ? 'FR' : 'EN';
+    
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -23,15 +30,25 @@ export default function Login({ auth, status, canResetPassword }: any) {
     };
 
     const features = [
-        { icon: Shield, title: 'Sécurité & Traçabilité', desc: 'Données protégées et historisées' },
-        { icon: BarChart3, title: 'Rentabilité en temps réel', desc: 'Indicateurs financiers actualisés' },
-        { icon: Users, title: 'Multi-rôles sécurisés', desc: 'Accès adaptés à chaque utilisateur' },
+        { icon: Shield, title: t('login.feature_1_title'), desc: t('login.feature_1_desc') },
+        { icon: BarChart3, title: t('login.feature_2_title'), desc: t('login.feature_2_desc') },
+        { icon: Users, title: t('login.feature_3_title'), desc: t('login.feature_3_desc') },
     ];
 
     return (
         <>
-            <Head title="Bienvenue" />
-            <div className="min-h-screen bg-cream-50 font-sans flex flex-col md:flex-row">
+            <Head title={t('login.title')} />
+            <div className="min-h-screen bg-cream-50 font-sans flex flex-col md:flex-row relative">
+                
+                {/* Language Switcher */}
+                <div className="absolute top-6 right-6 z-50">
+                    <a href={route('language.switch', { locale: toggleLocale })}
+                       className="rounded-full px-3 py-1.5 text-xs font-bold transition-opacity hover:opacity-80 border bg-cream-50"
+                       style={{ borderColor: '#bc6b43', color: '#bc6b43' }}>
+                        {toggleLabel}
+                    </a>
+                </div>
+
                 {/* Left Side - Info & Branding */}
                 <div className="w-full md:w-1/2 lg:w-7/12 relative overflow-hidden flex flex-col p-8 md:p-16 justify-between bg-ink">
                     {/* Background Video */}
@@ -51,22 +68,19 @@ export default function Login({ auth, status, canResetPassword }: any) {
                     <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-copper/10 rounded-full filter blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none" />
 
                     <div className="relative z-10 flex items-center gap-3 mb-12">
-                        <div className="p-2 bg-forest rounded-lg shadow-sm">
-                            <Milestone className="h-6 w-6 text-cream" />
-                        </div>
-                        <span className="text-2xl font-semibold text-cream tracking-tight font-display">Ferm Project</span>
+                        <img src="/images/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
+                        <span className="text-2xl font-semibold text-cream tracking-tight font-display">CoFarm & Partners</span>
                     </div>
 
                     <div className="relative z-10 flex-1 flex flex-col justify-center">
                         <div className="inline-flex items-center self-start gap-2 bg-forest/10 text-onForest px-4 py-1.5 rounded-full text-sm font-medium mb-6 ring-1 ring-forest/20">
                             <span className="w-2 h-2 bg-copper rounded-full" />
-                            Plateforme de gestion agricole
+                            {t('login.badge')}
                         </div>
-                        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold text-cream leading-[1.1] tracking-tight mb-6 font-display">
-                            Gérez votre <span className="text-copper">exploitation</span> avec précision
+                        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold text-cream leading-[1.1] tracking-tight mb-6 font-display" dangerouslySetInnerHTML={{ __html: t('login.heading') }}>
                         </h1>
                         <p className="text-lg text-onForest2 leading-relaxed mb-12 max-w-lg">
-                            Suivi du cheptel, traçabilité, investissements et rentabilité — le tout dans une interface moderne et sécurisée.
+                            {t('login.subheading')}
                         </p>
 
                         {/* Features */}
@@ -87,7 +101,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
 
                     <footer className="relative z-10 mt-12">
                         <p className="text-sm text-onForest">
-                            © {new Date().getFullYear()} Ferm Project — Tous droits réservés.
+                            {t('login.footer', { year: new Date().getFullYear() })}
                         </p>
                     </footer>
                 </div>
@@ -97,19 +111,19 @@ export default function Login({ auth, status, canResetPassword }: any) {
                     <div className="w-full max-w-md bg-cream border border-ink/10 shadow-sm rounded-xl p-8">
                         {auth.user ? (
                             <div className="text-center py-8 space-y-6">
-                                <h2 className="text-2xl font-semibold text-ink-900 tracking-tight font-display">Vous êtes déjà connecté</h2>
+                                <h2 className="text-2xl font-semibold text-ink-900 tracking-tight font-display">{t('login.already_logged_in')}</h2>
                                 <Link
                                     href={route('dashboard')}
                                     className="inline-flex w-full justify-center items-center gap-2 px-4 py-3 rounded-lg font-medium bg-forest text-cream hover:bg-forest-600 transition-all duration-200 active:scale-95"
                                 >
-                                    Aller au Dashboard <ArrowRight className="h-5 w-5" />
+                                    {t('login.go_to_dashboard')} <ArrowRight className="h-5 w-5" />
                                 </Link>
                             </div>
                         ) : (
                             <>
                                 <div className="mb-8 space-y-1">
-                                    <h2 className="text-2xl font-semibold text-ink-900 tracking-tight font-display">Bon retour</h2>
-                                    <p className="text-sm text-ink/70">Connectez-vous à votre espace sécurisé</p>
+                                    <h2 className="text-2xl font-semibold text-ink-900 tracking-tight font-display">{t('login.welcome_back')}</h2>
+                                    <p className="text-sm text-ink/70">{t('login.login_desc')}</p>
                                 </div>
 
                                 {status && (
@@ -120,7 +134,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
 
                                 <form onSubmit={submit} className="space-y-6">
                                     <div>
-                                        <InputLabel htmlFor="email" value="Adresse email" className="text-ink/80" />
+                                        <InputLabel htmlFor="email" value={t('login.email')} className="text-ink/80" />
                                         <TextInput
                                             id="email"
                                             type="email"
@@ -135,7 +149,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                     </div>
 
                                     <div>
-                                        <InputLabel htmlFor="password" value="Mot de passe" className="text-ink/80" />
+                                        <InputLabel htmlFor="password" value={t('login.password')} className="text-ink/80" />
                                         <TextInput
                                             id="password"
                                             type="password"
@@ -158,7 +172,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                                 }
                                             />
                                             <span className="text-sm text-ink/70">
-                                                Se souvenir de moi
+                                                {t('login.remember_me')}
                                             </span>
                                         </label>
 
@@ -167,7 +181,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                                 href={route('password.request')}
                                                 className="text-sm font-medium text-copper hover:text-copper-300 transition-all duration-200"
                                             >
-                                                Mot de passe oublié ?
+                                                {t('login.forgot_password')}
                                             </Link>
                                         )}
                                     </div>
@@ -176,7 +190,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                         className="w-full justify-center !py-3 !text-sm !rounded-lg !bg-forest hover:!bg-forest-600 transition-all duration-200 active:scale-95"
                                         disabled={processing}
                                     >
-                                        Se connecter
+                                        {t('login.submit')}
                                     </PrimaryButton>
                                 </form>
                             </>

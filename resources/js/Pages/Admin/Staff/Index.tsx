@@ -3,6 +3,7 @@ import { Head, useForm, router, usePage } from '@inertiajs/react';
 import { createPortal } from 'react-dom';
 import AppLayout from '@/Layouts/AppLayout';
 import { Shield, Plus, Edit2, Trash2, X } from 'lucide-react';
+import { useTrans } from '@/Hooks/useTrans';
 
 interface StaffUser {
     id: number;
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export default function StaffIndex({ staff }: Props) {
+    const { t } = useTrans();
     const { auth } = usePage().props as any;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingStaff, setEditingStaff] = useState<StaffUser | null>(null);
@@ -44,7 +46,7 @@ export default function StaffIndex({ staff }: Props) {
             if (member.userable_type === 'App\\Models\\Admin') {
                 userType = member.userable.role || 'admin';
             }
-            
+
             setData({
                 nom: member.nom,
                 prenom: member.prenom,
@@ -81,27 +83,27 @@ export default function StaffIndex({ staff }: Props) {
 
     const handleDelete = (id: number) => {
         if (id === auth.user.id) {
-            alert("Vous ne pouvez pas vous supprimer vous-même.");
+            alert(t('staff_management.alerts.cannot_delete_self'));
             return;
         }
-        if (confirm('Êtes-vous sûr de vouloir archiver ce membre du personnel ?')) {
+        if (confirm(t('staff_management.alerts.confirm_archive'))) {
             router.delete(route('admin.staff.destroy', id));
         }
     };
 
     const getRoleBadge = (type: string, role?: string) => {
         if (type === 'App\\Models\\Manager') {
-            return <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold tracking-wide">Manager</span>;
+            return <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold tracking-wide">{t('staff_management.roles.manager')}</span>;
         }
         if (role === 'super_admin') {
-            return <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold tracking-wide">Super Admin</span>;
+            return <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold tracking-wide">{t('staff_management.roles.super_admin')}</span>;
         }
-        return <span className="px-3 py-1 bg-emerald-100 text-forest rounded-full text-xs font-bold tracking-wide">Admin</span>;
+        return <span className="px-3 py-1 bg-emerald-100 text-forest rounded-full text-xs font-bold tracking-wide">{t('staff_management.roles.admin')}</span>;
     };
 
     return (
-        <AppLayout title="Gestion du Personnel">
-            <Head title="Personnel" />
+        <AppLayout title={t('staff_management.app_layout_title')}>
+            <Head title={t('staff_management.head_title')} />
 
             <div className="space-y-8">
                 <div className="card-premium">
@@ -110,11 +112,11 @@ export default function StaffIndex({ staff }: Props) {
                             <div className="bg-brand-100 p-2 rounded-lg">
                                 <Shield className="h-6 w-6 text-brand-600" />
                             </div>
-                            <h2 className="text-2xl font-bold text-forest tracking-tight">Membres du Personnel</h2>
+                            <h2 className="text-2xl font-bold text-forest tracking-tight">{t('staff_management.section_title')}</h2>
                         </div>
                         <button onClick={() => openModal()} className="btn-premium flex items-center gap-2">
                             <Plus className="w-5 h-5" />
-                            Nouveau Membre
+                            {t('staff_management.new_member_button')}
                         </button>
                     </div>
 
@@ -122,11 +124,11 @@ export default function StaffIndex({ staff }: Props) {
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-slate-50 border-y border-slate-100 text-slate-500 uppercase tracking-wider text-xs font-bold">
-                                    <th className="p-4 rounded-tl-lg">Nom Complet</th>
-                                    <th className="p-4">Rôle</th>
-                                    <th className="p-4">Email</th>
-                                    <th className="p-4">Téléphone</th>
-                                    <th className="p-4 text-right rounded-tr-lg">Actions</th>
+                                    <th className="p-4 rounded-tl-lg">{t('staff_management.table.full_name')}</th>
+                                    <th className="p-4">{t('staff_management.table.role')}</th>
+                                    <th className="p-4">{t('staff_management.table.email')}</th>
+                                    <th className="p-4">{t('staff_management.table.phone')}</th>
+                                    <th className="p-4 text-right rounded-tr-lg">{t('staff_management.table.actions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
@@ -134,7 +136,7 @@ export default function StaffIndex({ staff }: Props) {
                                     <tr key={member.id} className="hover:bg-slate-50/50 transition-colors duration-200">
                                         <td className="p-4 font-semibold text-slate-800">
                                             {member.prenom} {member.nom}
-                                            {member.id === auth.user.id && <span className="ml-2 text-xs text-slate-400 font-normal">(Vous)</span>}
+                                            {member.id === auth.user.id && <span className="ml-2 text-xs text-slate-400 font-normal">{t('staff_management.you')}</span>}
                                         </td>
                                         <td className="p-4">
                                             {getRoleBadge(member.userable_type, member.userable.role)}
@@ -155,7 +157,7 @@ export default function StaffIndex({ staff }: Props) {
                                 )) : (
                                     <tr>
                                         <td colSpan={5} className="p-12 text-center text-slate-500 font-medium">
-                                            Aucun membre du personnel enregistré.
+                                            {t('staff_management.empty_state')}
                                         </td>
                                     </tr>
                                 )}
@@ -171,86 +173,86 @@ export default function StaffIndex({ staff }: Props) {
                     <div className="bg-surface rounded-xl shadow-premium w-full max-w-lg overflow-hidden">
                         <div className="flex justify-between items-center p-6 border-b border-slate-100">
                             <h3 className="text-xl font-bold text-forest">
-                                {editingStaff ? 'Modifier le Membre' : 'Ajouter un Membre'}
+                                {editingStaff ? t('staff_management.modal.edit_title') : t('staff_management.modal.add_title')}
                             </h3>
                             <button onClick={closeModal} className="text-slate-400 hover:text-slate-600 transition-colors">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
-                        
+
                         <form onSubmit={submit} className="p-6 space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-1">Prénom</label>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1">{t('staff_management.modal.first_name')}</label>
                                     <input type="text" value={data.prenom} onChange={e => setData('prenom', e.target.value)} className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" required />
                                     {errors.prenom && <p className="text-red-500 text-xs mt-1">{errors.prenom}</p>}
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-1">Nom</label>
+                                    <label className="block text-sm font-semibold text-slate-700 mb-1">{t('staff_management.modal.last_name')}</label>
                                     <input type="text" value={data.nom} onChange={e => setData('nom', e.target.value)} className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" required />
                                     {errors.nom && <p className="text-red-500 text-xs mt-1">{errors.nom}</p>}
                                 </div>
                             </div>
-                            
+
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
+                                <label className="block text-sm font-semibold text-slate-700 mb-1">{t('staff_management.modal.email')}</label>
                                 <input type="email" value={data.email} onChange={e => setData('email', e.target.value)} className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" required />
                                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-1">Téléphone</label>
+                                <label className="block text-sm font-semibold text-slate-700 mb-1">{t('staff_management.modal.phone')}</label>
                                 <input type="text" value={data.telephone} onChange={e => setData('telephone', e.target.value)} className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" />
                                 {errors.telephone && <p className="text-red-500 text-xs mt-1">{errors.telephone}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-1">Rôle</label>
-                                <select 
-                                    value={data.type} 
-                                    onChange={e => setData('type', e.target.value)} 
+                                <label className="block text-sm font-semibold text-slate-700 mb-1">{t('staff_management.modal.role')}</label>
+                                <select
+                                    value={data.type}
+                                    onChange={e => setData('type', e.target.value)}
                                     className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500"
-                                    disabled={!!(editingStaff && editingStaff.userable_type !== 'App\\Models\\Admin')} // Simplification: on ne change pas le type principal (Manager <-> Admin) en édition.
+                                    disabled={!!(editingStaff && editingStaff.userable_type !== 'App\\Models\\Admin')}
                                 >
-                                    <option value="manager">Manager</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="super_admin">Super Admin</option>
+                                    <option value="manager">{t('staff_management.roles.manager')}</option>
+                                    <option value="admin">{t('staff_management.roles.admin')}</option>
+                                    <option value="super_admin">{t('staff_management.roles.super_admin')}</option>
                                 </select>
                                 {errors.type && <p className="text-red-500 text-xs mt-1">{errors.type}</p>}
                             </div>
 
                             <div className="pt-4 border-t border-slate-100">
-                                <h4 className="text-sm font-bold text-forest mb-4">Mot de passe</h4>
-                                
+                                <h4 className="text-sm font-bold text-forest mb-4">{t('staff_management.modal.password_section')}</h4>
+
                                 {editingStaff && (
                                     <p className="text-xs text-slate-500 mb-4">
-                                        Laissez les champs vides si vous ne souhaitez pas modifier le mot de passe actuel.
+                                        {t('staff_management.modal.password_help')}
                                     </p>
                                 )}
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-semibold text-slate-700 mb-1">
-                                            {editingStaff ? 'Nouveau mot de passe' : 'Mot de passe'} {editingStaff ? '' : <span className="text-red-500">*</span>}
+                                            {editingStaff ? t('staff_management.modal.new_password') : t('staff_management.modal.password')} {editingStaff ? '' : <span className="text-red-500">*</span>}
                                         </label>
-                                        <input 
-                                            type="password" 
-                                            value={data.password} 
-                                            onChange={e => setData('password', e.target.value)} 
-                                            className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" 
+                                        <input
+                                            type="password"
+                                            value={data.password}
+                                            onChange={e => setData('password', e.target.value)}
+                                            className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500"
                                             required={!editingStaff}
                                         />
                                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                                     </div>
                                     <div>
                                         <label className="block text-sm font-semibold text-slate-700 mb-1">
-                                            Confirmer le mot de passe {editingStaff ? '' : <span className="text-red-500">*</span>}
+                                            {t('staff_management.modal.confirm_password')} {editingStaff ? '' : <span className="text-red-500">*</span>}
                                         </label>
-                                        <input 
-                                            type="password" 
-                                            value={data.password_confirmation} 
-                                            onChange={e => setData('password_confirmation', e.target.value)} 
-                                            className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" 
+                                        <input
+                                            type="password"
+                                            value={data.password_confirmation}
+                                            onChange={e => setData('password_confirmation', e.target.value)}
+                                            className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500"
                                             required={!editingStaff}
                                         />
                                     </div>
@@ -259,10 +261,10 @@ export default function StaffIndex({ staff }: Props) {
 
                             <div className="flex justify-end gap-3 mt-8">
                                 <button type="button" onClick={closeModal} className="btn-premium-secondary">
-                                    Annuler
+                                    {t('staff_management.modal.cancel')}
                                 </button>
                                 <button type="submit" className="btn-premium">
-                                    {editingStaff ? 'Mettre à jour' : 'Créer'}
+                                    {editingStaff ? t('staff_management.modal.update_button') : t('staff_management.modal.create_button')}
                                 </button>
                             </div>
                         </form>

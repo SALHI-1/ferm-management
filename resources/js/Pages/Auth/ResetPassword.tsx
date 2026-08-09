@@ -4,8 +4,11 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
+import { useTrans } from '@/Hooks/useTrans';
 
 export default function ResetPassword({ token, email }: any) {
+    const { t } = useTrans();
+
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
         email: email,
@@ -22,16 +25,16 @@ export default function ResetPassword({ token, email }: any) {
 
     return (
         <GuestLayout>
-            <Head title="Réinitialiser le mot de passe" />
+            <Head title={t('reset_password.head_title')} />
 
             <div className="text-center mb-8">
-                <h1 className="text-xl font-bold text-forest font-display">Nouveau mot de passe</h1>
-                <p className="text-sm text-slate-500 mt-1">Choisissez un mot de passe fort et sécurisé</p>
+                <h1 className="text-xl font-bold text-forest font-display">{t('reset_password.title')}</h1>
+                <p className="text-sm text-slate-500 mt-1">{t('reset_password.subtitle')}</p>
             </div>
 
             <form onSubmit={submit} className="space-y-5">
                 <div>
-                    <InputLabel htmlFor="email" value="Adresse email" />
+                    <InputLabel htmlFor="email" value={t('reset_password.email_label')} />
                     <TextInput
                         id="email"
                         type="email"
@@ -45,7 +48,7 @@ export default function ResetPassword({ token, email }: any) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value="Nouveau mot de passe" />
+                    <InputLabel htmlFor="password" value={t('reset_password.password_label')} />
                     <TextInput
                         id="password"
                         type="password"
@@ -62,7 +65,7 @@ export default function ResetPassword({ token, email }: any) {
                 <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirmer le mot de passe"
+                        value={t('reset_password.password_confirmation_label')}
                     />
                     <TextInput
                         type="password"
@@ -82,7 +85,7 @@ export default function ResetPassword({ token, email }: any) {
                 </div>
 
                 <PrimaryButton className="w-full justify-center !py-3 !text-sm" disabled={processing}>
-                    Réinitialiser le mot de passe
+                    {t('reset_password.submit_button')}
                 </PrimaryButton>
             </form>
         </GuestLayout>

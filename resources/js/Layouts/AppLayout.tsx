@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
+import { useTrans } from '@/Hooks/useTrans';
 import { LayoutDashboard, Users, ShieldAlert, LogOut, Milestone, ClipboardList, ChevronLeft, Menu, PawPrint, Calendar, TrendingUp } from 'lucide-react';
 
 interface NavItem {
@@ -10,8 +11,12 @@ interface NavItem {
 }
 
 export default function AppLayout({ children, title }: { children: ReactNode; title: string }) {
-    const { auth } = usePage().props as any;
+    const { auth, locale } = usePage().props as any;
+    const { t } = useTrans();
     const [collapsed, setCollapsed] = useState(false);
+    
+    const toggleLocale = locale === 'en' ? 'fr' : 'en';
+    const toggleLabel = locale === 'en' ? 'FR' : 'EN';
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const currentPath = window.location.pathname;
@@ -21,9 +26,9 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
     const isSuperAdmin = isAdmin && auth.user.userable?.role === 'super_admin';
 
     const getRoleName = () => {
-        if (isAdmin) return isSuperAdmin ? 'Super Admin' : 'Admin';
-        if (isManager) return 'Manager';
-        return 'Client / Investisseur';
+        if (isAdmin) return isSuperAdmin ? t('roles.super_admin') : t('roles.admin');
+        if (isManager) return t('roles.manager');
+        return t('roles.client');
     };
 
     const getBaseRoute = () => {
@@ -35,55 +40,55 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
     const navItems: NavItem[] = [
         {
             href: `${getBaseRoute()}/dashboard`,
-            label: 'Dashboard',
+            label: t('nav.dashboard'),
             icon: LayoutDashboard,
             show: true,
         },
         {
             href: `${getBaseRoute()}/cheptel`,
-            label: 'Cheptel',
+            label: t('nav.cheptel'),
             icon: PawPrint,
             show: true,
         },
         {
             href: `${getBaseRoute()}/bilan`,
-            label: 'Bilan Annuel',
+            label: t('nav.bilan'),
             icon: TrendingUp,
             show: !isAdmin && !isManager,
         },
         {
             href: '/admin/clients',
-            label: 'Clients',
+            label: t('nav.clients'),
             icon: Users,
             show: isAdmin,
         },
         {
             href: '/admin/investment-requests',
-            label: 'Investissements',
+            label: t('nav.investments'),
             icon: Milestone,
             show: isAdmin,
         },
         {
             href: '/admin/staff',
-            label: 'Personnel',
+            label: t('nav.staff'),
             icon: ShieldAlert,
             show: isSuperAdmin,
         },
         {
             href: '/admin/traceabilite',
-            label: 'Traçabilité',
+            label: t('nav.traceability'),
             icon: ClipboardList,
             show: isSuperAdmin,
         },
         {
             href: '/admin/visites',
-            label: 'Demandes de visites',
+            label: t('nav.visit_requests'),
             icon: Calendar,
             show: isSuperAdmin,
         },
         {
             href: '/investisseur/visites',
-            label: 'Visites',
+            label: t('nav.visits'),
             icon: Calendar,
             show: !isAdmin && !isManager,
         },
@@ -114,7 +119,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                             <img src="/images/logo.png" alt="Logo" className="w-9 h-9 object-contain flex-shrink-0" />
                             {!collapsed && (
                                 <span className="font-display text-xl font-bold text-ink-900 tracking-tight">
-                                    Ferm Project
+                                    CoFarm & Partners
                                 </span>
                             )}
                         </Link>
@@ -130,7 +135,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                     <nav className="space-y-1.5">
                         {!collapsed && (
                             <div className="text-[11px] font-bold text-ink/50 uppercase tracking-widest mb-4 px-3">
-                                Menu
+                                {t('layout.menu')}
                             </div>
                         )}
                         {navItems.filter(item => item.show).map((item) => {
@@ -176,10 +181,10 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                         className={`w-full flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200 group ${
                             collapsed ? 'justify-center' : ''
                         }`}
-                        title={collapsed ? 'Déconnexion' : undefined}
+                        title={collapsed ? t('layout.logout') : undefined}
                     >
                         <LogOut className="h-[18px] w-[18px] group-hover:-translate-x-0.5 transition-transform duration-200" />
-                        {!collapsed && <span>Déconnexion</span>}
+                        {!collapsed && <span>{t('layout.logout')}</span>}
                     </Link>
                 </div>
             </aside>
@@ -198,6 +203,13 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                         <h1 className="text-lg lg:text-xl font-bold text-forest tracking-tight font-display">
                             {title}
                         </h1>
+                    </div>
+                    <div className="flex items-center">
+                        <a href={route('language.switch', { locale: toggleLocale })}
+                           className="cf-sans rounded-full px-3 py-1.5 text-xs font-bold transition-all hover:bg-cream-50 border"
+                           style={{ borderColor: '#bc6b43', color: '#bc6b43' }}>
+                            {toggleLabel}
+                        </a>
                     </div>
                 </header>
 

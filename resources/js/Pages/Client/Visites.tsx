@@ -3,9 +3,11 @@ import AppLayout from '@/Layouts/AppLayout';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { Calendar, Clock, Info, CheckCircle2, XCircle, Clock3 } from 'lucide-react';
 import Modal from '@/Components/Modal';
+import { useTrans } from '@/Hooks/useTrans';
 
 export default function Visites({ visites }: { visites: any[] }) {
-    const { flash } = usePage().props as any;
+    const { t } = useTrans();
+    const { flash, locale } = usePage().props as any;
     const [isFormOpen, setIsFormOpen] = useState(false);
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -29,21 +31,21 @@ export default function Visites({ visites }: { visites: any[] }) {
                 return (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-700 rounded-full border border-amber-200">
                         <Clock3 className="w-3.5 h-3.5" />
-                        En attente
+                        {t('visites.status.pending')}
                     </span>
                 );
             case 'acceptee':
                 return (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-forest/10 text-forest rounded-full border border-emerald-200">
                         <CheckCircle2 className="w-3.5 h-3.5" />
-                        Acceptée
+                        {t('visites.status.accepted')}
                     </span>
                 );
             case 'refusee':
                 return (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-red-50 text-red-700 rounded-full border border-red-200">
                         <XCircle className="w-3.5 h-3.5" />
-                        Refusée
+                        {t('visites.status.rejected')}
                     </span>
                 );
             default:
@@ -52,20 +54,20 @@ export default function Visites({ visites }: { visites: any[] }) {
     };
 
     return (
-        <AppLayout title="Mes Visites">
-            <Head title="Mes Visites" />
+        <AppLayout title={t('visites.app_layout_title')}>
+            <Head title={t('visites.head_title')} />
 
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h2 className="text-xl font-bold text-forest">Historique de vos visites</h2>
-                    <p className="text-sm text-slate-500">Gérez vos demandes de visite à la ferme</p>
+                    <h2 className="text-xl font-bold text-forest">{t('visites.subtitle')}</h2>
+                    <p className="text-sm text-slate-500">{t('visites.description')}</p>
                 </div>
                 <button
                     onClick={() => setIsFormOpen(true)}
                     className="inline-flex items-center justify-center rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 transition-all"
                 >
                     <Calendar className="w-4 h-4 mr-2" />
-                    Réserver une visite
+                    {t('visites.book_visit_button')}
                 </button>
             </div>
 
@@ -88,16 +90,16 @@ export default function Visites({ visites }: { visites: any[] }) {
                         <thead className="bg-slate-50">
                             <tr>
                                 <th scope="col" className="py-3.5 pl-6 pr-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                    Date
+                                    {t('visites.table.date')}
                                 </th>
                                 <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                    Heure
+                                    {t('visites.table.time')}
                                 </th>
                                 <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                    Statut
+                                    {t('visites.table.status')}
                                 </th>
                                 <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                                    Détails / Motif
+                                    {t('visites.table.details_reason')}
                                 </th>
                             </tr>
                         </thead>
@@ -106,7 +108,7 @@ export default function Visites({ visites }: { visites: any[] }) {
                                 visites.map((visite) => (
                                     <tr key={visite.id} className="hover:bg-slate-50/50 transition-colors">
                                         <td className="whitespace-nowrap py-4 pl-6 pr-3 text-sm font-medium text-slate-900">
-                                            {new Date(visite.date_visite).toLocaleDateString('fr-FR')}
+                                            {new Date(visite.date_visite).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-FR')}
                                         </td>
                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-slate-500">
                                             {visite.heure_visite.substring(0, 5)}
@@ -131,7 +133,7 @@ export default function Visites({ visites }: { visites: any[] }) {
                             ) : (
                                 <tr>
                                     <td colSpan={4} className="py-12 text-center text-sm text-slate-500">
-                                        Vous n'avez pas encore fait de demande de visite.
+                                        {t('visites.empty_state')}
                                     </td>
                                 </tr>
                             )}
@@ -143,7 +145,7 @@ export default function Visites({ visites }: { visites: any[] }) {
             <Modal show={isFormOpen} onClose={() => setIsFormOpen(false)} maxWidth="md">
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-5">
-                        <h3 className="text-lg font-bold text-slate-900">Demande de visite</h3>
+                        <h3 className="text-lg font-bold text-slate-900">{t('visites.modal.title')}</h3>
                         <button
                             onClick={() => setIsFormOpen(false)}
                             className="text-slate-400 hover:text-slate-500 transition-colors"
@@ -154,13 +156,13 @@ export default function Visites({ visites }: { visites: any[] }) {
 
                     <div className="bg-blue-50 text-blue-800 p-4 rounded-xl text-sm mb-6 flex items-start gap-3">
                         <Info className="w-5 h-5 flex-shrink-0 text-blue-500 mt-0.5" />
-                        <p>Votre demande sera étudiée par l'administration. Vous serez notifié de son acceptation ou refus.</p>
+                        <p>{t('visites.modal.info_banner')}</p>
                     </div>
 
                     <form onSubmit={submit} className="space-y-4">
                         <div>
                             <label htmlFor="date_visite" className="block text-sm font-medium text-slate-700 mb-1">
-                                Date souhaitée
+                                {t('visites.modal.desired_date')}
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -181,7 +183,7 @@ export default function Visites({ visites }: { visites: any[] }) {
 
                         <div>
                             <label htmlFor="heure_visite" className="block text-sm font-medium text-slate-700 mb-1">
-                                Heure souhaitée
+                                {t('visites.modal.desired_time')}
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -205,14 +207,14 @@ export default function Visites({ visites }: { visites: any[] }) {
                                 onClick={() => setIsFormOpen(false)}
                                 className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors"
                             >
-                                Annuler
+                                {t('visites.modal.cancel')}
                             </button>
                             <button
                                 type="submit"
                                 disabled={processing}
                                 className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-brand-600 border border-transparent rounded-xl hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors disabled:opacity-50"
                             >
-                                {processing ? 'Envoi...' : 'Confirmer la demande'}
+                                {processing ? t('visites.modal.sending') : t('visites.modal.confirm_request')}
                             </button>
                         </div>
                     </form>

@@ -5,8 +5,11 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { Lock } from 'lucide-react';
+import { useTrans } from '@/Hooks/useTrans';
 
 export default function ConfirmPassword() {
+    const { t } = useTrans();
+
     const { data, setData, post, processing, errors, reset } = useForm({
         password: '',
     });
@@ -20,22 +23,22 @@ export default function ConfirmPassword() {
 
     return (
         <GuestLayout>
-            <Head title="Confirmer le mot de passe" />
+            <Head title={t('confirm_password.head_title')} />
 
             <div className="text-center mb-6">
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-50 ring-1 ring-amber-200/60 mb-4">
                     <Lock className="h-7 w-7 text-amber-600" />
                 </div>
-                <h1 className="text-xl font-bold text-forest font-display">Zone sécurisée</h1>
+                <h1 className="text-xl font-bold text-forest font-display">{t('confirm_password.title')}</h1>
             </div>
 
             <p className="mb-6 text-sm text-slate-500 text-center leading-relaxed">
-                Veuillez confirmer votre mot de passe avant de continuer.
+                {t('confirm_password.description')}
             </p>
 
             <form onSubmit={submit} className="space-y-5">
                 <div>
-                    <InputLabel htmlFor="password" value="Mot de passe" />
+                    <InputLabel htmlFor="password" value={t('confirm_password.password_label')} />
                     <TextInput
                         id="password"
                         type="password"
@@ -49,7 +52,7 @@ export default function ConfirmPassword() {
                 </div>
 
                 <PrimaryButton className="w-full justify-center !py-3 !text-sm" disabled={processing}>
-                    Confirmer
+                    {t('confirm_password.submit_button')}
                 </PrimaryButton>
             </form>
         </GuestLayout>

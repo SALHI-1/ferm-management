@@ -4,6 +4,7 @@ import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
+import { useTrans } from '@/Hooks/useTrans';
 
 /* ── inline brand tokens (no Tailwind config change needed) ── */
 const C = {
@@ -34,35 +35,13 @@ const FONTS = `
 .cf-rise-2{animation:cfRise 0.85s 0.1s ease both;}
 `;
 
-const steps = [
-    { n: '01', t: 'Vous investissez', d: "39 000 MAD financent l'achat d'une vache Holstein — un actif réel, assurable et traçable." },
-    { n: '02', t: 'Nous exploitons',  d: "Nous fournissons la terre, la nourriture, la main-d'œuvre et les soins vétérinaires." },
-    { n: '03', t: 'Nous partageons',  d: 'Le profit net issu du lait et de la vente annuelle du veau est partagé à 50 / 50.' },
-];
-
-const returnCards = [
-    { v: '39k',   u: 'MAD',    l: 'Participation par vache laitière' },
-    { v: '2.4×',  u: undefined, l: 'Rendement total sur 5 ans' },
-    { v: '~19.5', u: '% CAGR', l: 'Rendement annualisé estimé' },
-    { v: '27–31', u: 'mois',   l: "Récupération de l'investissement" },
-];
-
-const marketPoints = [
-    { v: '32 M+', l: "Litres produits annuellement dans les fermes partenaires — demande locale en croissance constante." },
-    { v: '×2.6',  l: 'Hausse du prix moyen du lait au Maroc sur les 10 dernières années.' },
-    { v: '< 5 %', l: 'Auto-suffisance laitière nationale — fort déficit structurel à combler.' },
-];
-
-const faqs = [
-    { q: 'Que se passe-t-il si la vache tombe malade ?', a: "Chaque vache est couverte par une assurance bétail incluse dans le montant de participation. En cas de perte totale, la valeur de remplacement vous est versée." },
-    { q: 'Puis-je visiter la ferme ?', a: "Oui. Nous organisons des visites trimestrielles pour nos investisseurs et vous envoyons un rapport mensuel illustré avec photos et données de production." },
-    { q: "Quelle est la durée minimum d'engagement ?", a: "12 mois. Au-delà, vous pouvez renouveler ou céder votre part à un autre investisseur via notre plateforme interne." },
-    { q: 'Les bénéfices sont-ils garantis ?', a: "Les projections sont fondées sur les données réelles de nos fermes. Comme tout investissement, les rendements peuvent varier — nous visons la transparence totale." },
-];
-
 export default function Welcome({ auth }: any) {
-    const { flash } = usePage().props as any;
+    const { flash, locale } = usePage().props as any;
     const [openFaq, setOpenFaq] = useState<number>(0);
+    const { t } = useTrans();
+
+    const toggleLocale = locale === 'en' ? 'fr' : 'en';
+    const toggleLabel = locale === 'en' ? 'FR' : 'EN';
 
     const { data, setData, post, processing, errors, reset } = useForm({
         nom: '',
@@ -76,10 +55,36 @@ export default function Welcome({ auth }: any) {
         post(route('investment.store'), { onSuccess: () => reset() });
     };
 
+    const steps = [
+        { n: '01', t: t('welcome.model_step_1_title'), d: t('welcome.model_step_1_desc') },
+        { n: '02', t: t('welcome.model_step_2_title'), d: t('welcome.model_step_2_desc') },
+        { n: '03', t: t('welcome.model_step_3_title'), d: t('welcome.model_step_3_desc') },
+    ];
+
+    const returnCards = [
+        { v: t('welcome.hero_stat_1_val'),   u: t('welcome.hero_stat_1_unit'),    l: t('welcome.hero_stat_1_label') },
+        { v: t('welcome.hero_stat_2_val'),  u: t('welcome.hero_stat_2_unit'), l: t('welcome.hero_stat_2_label') },
+        { v: '~19.5', u: '% CAGR', l: 'Rendement annualisé estimé' },
+        { v: '27–31', u: t('welcome.hero_stat_3_unit'),   l: t('welcome.hero_stat_3_label') },
+    ];
+
+    const marketPoints = [
+        { v: '32 M+', l: "Litres produits annuellement dans les fermes partenaires — demande locale en croissance constante." },
+        { v: '×2.6',  l: 'Hausse du prix moyen du lait au Maroc sur les 10 dernières années.' },
+        { v: '< 5 %', l: 'Auto-suffisance laitière nationale — fort déficit structurel à combler.' },
+    ];
+
+    const faqs = [
+        { q: 'Que se passe-t-il si la vache tombe malade ?', a: "Chaque vache est couverte par une assurance bétail incluse dans le montant de participation. En cas de perte totale, la valeur de remplacement vous est versée." },
+        { q: 'Puis-je visiter la ferme ?', a: "Oui. Nous organisons des visites trimestrielles pour nos investisseurs et vous envoyons un rapport mensuel illustré avec photos et données de production." },
+        { q: "Quelle est la durée minimum d'engagement ?", a: "12 mois. Au-delà, vous pouvez renouveler ou céder votre part à un autre investisseur via notre plateforme interne." },
+        { q: 'Les bénéfices sont-ils garantis ?', a: "Les projections sont fondées sur les données réelles de nos fermes. Comme tout investissement, les rendements peuvent varier — nous visons la transparence totale." },
+    ];
+
     return (
         <>
             <style>{FONTS}</style>
-            <Head title="CoFarm Dairy Partners — Opportunité d'Investissement" />
+            <Head title={t('welcome.title')} />
 
             <div className="cf-sans min-h-screen" style={{ background: C.cream, color: C.ink }}>
 
@@ -97,23 +102,30 @@ export default function Welcome({ auth }: any) {
 
                         <div className="flex items-center gap-5">
                             <div className="hidden items-center gap-7 lg:flex">
-                                {[['#fonctionnement','Comment ça marche'],['#rendements','Rendements'],['#marche','Marché'],['#faq','FAQ']].map(([href,label]) => (
+                                {[['#fonctionnement',t('welcome.nav_how_it_works')],['#rendements',t('welcome.nav_returns')],['#marche',t('welcome.nav_market')],['#faq',t('welcome.nav_faq')]].map(([href,label]) => (
                                     <a key={href} href={href}
                                        style={{ color: C.muted500, fontSize: 15 }}
                                        className="transition-colors hover:text-ink">{label}</a>
                                 ))}
                             </div>
+                            
+                            <a href={route('language.switch', { locale: toggleLocale })}
+                               className="cf-sans rounded-full px-3 py-1.5 text-xs font-bold transition-opacity hover:opacity-80 border"
+                               style={{ borderColor: C.copper, color: C.copper }}>
+                                {toggleLabel}
+                            </a>
+
                             {auth.user ? (
                                 <Link href={route('dashboard')}
                                       className="rounded-full px-5 py-2.5 text-sm font-semibold transition-opacity hover:opacity-80"
                                       style={{ background: C.forest, color: C.cream }}>
-                                    Mon Espace
+                                    {t('welcome.nav_dashboard')}
                                 </Link>
                             ) : (
                                 <Link href={route('login')}
                                       className="rounded-full px-5 py-2.5 text-sm font-semibold transition-opacity hover:opacity-80"
                                       style={{ background: C.forest, color: C.cream }}>
-                                    Connexion
+                                    {t('welcome.nav_login')}
                                 </Link>
                             )}
                         </div>
@@ -125,38 +137,38 @@ export default function Welcome({ auth }: any) {
                     <div className="mx-auto grid w-full max-w-[1180px] items-center gap-12 px-7 py-16 lg:grid-cols-2 lg:py-24">
                         {/* Left */}
                         <div className="cf-rise">
-                            <p className="cf-eyebrow mb-5" style={{ color: C.copper }}>CO-INVESTMENT OPPORTUNITY 2026</p>
+                            <p className="cf-eyebrow mb-5" style={{ color: C.copper }}>{t('welcome.hero_eyebrow')}</p>
                             <h1 className="cf-serif mb-5 text-[42px] font-bold leading-[1.05] tracking-tight sm:text-[56px]"
                                 style={{ color: C.ink }}>
                                 CoFarm Dairy<br />
                                 <span style={{ color: C.forest }}>Partners</span>
                             </h1>
                             <p className="mb-8 max-w-[30em] text-[19px] leading-relaxed" style={{ color: C.muted }}>
-                                Devenez propriétaire d'une vache laitière productive. Nous l'élevons, vendons le lait et partageons les bénéfices avec vous.
+                                {t('welcome.hero_desc')}
                             </p>
                             <blockquote className="mb-8 border-l-4 pl-5 italic" style={{ borderColor: C.copper, color: C.muted500 }}>
-                                "You don't need a farm to be a farmer"
+                                "{t('welcome.hero_quote')}"
                                 <footer className="mt-1 text-sm not-italic font-semibold" style={{ color: C.copper }}>— Y. Manyani</footer>
                             </blockquote>
                             <div className="flex flex-wrap gap-3">
                                 <a href="#demande"
                                    className="rounded-full px-7 py-4 text-[15.5px] font-semibold transition-transform hover:-translate-y-0.5"
                                    style={{ background: C.copper, color: C.cream50, boxShadow: '0 6px 20px rgba(188,107,67,0.28)' }}>
-                                    Je souhaite investir
+                                    {t('welcome.hero_btn_invest')}
                                 </a>
                                 <a href="#fonctionnement"
                                    className="rounded-full px-6 py-4 text-[15.5px] font-semibold transition-colors"
                                    style={{ border: `1px solid ${C.forest}44`, color: C.forest }}>
-                                    Comment ça marche ?
+                                    {t('welcome.hero_btn_how')}
                                 </a>
                             </div>
 
                             {/* Stats row */}
                             <div className="mt-10 grid grid-cols-3 gap-4 border-t pt-7" style={{ borderColor: `${C.ink}1a` }}>
                                 {[
-                                    { v: '39 000', u: 'MAD', l: 'par vache laitière' },
-                                    { v: '2.4', u: '×', l: 'sur 5 ans', accent: true },
-                                    { v: '~27', u: 'mois', l: 'récupération' },
+                                    { v: t('welcome.hero_stat_1_val'), u: t('welcome.hero_stat_1_unit'), l: t('welcome.hero_stat_1_label') },
+                                    { v: t('welcome.hero_stat_2_val'), u: t('welcome.hero_stat_2_unit'), l: t('welcome.hero_stat_2_label'), accent: true },
+                                    { v: t('welcome.hero_stat_3_val'), u: t('welcome.hero_stat_3_unit'), l: t('welcome.hero_stat_3_label') },
                                 ].map(({ v, u, l, accent }) => (
                                     <div key={l}>
                                         <div className="cf-serif text-[28px] font-bold leading-none" style={{ color: C.forest }}>
@@ -180,8 +192,8 @@ export default function Welcome({ auth }: any) {
                             {/* Badge */}
                             <div className="absolute -left-4 bottom-8 max-w-[200px] rounded-2xl border px-5 py-4 shadow-xl"
                                  style={{ background: C.cream50, borderColor: `${C.ink}14` }}>
-                                <p className="cf-eyebrow mb-1 text-[11px]" style={{ color: C.copper }}>Actif réel</p>
-                                <p className="text-[13.5px] leading-snug" style={{ color: C.ink }}>Vache Holstein assurée &amp; traçable</p>
+                                <p className="cf-eyebrow mb-1 text-[11px]" style={{ color: C.copper }}>{t('welcome.hero_badge_title')}</p>
+                                <p className="text-[13.5px] leading-snug" style={{ color: C.ink }}>{t('welcome.hero_badge_desc')}</p>
                             </div>
                         </div>
                     </div>
@@ -190,12 +202,12 @@ export default function Welcome({ auth }: any) {
                 {/* ── HOW IT WORKS ── */}
                 <section id="fonctionnement" style={{ background: C.cream50, borderTop: `1px solid ${C.ink}0d`, borderBottom: `1px solid ${C.ink}0d` }}>
                     <div className="mx-auto w-full max-w-[1180px] px-7 py-[90px]">
-                        <p className="cf-eyebrow mb-4" style={{ color: C.copper }}>MODÈLE</p>
+                        <p className="cf-eyebrow mb-4" style={{ color: C.copper }}>{t('welcome.model_eyebrow')}</p>
                         <h2 className="cf-serif mb-3 max-w-[16em] text-[32px] font-bold leading-[1.08] tracking-tight sm:text-[42px]">
-                            Le Modèle de Co-Investissement
+                            {t('welcome.model_title')}
                         </h2>
                         <p className="mb-12 max-w-[34em] text-[18px]" style={{ color: C.muted }}>
-                            Un partenariat gagnant-gagnant où chaque partie apporte sa valeur ajoutée.
+                            {t('welcome.model_desc')}
                         </p>
                         <div className="grid gap-6 md:grid-cols-3">
                             {steps.map((s) => (
@@ -211,7 +223,7 @@ export default function Welcome({ auth }: any) {
                             ))}
                         </div>
                         <p className="cf-serif mt-8 max-w-[48em] text-[14.5px] italic leading-relaxed" style={{ color: C.muted400 }}>
-                            * Les rendements sont basés sur les données de nos fermes partenaires. Investir comporte des risques. Nous nous engageons à une transparence totale.
+                            {t('welcome.model_disclaimer')}
                         </p>
                     </div>
                 </section>
@@ -219,12 +231,12 @@ export default function Welcome({ auth }: any) {
                 {/* ── RETURNS ── */}
                 <section id="rendements" style={{ background: C.cream }}>
                     <div className="mx-auto w-full max-w-[1180px] px-7 py-[90px]">
-                        <p className="cf-eyebrow mb-4" style={{ color: C.copper }}>RENDEMENTS</p>
+                        <p className="cf-eyebrow mb-4" style={{ color: C.copper }}>{t('welcome.returns_eyebrow')}</p>
                         <h2 className="cf-serif mb-3 max-w-[18em] text-[32px] font-bold leading-[1.08] tracking-tight sm:text-[42px]">
-                            Des chiffres clairs, des projections honnêtes
+                            {t('welcome.returns_title')}
                         </h2>
                         <p className="mb-12 max-w-[40em] text-[18px]" style={{ color: C.muted }}>
-                            Fondées sur nos données réelles de production laitière et de vente de veaux.
+                            {t('welcome.returns_desc')}
                         </p>
                         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                             {returnCards.map((c) => (
@@ -243,12 +255,12 @@ export default function Welcome({ auth }: any) {
                 {/* ── MARKET ── */}
                 <section id="marche" style={{ background: C.forest, color: C.cream }}>
                     <div className="mx-auto w-full max-w-[1180px] px-7 py-[88px]">
-                        <p className="cf-eyebrow mb-4" style={{ color: C.gold }}>MARCHÉ</p>
+                        <p className="cf-eyebrow mb-4" style={{ color: C.gold }}>{t('welcome.market_eyebrow')}</p>
                         <h2 className="cf-serif mb-3 max-w-[16em] text-[32px] font-bold leading-[1.1] tracking-tight sm:text-[42px]">
-                            Un secteur laitier marocain en forte demande
+                            {t('welcome.market_title')}
                         </h2>
                         <p className="mb-12 max-w-[36em] text-[18px]" style={{ color: C.onForest2 }}>
-                            La production locale ne couvre pas la consommation nationale — une opportunité structurelle durable.
+                            {t('welcome.market_desc')}
                         </p>
                         <div className="grid gap-6 md:grid-cols-3">
                             {marketPoints.map((pt) => (
@@ -264,9 +276,9 @@ export default function Welcome({ auth }: any) {
                 {/* ── FAQ ── */}
                 <section id="faq" style={{ background: C.cream50, borderBottom: `1px solid ${C.ink}0d` }}>
                     <div className="mx-auto w-full max-w-[880px] px-7 py-[90px]">
-                        <p className="cf-eyebrow mb-4 text-center" style={{ color: C.copper }}>FAQ</p>
+                        <p className="cf-eyebrow mb-4 text-center" style={{ color: C.copper }}>{t('welcome.faq_eyebrow')}</p>
                         <h2 className="cf-serif mb-11 text-center text-[32px] font-bold leading-[1.1] tracking-tight sm:text-[40px]">
-                            Questions fréquentes
+                            {t('welcome.faq_title')}
                         </h2>
                         <div className="flex flex-col gap-3">
                             {faqs.map((item, i) => {
@@ -297,12 +309,12 @@ export default function Welcome({ auth }: any) {
                 {/* ── INVESTMENT FORM ── */}
                 <section id="demande" style={{ background: C.cream }}>
                     <div className="mx-auto w-full max-w-[1000px] px-7 py-[90px]">
-                        <p className="cf-eyebrow mb-4" style={{ color: C.copper }}>INVESTIR</p>
+                        <p className="cf-eyebrow mb-4" style={{ color: C.copper }}>{t('welcome.invest_eyebrow')}</p>
                         <h2 className="cf-serif mb-2 text-[32px] font-bold leading-[1.08] tracking-tight sm:text-[42px]">
-                            Rejoignez l'Aventure
+                            {t('welcome.invest_title')}
                         </h2>
                         <p className="mb-10 max-w-[34em] text-[18px]" style={{ color: C.muted }}>
-                            Remplissez ce formulaire — notre équipe vous contactera dans les plus brefs délais.
+                            {t('welcome.invest_desc')}
                         </p>
 
                         <div className="overflow-hidden rounded-[20px] border shadow-xl md:flex"
@@ -312,23 +324,23 @@ export default function Welcome({ auth }: any) {
                             <div className="flex flex-col justify-between p-10 md:w-5/12"
                                  style={{ background: C.forest, color: C.cream }}>
                                 <div>
-                                    <h3 className="cf-serif mb-4 text-[24px] font-bold">Pourquoi nous rejoindre ?</h3>
+                                    <h3 className="cf-serif mb-4 text-[24px] font-bold">{t('welcome.invest_why_title')}</h3>
                                     <p className="mb-8 text-[15.5px] leading-relaxed" style={{ color: C.onForest2 }}>
-                                        Un investissement tangible, traçable et rentable dans l'agriculture marocaine.
+                                        {t('welcome.invest_why_desc')}
                                     </p>
                                 </div>
                                 <div className="space-y-4 text-[14.5px]" style={{ color: C.onForest }}>
-                                    {['Sans engagement initial', 'Informations confidentielles', 'Accompagnement personnalisé'].map((t) => (
-                                        <div key={t} className="flex items-center gap-3">
+                                    {[t('welcome.invest_point_1'), t('welcome.invest_point_2'), t('welcome.invest_point_3')].map((point) => (
+                                        <div key={point} className="flex items-center gap-3">
                                             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold"
                                                   style={{ background: C.copper300, color: C.cream }}>✓</span>
-                                            {t}
+                                            {point}
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            {/* Right panel — form (inputs UNCHANGED) */}
+                            {/* Right panel — form */}
                             <div className="p-10 md:w-7/12" style={{ background: C.cream50 }}>
                                 {flash?.success ? (
                                     <div className="flex h-full flex-col items-center justify-center space-y-4 py-12 text-center animate-fade-in">
@@ -336,19 +348,19 @@ export default function Welcome({ auth }: any) {
                                              style={{ background: '#d1fae5' }}>
                                             <span className="text-2xl">✓</span>
                                         </div>
-                                        <h3 className="cf-serif text-[24px] font-bold">Demande Envoyée !</h3>
-                                        <p style={{ color: C.muted }}>{flash.success}</p>
+                                        <h3 className="cf-serif text-[24px] font-bold">{t('welcome.invest_success')}</h3>
+                                        <p style={{ color: C.muted }}>{t('welcome.invest_success_desc')}</p>
                                         <button onClick={() => window.location.reload()}
                                                 className="mt-8 font-medium transition-colors"
                                                 style={{ color: C.copper }}>
-                                            Soumettre une autre demande
+                                            {t('welcome.invest_submit_another')}
                                         </button>
                                     </div>
                                 ) : (
                                     <form onSubmit={submit} className="space-y-6">
                                         <div className="grid grid-cols-2 gap-6">
                                             <div>
-                                                <InputLabel htmlFor="prenom" value="Prénom" className="text-slate-700 font-semibold" />
+                                                <InputLabel htmlFor="prenom" value={t('welcome.form_firstname')} className="text-slate-700 font-semibold" />
                                                 <TextInput
                                                     id="prenom"
                                                     type="text"
@@ -361,7 +373,7 @@ export default function Welcome({ auth }: any) {
                                                 <InputError message={errors.prenom} className="mt-2" />
                                             </div>
                                             <div>
-                                                <InputLabel htmlFor="nom" value="Nom" className="text-slate-700 font-semibold" />
+                                                <InputLabel htmlFor="nom" value={t('welcome.form_lastname')} className="text-slate-700 font-semibold" />
                                                 <TextInput
                                                     id="nom"
                                                     type="text"
@@ -376,7 +388,7 @@ export default function Welcome({ auth }: any) {
                                         </div>
 
                                         <div>
-                                            <InputLabel htmlFor="email" value="Adresse Email" className="text-slate-700 font-semibold" />
+                                            <InputLabel htmlFor="email" value={t('welcome.form_email')} className="text-slate-700 font-semibold" />
                                             <TextInput
                                                 id="email"
                                                 type="email"
@@ -390,7 +402,7 @@ export default function Welcome({ auth }: any) {
                                         </div>
 
                                         <div>
-                                            <InputLabel htmlFor="telephone" value="Téléphone" className="text-slate-700 font-semibold" />
+                                            <InputLabel htmlFor="telephone" value={t('welcome.form_phone')} className="text-slate-700 font-semibold" />
                                             <TextInput
                                                 id="telephone"
                                                 type="tel"
@@ -407,7 +419,7 @@ export default function Welcome({ auth }: any) {
                                             className="w-full justify-center !py-4 !text-base !rounded-xl !bg-slate-900 hover:!bg-indigo-600 transition-colors duration-300 mt-4 shadow-lg shadow-slate-900/10"
                                             disabled={processing}
                                         >
-                                            Soumettre ma demande d'investissement
+                                            {t('welcome.form_submit')}
                                         </PrimaryButton>
                                     </form>
                                 )}
@@ -426,10 +438,10 @@ export default function Welcome({ auth }: any) {
                             </span>
                         </div>
                         <p className="cf-serif mb-8 max-w-[20em] text-[24px] leading-[1.35] tracking-tight" style={{ color: C.cream }}>
-                            Vous n'avez pas besoin d'une ferme pour être fermier.
+                            {t('welcome.footer_quote')}
                         </p>
                         <div className="border-t pt-6 font-mono text-[12px] tracking-widest" style={{ borderColor: 'rgba(255,255,255,0.1)', color: C.muted400 }}>
-                            © {new Date().getFullYear()} CoFarm Dairy Partners par Ferm Project. Tous droits réservés.
+                            {t('welcome.footer_rights', { year: new Date().getFullYear() })}
                         </div>
                     </div>
                 </footer>

@@ -1,0 +1,630 @@
+{
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "cheptel": "Cheptel",
+    "bilan": "Bilan Annuel",
+    "clients": "Clients",
+    "investments": "Investissements",
+    "staff": "Personnel",
+    "traceability": "Traçabilité",
+    "visit_requests": "Demandes de visites",
+    "visits": "Visites"
+  },
+  "roles": {
+    "super_admin": "Super Admin",
+    "admin": "Admin",
+    "manager": "Manager",
+    "client": "Client / Investisseur"
+  },
+  "layout": {
+    "menu": "Menu",
+    "logout": "Déconnexion",
+    "profile": "Profil"
+  },
+  "welcome": {
+    "title": "CoFarm Dairy Partners — Opportunité d'Investissement",
+    "nav_how_it_works": "Comment ça marche",
+    "nav_returns": "Rendements",
+    "nav_market": "Marché",
+    "nav_faq": "FAQ",
+    "nav_dashboard": "Mon Espace",
+    "nav_login": "Connexion",
+    "hero_eyebrow": "CO-INVESTMENT OPPORTUNITY 2026",
+    "hero_desc": "Devenez propriétaire d'une vache laitière productive. Nous l'élevons, vendons le lait et partageons les bénéfices avec vous.",
+    "hero_quote": "You don't need a farm to be a farmer",
+    "hero_btn_invest": "Je souhaite investir",
+    "hero_btn_how": "Comment ça marche ?",
+    "hero_stat_1_val": "39 000",
+    "hero_stat_1_unit": "MAD",
+    "hero_stat_1_label": "par vache laitière",
+    "hero_stat_2_val": "2.4",
+    "hero_stat_2_unit": "×",
+    "hero_stat_2_label": "sur 5 ans",
+    "hero_stat_3_val": "~27",
+    "hero_stat_3_unit": "mois",
+    "hero_stat_3_label": "récupération",
+    "hero_badge_title": "Actif réel",
+    "hero_badge_desc": "Vache Holstein assurée & traçable",
+    "model_eyebrow": "MODÈLE",
+    "model_title": "Le Modèle de Co-Investissement",
+    "model_desc": "Un partenariat gagnant-gagnant où chaque partie apporte sa valeur ajoutée.",
+    "model_step_1_title": "Vous investissez",
+    "model_step_1_desc": "39 000 MAD financent l'achat d'une vache Holstein — un actif réel, assurable et traçable.",
+    "model_step_2_title": "Nous exploitons",
+    "model_step_2_desc": "Nous fournissons la terre, la nourriture, la main-d'œuvre et les soins vétérinaires.",
+    "model_step_3_title": "Nous partageons",
+    "model_step_3_desc": "Le profit net issu du lait et de la vente annuelle du veau est partagé à 50 / 50.",
+    "model_disclaimer": "* Les rendements sont basés sur les données de nos fermes partenaires. Investir comporte des risques. Nous nous engageons à une transparence totale.",
+    "returns_eyebrow": "RENDEMENTS",
+    "returns_title": "Des chiffres clairs, des projections honnêtes",
+    "returns_desc": "Fondées sur nos données réelles de production laitière et de vente de veaux.",
+    "market_eyebrow": "MARCHÉ",
+    "market_title": "Un secteur laitier marocain en forte demande",
+    "market_desc": "La production locale ne couvre pas la consommation nationale — une opportunité structurelle durable.",
+    "faq_eyebrow": "FAQ",
+    "faq_title": "Questions fréquentes",
+    "invest_eyebrow": "INVESTIR",
+    "invest_title": "Rejoignez l'Aventure",
+    "invest_desc": "Remplissez ce formulaire — notre équipe vous contactera dans les plus brefs délais.",
+    "invest_why_title": "Pourquoi nous rejoindre ?",
+    "invest_why_desc": "Un investissement tangible, traçable et rentable dans l'agriculture marocaine.",
+    "invest_point_1": "Sans engagement initial",
+    "invest_point_2": "Informations confidentielles",
+    "invest_point_3": "Accompagnement personnalisé",
+    "invest_success": "Demande Envoyée !",
+    "invest_success_desc": "Nous avons bien reçu votre demande.",
+    "invest_submit_another": "Soumettre une autre demande",
+    "form_firstname": "Prénom",
+    "form_lastname": "Nom",
+    "form_email": "Adresse Email",
+    "form_phone": "Téléphone",
+    "form_submit": "Soumettre ma demande d'investissement",
+    "footer_quote": "Vous n'avez pas besoin d'une ferme pour être fermier.",
+    "footer_rights": "© {{year}} CoFarm Dairy Partners par CoFarm & Partners. Tous droits réservés."
+  },
+  "login": {
+    "title": "Bienvenue",
+    "feature_1_title": "Sécurité & Traçabilité",
+    "feature_1_desc": "Données protégées et historisées",
+    "feature_2_title": "Rentabilité en temps réel",
+    "feature_2_desc": "Indicateurs financiers actualisés",
+    "feature_3_title": "Multi-rôles sécurisés",
+    "feature_3_desc": "Accès adaptés à chaque utilisateur",
+    "badge": "Plateforme de gestion agricole",
+    "heading": "Gérez votre <span class=\"text-copper\">exploitation</span> avec précision",
+    "subheading": "Suivi du cheptel, traçabilité, investissements et rentabilité — le tout dans une interface moderne et sécurisée.",
+    "footer": "© {{year}} CoFarm & Partners — Tous droits réservés.",
+    "already_logged_in": "Vous êtes déjà connecté",
+    "go_to_dashboard": "Aller au Dashboard",
+    "welcome_back": "Bon retour",
+    "login_desc": "Connectez-vous à votre espace sécurisé",
+    "email": "Adresse email",
+    "password": "Mot de passe",
+    "remember_me": "Se souvenir de moi",
+    "forgot_password": "Mot de passe oublié ?",
+    "submit": "Se connecter"
+  },
+  "admin_login": {
+    "head_title": "Connexion Administration",
+    "title": "Portail Staff",
+    "subtitle": "Réservé aux Administrateurs et Managers",
+    "email_label": "Adresse email professionnelle",
+    "password_label": "Mot de passe",
+    "submit_button": "Se connecter au Backoffice"
+  },
+  "forgot_password": {
+    "head_title": "Mot de passe oublié",
+    "title": "Mot de passe oublié ?",
+    "description": "Indiquez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "email_placeholder": "votre@email.com",
+    "submit_button": "Envoyer le lien de réinitialisation"
+  },
+  "reset_password": {
+    "head_title": "Réinitialiser le mot de passe",
+    "title": "Nouveau mot de passe",
+    "subtitle": "Choisissez un mot de passe fort et sécurisé",
+    "email_label": "Adresse email",
+    "password_label": "Nouveau mot de passe",
+    "password_confirmation_label": "Confirmer le mot de passe",
+    "submit_button": "Réinitialiser le mot de passe"
+  },
+  "confirm_password": {
+    "head_title": "Confirmer le mot de passe",
+    "title": "Zone sécurisée",
+    "description": "Veuillez confirmer votre mot de passe avant de continuer.",
+    "password_label": "Mot de passe",
+    "submit_button": "Confirmer"
+  },
+  "verify_email": {
+    "head_title": "Vérification Email",
+    "title": "Vérifiez votre email",
+    "description": "Merci pour votre inscription ! Cliquez sur le lien que nous venons de vous envoyer par email pour vérifier votre adresse.",
+    "link_sent_status": "Un nouveau lien de vérification a été envoyé.",
+    "resend_button": "Renvoyer l'email de vérification",
+    "logout_button": "Se déconnecter"
+  },
+  "admin_dashboard": {
+    "app_layout_title": "Panneau d'Administration - Statistiques",
+    "head_title": "Tableau de bord Admin",
+    "stat_users": "Utilisateurs",
+    "stat_total_cattle": "Total bovins",
+    "stat_investments": "Investissements",
+    "user_distribution_title": "Répartition des Utilisateurs",
+    "platform_overview_title": "Vue d'ensemble de la plateforme",
+    "tooltip_users": "Utilisateurs",
+    "tooltip_quantity": "Quantité",
+    "roles": {
+      "admins": "Admins",
+      "managers": "Managers",
+      "clients": "Clients"
+    },
+    "chart_labels": {
+      "users": "Utilisateurs",
+      "cattle": "Bovins",
+      "investments": "Investissements"
+    }
+  },
+  "investment_requests": {
+    "title": "Demandes d'Investissement",
+    "section_title": "Toutes les demandes",
+    "subtitle": "Gérez les demandes de participation au programme CoFarm Dairy Partners.",
+    "search_placeholder": "Rechercher...",
+    "filter_all_statuses": "Tous les statuts",
+    "statuses": {
+      "en attente": "En attente",
+      "confirmé": "Confirmé",
+      "refusé": "Refusé",
+      "annulé": "Annulé"
+    },
+    "table": {
+      "investor": "Investisseur",
+      "contact": "Contact",
+      "request_date": "Date de demande",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "no_requests": "Aucune demande trouvée.",
+    "actions": {
+      "confirm": "Confirmer",
+      "refuse": "Refuser",
+      "cancel": "Annuler"
+    }
+  },
+  "traceability": {
+    "app_layout_title": "Traçabilité des Actions",
+    "head_title": "Traçabilité",
+    "section_title": "Journal d'Activité des Managers",
+    "load_more": "Voir plus",
+    "loading": "Chargement...",
+    "empty_title": "Aucune activité récente",
+    "empty_description": "Les actions des managers apparaîtront ici."
+  },
+  "admin_visites": {
+    "title": "Gestion des Visites",
+    "subtitle": "Demandes de visites",
+    "description": "Gérez les demandes de visites des clients",
+    "search_placeholder": "Rechercher un client...",
+    "table": {
+      "client": "Client",
+      "date_time": "Date & Heure",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "En attente",
+      "accepted": "Acceptée",
+      "rejected": "Refusée"
+    },
+    "actions": {
+      "accept": "Accepter",
+      "reject": "Refuser",
+      "view_reason": "Voir le motif"
+    },
+    "empty_state": "Aucune demande de visite trouvée.",
+    "confirm_accept": "Voulez-vous vraiment accepter cette visite ?",
+    "modal": {
+      "reason_title": "Motif du refus",
+      "reject_title": "Refuser la visite",
+      "main_reason": "Raison principale",
+      "additional_comment": "Commentaire supplémentaire",
+      "close": "Fermer",
+      "reason_label": "Raison du refus (obligatoire)",
+      "select_reason": "Sélectionnez une raison",
+      "comment_label": "Commentaire supplémentaire (optionnel)",
+      "comment_placeholder": "Ajoutez des détails si nécessaire...",
+      "cancel": "Annuler",
+      "confirm_reject": "Confirmer le refus",
+      "rejecting": "Refus..."
+    },
+    "reject_reasons": {
+      "staff_unavailable": "Indisponibilité du personnel",
+      "farm_closed": "Ferme fermée à cette date",
+      "capacity_reached": "Capacité d'accueil atteinte",
+      "bad_weather": "Conditions météorologiques défavorables",
+      "other": "Autre"
+    }
+  },
+  "staff_management": {
+    "app_layout_title": "Gestion du Personnel",
+    "head_title": "Personnel",
+    "section_title": "Membres du Personnel",
+    "new_member_button": "Nouveau Membre",
+    "you": "(Vous)",
+    "empty_state": "Aucun membre du personnel enregistré.",
+    "table": {
+      "full_name": "Nom Complet",
+      "role": "Rôle",
+      "email": "Email",
+      "phone": "Téléphone",
+      "actions": "Actions"
+    },
+    "roles": {
+      "manager": "Manager",
+      "admin": "Admin",
+      "super_admin": "Super Admin"
+    },
+    "alerts": {
+      "cannot_delete_self": "Vous ne pouvez pas vous supprimer vous-même.",
+      "confirm_archive": "Êtes-vous sûr de vouloir archiver ce membre du personnel ?"
+    },
+    "modal": {
+      "add_title": "Ajouter un Membre",
+      "edit_title": "Modifier le Membre",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "role": "Rôle",
+      "password_section": "Mot de passe",
+      "password_help": "Laissez les champs vides si vous ne souhaitez pas modifier le mot de passe actuel.",
+      "password": "Mot de passe",
+      "new_password": "Nouveau mot de passe",
+      "confirm_password": "Confirmer le mot de passe",
+      "cancel": "Annuler",
+      "create_button": "Créer",
+      "update_button": "Mettre à jour"
+    }
+  },
+  "manager_dashboard": {
+    "app_layout_title": "Portail d'Exploitation Agricole (Manager)",
+    "head_title": "Tableau de bord Manager",
+    "global_milk_production": "Production Laitière Globale",
+    "liters_unit": "Litres",
+    "monitored_livestock": "Tête de Bétail Suivies",
+    "cattle_unit": "Bovins",
+    "production_evolution_title": "Evolution de la Production (L)",
+    "tooltip_production": "Production",
+    "no_recent_data": "Aucune donnée de production récente."
+  },
+  "client_dashboard": {
+    "app_layout_title": "Espace Partenaire — Tableau de Bord",
+    "head_title": "Mon Tableau de Bord",
+    "welcome_banner": "👋 Bienvenue dans votre espace sécurisé. Vos actifs sont présentés sous forme de statistiques synthétiques.",
+    "active_contracts": "Contrats d'investissements actifs",
+    "contracts_unit": "Contrats",
+    "portfolio_distribution": "Répartition de votre portefeuille",
+    "owned_share": "Part possédée",
+    "owned_share_percent": ":value% des parts",
+    "cattle_ticket": "Bovin :ticket",
+    "financial_evolution": "Évolution Financière (Gains vs Coûts)",
+    "all_cattle": "Tous les bovins",
+    "gains_net": "Gains (Net) en DH",
+    "food_costs": "Coût (Nourriture) en DH",
+    "health_costs": "Coût (Santé) en DH",
+    "no_financial_data": "Aucune donnée financière disponible."
+  },
+  "bilan_annuel": {
+    "app_layout_title": "Bilan Annuel",
+    "head_title": "Bilan Annuel",
+    "banner_info": "Retrouvez ici le bilan annuel de vos investissements. L'année en cours ne s'affiche qu'à sa clôture (le 1er janvier de l'année suivante).",
+    "empty_title": "Aucun historique disponible",
+    "empty_description": "Les bilans annuels s'afficheront ici une fois qu'une année complète aura été clôturée.",
+    "year_title": "Année :year",
+    "calculation_error": "Erreur de calculs",
+    "total_costs": "Coûts Totaux",
+    "net_milk_revenue": "Revenu Laitier Net",
+    "sales_revenue": "Revenu des Ventes",
+    "global_benefit": "Bénéfice Global",
+    "farm_part": "Part de la Ferme (50%)",
+    "your_net_part": "Votre Part Nette"
+  },
+  "cheptel_details": {
+    "app_layout_title": "Détails du bovin :ticket",
+    "head_title": "Bovin :ticket",
+    "no_photo": "Pas de photo",
+    "ticket": "Ticket :",
+    "sold_badge": "VENDUE",
+    "sold_info": "Vendu à :price DH le :date",
+    "health_status": {
+      "healthy": "En bonne santé",
+      "pregnancy": "Gestation",
+      "sick": "Malade"
+    },
+    "born_date": "Née le :",
+    "years_old": ":age ans",
+    "origin_label": "Origine :",
+    "origin_farm": "Née à la ferme",
+    "origin_purchased": "Achetée",
+    "file_label": "Fichier :",
+    "view_document": "Voir le document",
+    "owners_label": "Propriétaire(s) :",
+    "owned_by_farm": "Appartient à la ferme",
+    "monthly_profitability": "Rentabilité Mensuelle",
+    "liter_price_label": "Prix du litre :",
+    "liter_price_value": "4 DH/L",
+    "net_profit_prefix": "Bénéfices nets estimés :",
+    "net_profit_formula": "(Production × 4 DH) - Coûts",
+    "net_profit_middle": "Après 50% pour la ferme, votre part nette est de",
+    "net_profit_suffix": "des bénéfices.",
+    "table": {
+      "month": "Mois",
+      "milk_produced": "Lait Produit",
+      "milk_consumed": "Lait Consommé",
+      "net_production": "Production Nette",
+      "gross_revenue": "Revenu Brut",
+      "costs": "Coûts",
+      "net_profit": "Bénéfice Net",
+      "your_share": "Votre Part",
+      "no_data": "Aucune donnée disponible."
+    },
+    "costs_section": "Frais",
+    "health_section": "Santé",
+    "archive_link": "Archive →",
+    "latest_events": "Derniers Événements",
+    "no_events": "Aucun événement enregistré",
+    "offspring_section": "Descendance (:count)",
+    "no_offspring": "Aucune descendance.",
+    "health_types": {
+      "sickness": "Maladie",
+      "pregnancy": "Gestation",
+      "routine": "Visite routine"
+    },
+    "financial_archive_modal": {
+      "title": "Archive Financière",
+      "costs_title": "Coûts",
+      "food": "Nourriture",
+      "health": "Santé",
+      "other": "Autre",
+      "total": "Total",
+      "consumed_milk_title": "Lait Consommé",
+      "total_quantity": "Quantité Totale",
+      "productions_title": "Productions"
+    },
+    "health_archive_modal": {
+      "title": "Archive Santé",
+      "status": "Statut",
+      "start": "Début",
+      "end": "Fin",
+      "ongoing": "En cours"
+    }
+  },
+  "cheptel_list": {
+    "app_layout_title": "Mes Investissements Bovins",
+    "head_title": "Mes Bovins",
+    "section_title": "Mon Cheptel",
+    "table": {
+      "ear_tag_number": "Numéro Boucle",
+      "weight": "Poids (kg)",
+      "health_status": "Statut Santé",
+      "actions": "Actions"
+    },
+    "health_status": {
+      "healthy": "En bonne santé",
+      "pregnancy": "Gestation",
+      "sick": "Malade"
+    },
+    "not_available": "N/A",
+    "view_details": "Voir les détails →",
+    "empty_state": "Vous n'avez aucun bovin dans votre cheptel pour le moment."
+  },
+  "visites": {
+    "app_layout_title": "Mes Visites",
+    "head_title": "Mes Visites",
+    "subtitle": "Historique de vos visites",
+    "description": "Gérez vos demandes de visite à la ferme",
+    "book_visit_button": "Réserver une visite",
+    "status": {
+      "pending": "En attente",
+      "accepted": "Acceptée",
+      "rejected": "Refusée"
+    },
+    "table": {
+      "date": "Date",
+      "time": "Heure",
+      "status": "Statut",
+      "details_reason": "Détails / Motif"
+    },
+    "empty_state": "Vous n'avez pas encore fait de demande de visite.",
+    "modal": {
+      "title": "Demande de visite",
+      "info_banner": "Votre demande sera étudiée par l'administration. Vous serez notifié de son acceptation ou refus.",
+      "desired_date": "Date souhaitée",
+      "desired_time": "Heure souhaitée",
+      "cancel": "Annuler",
+      "confirm_request": "Confirmer la demande",
+      "sending": "Envoi..."
+    }
+  },
+  "admin_cheptel_details": {
+    "app_layout_title": "Détails du bovin :ticket",
+    "head_title": "Bovin :ticket",
+    "no_photo": "Pas de photo",
+    "ticket": "Ticket :",
+    "sold_badge": "VENDUE",
+    "sold_info": "Vendu à :price DH le :date",
+    "health_status": {
+      "healthy": "En bonne santé",
+      "pregnancy": "Gestation",
+      "sick": "Malade"
+    },
+    "born_date": "Née le :",
+    "years_old": ":age ans",
+    "origin_label": "Origine :",
+    "origin_farm": "Née à la ferme",
+    "origin_purchased": "Achetée",
+    "file_label": "Fichier :",
+    "view_document": "Voir le document",
+    "owners_label": "Propriétaire(s) :",
+    "owned_by_farm": "Appartient à la ferme",
+    "actions": {
+      "edit_info": "Modifier infos",
+      "change_health": "Changer statut santé",
+      "cancel_sale": "Annuler la vente",
+      "mark_sold": "Marquer comme vendue",
+      "confirm_cancel_sale": "Marquer comme non vendu ?"
+    },
+    "finances": {
+      "title": "Finances",
+      "archive_link": "Archive →",
+      "year": "Année",
+      "month": "Mois",
+      "type": "Type",
+      "types": {
+        "food": "Nourriture",
+        "veterinaire": "Vétérinaire",
+        "gain": "Production lait (L)",
+        "lait_consomme": "Lait consommé (L)"
+      },
+      "quantity": "Quantité (L)",
+      "amount": "Montant (DH)",
+      "save": "Enregistrer",
+      "sold_disabled": "Actions désactivées (animal vendu).",
+      "unauthorized": "Droits insuffisants."
+    },
+    "health": {
+      "title": "Santé",
+      "archive_link": "Archive →",
+      "status": "Statut",
+      "start_date": "Date début",
+      "end_date_optional": "Date fin (optionnel)",
+      "save": "Enregistrer",
+      "types": {
+        "sickness": "Maladie",
+        "pregnancy": "Gestation"
+      }
+    },
+    "lineage": {
+      "title": "Descendance (:count)",
+      "add_button": "+ Descendance",
+      "empty": "Aucune descendance enregistrée."
+    },
+    "financial_modal": {
+      "title": "Archive Financière",
+      "costs_title": "Coûts",
+      "productions_title": "Productions",
+      "date": "Date",
+      "type": "Type",
+      "amount_quantity": "Montant / Quantité",
+      "period": "Période",
+      "quantity": "Quantité",
+      "consumed_milk": "Lait Consommé"
+    },
+    "health_modal": {
+      "title": "Archive Santé",
+      "status": "Statut",
+      "start": "Début",
+      "end": "Fin",
+      "ongoing": "En cours",
+      "types": {
+        "sickness": "Maladie",
+        "pregnancy": "Gestation",
+        "routine": "Visite routine"
+      }
+    },
+    "child_modal": {
+      "title": "Ajouter une descendance",
+      "sex": "Sexe",
+      "female": "Femelle",
+      "male": "Mâle",
+      "birth_date": "Date naissance",
+      "entry_date": "Date d'entrée",
+      "photo_optional": "Photo (optionnel)",
+      "drag_drop": "Glissez-déposez une image ou cliquez ici",
+      "cancel": "Annuler",
+      "add": "Ajouter"
+    },
+    "edit_modal": {
+      "title": "Modifier les informations",
+      "ear_tag": "Numéro de boucle",
+      "sex": "Sexe",
+      "female": "Femelle",
+      "male": "Mâle",
+      "birth_date": "Date naissance",
+      "photo_optional": "Photo (optionnel)",
+      "current_image": "Image actuelle :",
+      "drag_drop_replace_image": "Glissez-déposez une image ou cliquez ici pour remplacer",
+      "file_optional": "Fichier Animal (optionnel)",
+      "current_file": "Fichier actuel :",
+      "view_current_file": "Voir le fichier actuel",
+      "drag_drop_replace_file": "Glissez-déposez un fichier ou cliquez ici pour remplacer",
+      "cancel": "Annuler",
+      "update": "Mettre à jour"
+    },
+    "status_modal": {
+      "title": "Changer le statut de santé",
+      "status": "Statut",
+      "healthy": "En bonne santé",
+      "sickness": "Malade",
+      "pregnancy": "Gestation",
+      "cancel": "Annuler",
+      "update": "Mettre à jour"
+    },
+    "sell_modal": {
+      "title": "Vendre l'animal",
+      "sale_price": "Prix de vente (DH)",
+      "sale_date": "Date de vente",
+      "cancel": "Annuler",
+      "confirm": "Confirmer la vente"
+    }
+  },
+  "admin_cheptel_list": {
+    "app_layout_title": "Gestion du Cheptel (Espace Partagé)",
+    "head_title": "Liste des Bovins",
+    "section_title": "Suivi des Animaux",
+    "add_button": "Ajouter",
+    "table": {
+      "ear_tag_number": "Numéro Boucle",
+      "origin": "Origine",
+      "weight": "Poids (kg)",
+      "health_status": "Statut Santé",
+      "sale_status": "Vente",
+      "actions": "Actions"
+    },
+    "origin_types": {
+      "farm": "Née à la ferme",
+      "purchased": "Achetée"
+    },
+    "health_status": {
+      "healthy": "En bonne santé",
+      "pregnancy": "Gestation",
+      "sick": "Malade"
+    },
+    "sale_status": {
+      "sold": "Vendue",
+      "in_herd": "Au cheptel"
+    },
+    "not_available": "N/A",
+    "view_details": "Détails",
+    "add_modal": {
+      "title": "Ajouter une nouvelle bête",
+      "ear_tag": "Numéro de boucle",
+      "sex": "Sexe",
+      "female": "Femelle",
+      "male": "Mâle",
+      "birth_date": "Date de naissance",
+      "entry_date": "Date d'entrée",
+      "photo_optional": "Photo (optionnel)",
+      "file_optional": "Fichier Animal (optionnel)",
+      "image_drag_drop": "Glissez-déposez une image ou cliquez ici",
+      "file_drag_drop": "Glissez-déposez un fichier ou cliquez ici",
+      "ownership_type": "Type de Propriété",
+      "ownership_full": "Complet (1)",
+      "ownership_half": "Demi (0.5)",
+      "owner_1": "Propriétaire 1",
+      "owner_2": "Propriétaire 2",
+      "choose_owner": "-- Choisir --",
+      "cancel": "Annuler",
+      "add": "Ajouter"
+    }
+  }
+}

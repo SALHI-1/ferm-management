@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Head, usePage, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { 
-    Clock, CheckCircle, XCircle, Ban, Filter, 
+import {
+    Clock, CheckCircle, XCircle, Ban, Filter,
     ChevronDown, Mail, Phone, Calendar, Search
 } from 'lucide-react';
+import { useTrans } from '@/Hooks/useTrans';
 
 interface RequestData {
     id: number;
@@ -17,7 +18,8 @@ interface RequestData {
 }
 
 export default function InvestmentRequests({ requests }: { requests: RequestData[] }) {
-    const { flash } = usePage().props as any;
+    const { t } = useTrans();
+    const { flash, locale } = usePage().props as any;
     const [filterStatus, setFilterStatus] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -62,8 +64,8 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
     };
 
     return (
-        <AppLayout title="Demandes d'Investissement">
-            <Head title="Demandes d'Investissement" />
+        <AppLayout title={t('investment_requests.title')}>
+            <Head title={t('investment_requests.title')} />
 
             {flash?.success && (
                 <div className="mb-6 p-4 bg-forest/10 text-forest border border-emerald-200 rounded-xl flex items-center shadow-sm">
@@ -75,8 +77,8 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
             {/* Header / Filters */}
             <div className="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-xl font-bold text-forest">Toutes les demandes</h2>
-                    <p className="text-sm text-slate-500 mt-1">Gérez les demandes de participation au programme CoFarm Dairy Partners.</p>
+                    <h2 className="text-xl font-bold text-forest">{t('investment_requests.section_title')}</h2>
+                    <p className="text-sm text-slate-500 mt-1">{t('investment_requests.subtitle')}</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
@@ -84,13 +86,13 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                         <input
                             type="text"
-                            placeholder="Rechercher..."
+                            placeholder={t('investment_requests.search_placeholder')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 w-full sm:w-64 transition-all"
                         />
                     </div>
-                    
+
                     <div className="relative group">
                         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                             <Filter className="h-4 w-4 text-slate-400" />
@@ -100,11 +102,11 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
                             onChange={(e) => setFilterStatus(e.target.value)}
                             className="pl-9 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 appearance-none w-full sm:w-auto cursor-pointer"
                         >
-                            <option value="all">Tous les statuts</option>
-                            <option value="en attente">En attente</option>
-                            <option value="confirmé">Confirmé</option>
-                            <option value="refusé">Refusé</option>
-                            <option value="annulé">Annulé</option>
+                            <option value="all">{t('investment_requests.filter_all_statuses')}</option>
+                            <option value="en attente">{t('investment_requests.statuses.en attente')}</option>
+                            <option value="confirmé">{t('investment_requests.statuses.confirmé')}</option>
+                            <option value="refusé">{t('investment_requests.statuses.refusé')}</option>
+                            <option value="annulé">{t('investment_requests.statuses.annulé')}</option>
                         </select>
                         <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                     </div>
@@ -117,11 +119,11 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
                     <table className="w-full text-left text-sm text-slate-600">
                         <thead className="bg-slate-50/50 text-slate-500 uppercase text-[11px] font-bold tracking-wider">
                             <tr>
-                                <th className="px-6 py-4">Investisseur</th>
-                                <th className="px-6 py-4">Contact</th>
-                                <th className="px-6 py-4">Date de demande</th>
-                                <th className="px-6 py-4">Statut</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
+                                <th className="px-6 py-4">{t('investment_requests.table.investor')}</th>
+                                <th className="px-6 py-4">{t('investment_requests.table.contact')}</th>
+                                <th className="px-6 py-4">{t('investment_requests.table.request_date')}</th>
+                                <th className="px-6 py-4">{t('investment_requests.table.status')}</th>
+                                <th className="px-6 py-4 text-right">{t('investment_requests.table.actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -140,43 +142,43 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
                                         <td className="px-6 py-4 text-slate-500">
                                             <div className="flex items-center gap-1.5">
                                                 <Calendar className="w-4 h-4 text-slate-400" />
-                                                {new Date(req.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                                {new Date(req.created_at).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${getStatusStyle(req.status)}`}>
                                                 {getStatusIcon(req.status)}
-                                                {req.status.charAt(0).toUpperCase() + req.status.slice(1)}
+                                                {t(`investment_requests.statuses.${req.status}`)}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex justify-end gap-2">
                                                 {req.status === 'en attente' && (
                                                     <>
-                                                        <button 
+                                                        <button
                                                             onClick={() => updateStatus(req.id, 'confirmé')}
                                                             className="p-1.5 text-forest hover:bg-forest/10 rounded-lg transition-colors"
-                                                            title="Confirmer"
+                                                            title={t('investment_requests.actions.confirm')}
                                                         >
                                                             <CheckCircle className="w-5 h-5" />
                                                         </button>
-                                                        <button 
+                                                        <button
                                                             onClick={() => updateStatus(req.id, 'refusé')}
                                                             className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                                            title="Refuser"
+                                                            title={t('investment_requests.actions.refuse')}
                                                         >
                                                             <XCircle className="w-5 h-5" />
                                                         </button>
                                                     </>
                                                 )}
                                                 {req.status !== 'annulé' && req.status !== 'en attente' && (
-                                                     <button 
-                                                     onClick={() => updateStatus(req.id, 'annulé')}
-                                                     className="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
-                                                     title="Annuler"
-                                                 >
-                                                     <Ban className="w-5 h-5" />
-                                                 </button>
+                                                    <button
+                                                        onClick={() => updateStatus(req.id, 'annulé')}
+                                                        className="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
+                                                        title={t('investment_requests.actions.cancel')}
+                                                    >
+                                                        <Ban className="w-5 h-5" />
+                                                    </button>
                                                 )}
                                             </div>
                                         </td>
@@ -189,7 +191,7 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
                                             <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
                                                 <Search className="w-6 h-6 text-slate-400" />
                                             </div>
-                                            <p>Aucune demande trouvée.</p>
+                                            <p>{t('investment_requests.no_requests')}</p>
                                         </div>
                                     </td>
                                 </tr>

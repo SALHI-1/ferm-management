@@ -4,10 +4,16 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { useTrans } from '@/Hooks/useTrans';
 import { Menu, X } from 'lucide-react';
 
 export default function AuthenticatedLayout({ header, children }: any) {
-    const user = (usePage().props as any).auth.user;
+    const { auth, locale } = usePage().props as any;
+    const user = auth.user;
+    const { t } = useTrans();
+
+    const toggleLocale = locale === 'en' ? 'fr' : 'en';
+    const toggleLabel = locale === 'en' ? 'FR' : 'EN';
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -29,12 +35,19 @@ export default function AuthenticatedLayout({ header, children }: any) {
                                     href={route('dashboard')}
                                     active={!!(route as any)().current('dashboard')}
                                 >
-                                    Dashboard
+                                    {t('nav.dashboard')}
                                 </NavLink>
                             </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                            <div className="mr-3">
+                                <a href={route('language.switch', { locale: toggleLocale })}
+                                   className="rounded-full px-3 py-1.5 text-xs font-bold transition-opacity hover:opacity-80 border bg-cream-50"
+                                   style={{ borderColor: '#bc6b43', color: '#bc6b43' }}>
+                                    {toggleLabel}
+                                </a>
+                            </div>
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -65,14 +78,14 @@ export default function AuthenticatedLayout({ header, children }: any) {
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
-                                            Profile
+                                            {t('layout.profile')}
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            {t('layout.logout')}
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -80,6 +93,13 @@ export default function AuthenticatedLayout({ header, children }: any) {
                         </div>
 
                         <div className="-me-2 flex items-center sm:hidden">
+                            <div className="mr-3">
+                                <a href={route('language.switch', { locale: toggleLocale })}
+                                   className="rounded-full px-3 py-1.5 text-xs font-bold transition-opacity hover:opacity-80 border bg-cream-50"
+                                   style={{ borderColor: '#bc6b43', color: '#bc6b43' }}>
+                                    {toggleLabel}
+                                </a>
+                            </div>
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
@@ -109,7 +129,7 @@ export default function AuthenticatedLayout({ header, children }: any) {
                             href={route('dashboard')}
                             active={!!(route as any)().current('dashboard')}
                         >
-                            Dashboard
+                            {t('nav.dashboard')}
                         </ResponsiveNavLink>
                     </div>
 
@@ -125,14 +145,14 @@ export default function AuthenticatedLayout({ header, children }: any) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
+                                {t('layout.profile')}
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
                                 as="button"
                             >
-                                Log Out
+                                {t('layout.logout')}
                             </ResponsiveNavLink>
                         </div>
                     </div>
