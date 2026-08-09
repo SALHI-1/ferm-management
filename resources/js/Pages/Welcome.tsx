@@ -5,6 +5,8 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useTrans } from '@/Hooks/useTrans';
+import { Globe, Check } from 'lucide-react';
+import Dropdown from '@/Components/Dropdown';
 
 /* ── inline brand tokens (no Tailwind config change needed) ── */
 const C = {
@@ -109,11 +111,45 @@ export default function Welcome({ auth }: any) {
                                 ))}
                             </div>
                             
-                            <a href={route('language.switch', { locale: toggleLocale })}
-                               className="cf-sans rounded-full px-3 py-1.5 text-xs font-bold transition-opacity hover:opacity-80 border"
-                               style={{ borderColor: C.copper, color: C.copper }}>
-                                {toggleLabel}
-                            </a>
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <button
+                                        type="button"
+                                        className="inline-flex items-center justify-center rounded-full p-2 text-ink/70 hover:bg-ink/5 hover:text-ink border border-transparent transition-all duration-200"
+                                    >
+                                        <Globe className="h-5 w-5" />
+                                    </button>
+                                </Dropdown.Trigger>
+                                <Dropdown.Content 
+                                    align="right" 
+                                    width="32"
+                                    containerClasses="rounded-2xl border border-white/40 shadow-[0_24px_40px_-12px_rgba(0,0,0,0.15)] bg-white/50 backdrop-blur-2xl"
+                                    contentClasses="p-1.5 space-y-1"
+                                >
+                                    <a
+                                        href={route('language.switch', { locale: 'fr' })}
+                                        className={`group relative flex items-center justify-between w-full px-3 py-2 text-sm font-bold tracking-widest transition-all duration-300 rounded-xl ${
+                                            locale === 'fr' 
+                                                ? 'bg-forest/10 text-forest shadow-[inset_0_1px_1px_rgba(255,255,255,0.7)]' 
+                                                : 'text-ink/60 hover:bg-white/60 hover:text-ink'
+                                        }`}
+                                    >
+                                        <span>FR</span>
+                                        {locale === 'fr' && <Check className="h-4 w-4 text-forest drop-shadow-sm" />}
+                                    </a>
+                                    <a
+                                        href={route('language.switch', { locale: 'en' })}
+                                        className={`group relative flex items-center justify-between w-full px-3 py-2 text-sm font-bold tracking-widest transition-all duration-300 rounded-xl ${
+                                            locale === 'en' 
+                                                ? 'bg-forest/10 text-forest shadow-[inset_0_1px_1px_rgba(255,255,255,0.7)]' 
+                                                : 'text-ink/60 hover:bg-white/60 hover:text-ink'
+                                        }`}
+                                    >
+                                        <span>EN</span>
+                                        {locale === 'en' && <Check className="h-4 w-4 text-forest drop-shadow-sm" />}
+                                    </a>
+                                </Dropdown.Content>
+                            </Dropdown>
 
                             {auth.user ? (
                                 <Link href={route('dashboard')}

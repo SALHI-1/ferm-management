@@ -38,7 +38,9 @@ const Trigger = ({ children }: any) => {
 const Content = ({
     align = 'right',
     width = '48',
-    contentClasses = 'py-1.5 bg-white', children }: any) => {
+    contentClasses = 'py-1.5 bg-white',
+    containerClasses = 'rounded-xl shadow-premium-md border border-slate-100',
+    children }: any) => {
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = 'origin-top';
@@ -53,6 +55,8 @@ const Content = ({
 
     if (width === '48') {
         widthClasses = 'w-48';
+    } else if (width === '32') {
+        widthClasses = 'w-32';
     }
 
     return (
@@ -67,7 +71,7 @@ const Content = ({
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-                    className={`absolute z-50 mt-2.5 rounded-xl shadow-premium-md border border-slate-100 ${alignmentClasses} ${widthClasses}`}
+                    className={`absolute z-50 mt-2.5 ${containerClasses} ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
                     <div

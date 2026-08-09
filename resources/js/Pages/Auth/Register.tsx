@@ -27,7 +27,7 @@ export default function Register() {
 
             <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold text-ink-900 font-display">Créer un compte</h1>
-                <p className="text-sm text-ink/60 mt-1">Rejoignez la plateforme CoFarm & Partners</p>
+                <p className="text-sm text-ink/60 mt-1">Rejoignez la plateforme Ferm Project</p>
             </div>
 
             <form onSubmit={submit} className="space-y-5">

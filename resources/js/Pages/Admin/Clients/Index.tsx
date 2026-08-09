@@ -149,7 +149,7 @@ export default function ClientIndex({ clients }: Props) {
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
-                        
+
                         <form onSubmit={submit} className="p-6 space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
@@ -163,7 +163,7 @@ export default function ClientIndex({ clients }: Props) {
                                     {errors.nom && <p className="text-red-500 text-xs mt-1">{errors.nom}</p>}
                                 </div>
                             </div>
-                            
+
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
                                 <input type="email" value={data.email} onChange={e => setData('email', e.target.value)} className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" required />
@@ -186,7 +186,7 @@ export default function ClientIndex({ clients }: Props) {
 
                             <div className="pt-4 border-t border-slate-100">
                                 <h4 className="text-sm font-bold text-forest mb-4">Mot de passe</h4>
-                                
+
                                 {editingClient && (
                                     <p className="text-xs text-slate-500 mb-4">
                                         Laissez les champs vides si vous ne souhaitez pas modifier le mot de passe actuel.
@@ -198,11 +198,11 @@ export default function ClientIndex({ clients }: Props) {
                                         <label className="block text-sm font-semibold text-slate-700 mb-1">
                                             {editingClient ? 'Nouveau mot de passe' : 'Mot de passe'} {editingClient ? '' : <span className="text-red-500">*</span>}
                                         </label>
-                                        <input 
-                                            type="password" 
-                                            value={data.password} 
-                                            onChange={e => setData('password', e.target.value)} 
-                                            className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" 
+                                        <input
+                                            type="password"
+                                            value={data.password}
+                                            onChange={e => setData('password', e.target.value)}
+                                            className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500"
                                             required={!editingClient}
                                         />
                                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
@@ -211,11 +211,11 @@ export default function ClientIndex({ clients }: Props) {
                                         <label className="block text-sm font-semibold text-slate-700 mb-1">
                                             Confirmer le mot de passe {editingClient ? '' : <span className="text-red-500">*</span>}
                                         </label>
-                                        <input 
-                                            type="password" 
-                                            value={data.password_confirmation} 
-                                            onChange={e => setData('password_confirmation', e.target.value)} 
-                                            className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" 
+                                        <input
+                                            type="password"
+                                            value={data.password_confirmation}
+                                            onChange={e => setData('password_confirmation', e.target.value)}
+                                            className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500"
                                             required={!editingClient}
                                         />
                                     </div>
