@@ -630,5 +630,38 @@
   "profile_edit": {
     "app_layout_title": "My Profile",
     "head_title": "Profile"
+  },
+  "delete_user_form": {
+    "title": "Danger Zone",
+    "description": "Deleting your account is permanent. All of your data will be permanently deleted.",
+    "delete_button": "Delete Account",
+    "modal": {
+      "title": "Are you sure you want to delete your account?",
+      "description": "This action cannot be undone. Please enter your password to confirm.",
+      "password_label": "Password",
+      "password_placeholder": "Your password",
+      "cancel_button": "Cancel",
+      "confirm_button": "Confirm Deletion"
+    }
+  },
+  "update_password_form": {
+    "title": "Update Password",
+    "description": "Ensure your account is using a long, random password to stay secure.",
+    "current_password_label": "Current Password",
+    "new_password_label": "New Password",
+    "confirm_password_label": "Confirm Password",
+    "save_button": "Save",
+    "saved_message": "✓ Saved"
+  },
+  "update_profile_information": {
+    "title": "Profile Information",
+    "description": "Update your account's profile information and email address.",
+    "name_label": "Name",
+    "email_label": "Email",
+    "unverified_email": "Your email address is unverified.",
+    "resend_verification_link": "Click here to re-send the verification email.",
+    "verification_link_sent": "A new verification link has been sent to your email address.",
+    "save_button": "Save",
+    "saved_message": "✓ Saved"
   }
 }

@@ -4,9 +4,11 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
+import { useTrans } from '@/Hooks/useTrans';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail, status, className = '' }: any) {
+    const { t } = useTrans();
     const user = (usePage().props as any).auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
@@ -24,16 +26,16 @@ export default function UpdateProfileInformation({
         <section className={className}>
             <header>
                 <h2 className="text-lg font-bold text-forest font-display">
-                    Informations du profil
+                    {t('update_profile_information.title')}
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
-                    Mettez à jour vos informations personnelles et votre adresse email.
+                    {t('update_profile_information.description')}
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-5">
                 <div>
-                    <InputLabel htmlFor="name" value="Nom" />
+                    <InputLabel htmlFor="name" value={t('update_profile_information.name_label')} />
                     <TextInput
                         id="name"
                         className="mt-1.5 block w-full"
@@ -47,7 +49,7 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value={t('update_profile_information.email_label')} />
                     <TextInput
                         id="email"
                         type="email"
@@ -63,27 +65,27 @@ export default function UpdateProfileInformation({
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="mt-2 text-sm text-slate-700">
-                            Votre adresse email n'est pas vérifiée.
+                            {t('update_profile_information.unverified_email')}{' '}
                             <Link
                                 href={route('verification.send')}
                                 method="post"
                                 as="button"
                                 className="ml-1 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors"
                             >
-                                Renvoyer le lien de vérification.
+                                {t('update_profile_information.resend_verification_link')}
                             </Link>
                         </p>
 
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 text-sm font-medium text-forest">
-                                Un nouveau lien de vérification a été envoyé.
+                                {t('update_profile_information.verification_link_sent')}
                             </div>
                         )}
                     </div>
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Sauvegarder</PrimaryButton>
+                    <PrimaryButton disabled={processing}>{t('update_profile_information.save_button')}</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -93,7 +95,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-forest font-medium">
-                            ✓ Enregistré
+                            {t('update_profile_information.saved_message')}
                         </p>
                     </Transition>
                 </div>

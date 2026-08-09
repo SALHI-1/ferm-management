@@ -626,5 +626,42 @@
       "cancel": "Annuler",
       "add": "Ajouter"
     }
+  },
+  "profile_edit": {
+    "app_layout_title": "Mon Profil",
+    "head_title": "Profil"
+  },
+  "delete_user_form": {
+    "title": "Zone de danger",
+    "description": "La suppression de votre compte est irréversible. Toutes vos données seront définitivement effacées.",
+    "delete_button": "Supprimer mon compte",
+    "modal": {
+      "title": "Êtes-vous sûr de vouloir supprimer votre compte ?",
+      "description": "Cette action est irréversible. Entrez votre mot de passe pour confirmer.",
+      "password_label": "Mot de passe",
+      "password_placeholder": "Votre mot de passe",
+      "cancel_button": "Annuler",
+      "confirm_button": "Confirmer la suppression"
+    }
+  },
+  "update_password_form": {
+    "title": "Modifier le mot de passe",
+    "description": "Utilisez un mot de passe long et aléatoire pour rester en sécurité.",
+    "current_password_label": "Mot de passe actuel",
+    "new_password_label": "Nouveau mot de passe",
+    "confirm_password_label": "Confirmer le mot de passe",
+    "save_button": "Sauvegarder",
+    "saved_message": "✓ Enregistré"
+  },
+  "update_profile_information": {
+    "title": "Informations du profil",
+    "description": "Mettez à jour vos informations personnelles et votre adresse email.",
+    "name_label": "Nom",
+    "email_label": "Email",
+    "unverified_email": "Votre adresse email n'est pas vérifiée.",
+    "resend_verification_link": "Renvoyer le lien de vérification.",
+    "verification_link_sent": "Un nouveau lien de vérification a été envoyé.",
+    "save_button": "Sauvegarder",
+    "saved_message": "✓ Enregistré"
   }
 }

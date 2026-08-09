@@ -7,8 +7,10 @@ import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
+import { useTrans } from '@/Hooks/useTrans';
 
 export default function DeleteUserForm({ className = '' }: any) {
+    const { t } = useTrans();
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const passwordInput = useRef<any>(null);
 
@@ -32,28 +34,28 @@ export default function DeleteUserForm({ className = '' }: any) {
         <section className={`space-y-6 ${className}`}>
             <header>
                 <h2 className="text-lg font-bold text-red-600 font-display flex items-center gap-2">
-                    <AlertTriangle className="h-5 w-5" /> Zone de danger
+                    <AlertTriangle className="h-5 w-5" /> {t('delete_user_form.title')}
                 </h2>
                 <p className="mt-1 text-sm text-slate-500">
-                    La suppression de votre compte est irréversible. Toutes vos données seront définitivement effacées.
+                    {t('delete_user_form.description')}
                 </p>
             </header>
 
             <DangerButton onClick={confirmUserDeletion}>
-                Supprimer mon compte
+                {t('delete_user_form.delete_button')}
             </DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className="text-lg font-bold text-forest font-display">
-                        Êtes-vous sûr de vouloir supprimer votre compte ?
+                        {t('delete_user_form.modal.title')}
                     </h2>
                     <p className="mt-2 text-sm text-slate-500">
-                        Cette action est irréversible. Entrez votre mot de passe pour confirmer.
+                        {t('delete_user_form.modal.description')}
                     </p>
 
                     <div className="mt-6">
-                        <InputLabel htmlFor="password" value="Mot de passe" className="sr-only" />
+                        <InputLabel htmlFor="password" value={t('delete_user_form.modal.password_label')} className="sr-only" />
                         <TextInput
                             id="password"
                             type="password"
@@ -63,14 +65,14 @@ export default function DeleteUserForm({ className = '' }: any) {
                             onChange={(e: any) => setData('password', e.target.value)}
                             className="mt-1 block w-3/4"
                             isFocused
-                            placeholder="Votre mot de passe"
+                            placeholder={t('delete_user_form.modal.password_placeholder')}
                         />
                         <InputError message={errors.password} className="mt-2" />
                     </div>
 
                     <div className="mt-6 flex justify-end gap-3">
-                        <SecondaryButton onClick={closeModal}>Annuler</SecondaryButton>
-                        <DangerButton disabled={processing}>Confirmer la suppression</DangerButton>
+                        <SecondaryButton onClick={closeModal}>{t('delete_user_form.modal.cancel_button')}</SecondaryButton>
+                        <DangerButton disabled={processing}>{t('delete_user_form.modal.confirm_button')}</DangerButton>
                     </div>
                 </form>
             </Modal>
