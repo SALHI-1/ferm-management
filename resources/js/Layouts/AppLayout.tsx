@@ -70,6 +70,12 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
             show: isAdmin,
         },
         {
+            href: '/admin/ferme-bilan',
+            label: t('nav.ferme_bilan'),
+            icon: TrendingUp,
+            show: isSuperAdmin,
+        },
+        {
             href: '/admin/staff',
             label: t('nav.staff'),
             icon: ShieldAlert,

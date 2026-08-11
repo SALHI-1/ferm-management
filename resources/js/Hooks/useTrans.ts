@@ -12,10 +12,9 @@ export function useTrans() {
 
         if (replace && typeof translation === 'string') {
             Object.keys(replace).forEach(replaceKey => {
-                translation = (translation as string).replace(
-                    new RegExp('{{' + replaceKey + '}}', 'g'),
-                    String(replace[replaceKey])
-                );
+                translation = (translation as string)
+                    .replace(new RegExp('{{' + replaceKey + '}}', 'g'), String(replace[replaceKey]))
+                    .replace(new RegExp(':' + replaceKey + '\\b', 'g'), String(replace[replaceKey]));
             });
         }
 

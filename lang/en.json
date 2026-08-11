@@ -1,671 +1,729 @@
 {
-  "nav": {
-    "dashboard": "Dashboard",
-    "cheptel": "Livestock",
-    "bilan": "Annual Report",
-    "clients": "Clients",
-    "investments": "Investments",
-    "staff": "Staff",
-    "traceability": "Traceability",
-    "visit_requests": "Visit Requests",
-    "visits": "Visits"
-  },
-  "roles": {
-    "super_admin": "Super Admin",
-    "admin": "Admin",
-    "manager": "Manager",
-    "client": "Client / Investor"
-  },
-  "layout": {
-    "menu": "Menu",
-    "logout": "Log Out",
-    "profile": "Profile"
-  },
-  "welcome": {
-    "title": "CoFarm Dairy Partners — Investment Opportunity",
-    "nav_how_it_works": "How it works",
-    "nav_returns": "Returns",
-    "nav_market": "Market",
-    "nav_faq": "FAQ",
-    "nav_dashboard": "My Dashboard",
-    "nav_login": "Log In",
-    "hero_eyebrow": "CO-INVESTMENT OPPORTUNITY 2026",
-    "hero_desc": "Own a productive dairy cow. We raise it, sell the milk, and share the profits with you.",
-    "hero_quote": "You don't need a farm to be a farmer",
-    "hero_btn_invest": "I want to invest",
-    "hero_btn_how": "How does it work?",
-    "hero_stat_1_val": "39,000",
-    "hero_stat_1_unit": "MAD",
-    "hero_stat_1_label": "per dairy cow",
-    "hero_stat_2_val": "2.4",
-    "hero_stat_2_unit": "×",
-    "hero_stat_2_label": "over 5 years",
-    "hero_stat_3_val": "~27",
-    "hero_stat_3_unit": "months",
-    "hero_stat_3_label": "payback",
-    "hero_badge_title": "Real Asset",
-    "hero_badge_desc": "Insured & traceable Holstein cow",
-    "model_eyebrow": "MODEL",
-    "model_title": "The Co-Investment Model",
-    "model_desc": "A win-win partnership where each party brings value.",
-    "model_step_1_title": "You invest",
-    "model_step_1_desc": "39,000 MAD funds the purchase of a Holstein cow — a real, insured, and traceable asset.",
-    "model_step_2_title": "We operate",
-    "model_step_2_desc": "We provide the land, feed, labor, and veterinary care.",
-    "model_step_3_title": "We share",
-    "model_step_3_desc": "Net profit from milk and annual calf sales is shared 50/50.",
-    "model_disclaimer": "* Returns are based on data from our partner farms. Investing involves risks. We commit to total transparency.",
-    "returns_eyebrow": "RETURNS",
-    "returns_title": "Clear numbers, honest projections",
-    "returns_desc": "Based on our actual milk production and calf sales data.",
-    "market_eyebrow": "MARKET",
-    "market_title": "A Moroccan dairy sector in high demand",
-    "market_desc": "Local production does not meet national consumption — a sustainable structural opportunity.",
-    "faq_eyebrow": "FAQ",
-    "faq_title": "Frequently Asked Questions",
-    "invest_eyebrow": "INVEST",
-    "invest_title": "Join the Adventure",
-    "invest_desc": "Fill out this form — our team will contact you shortly.",
-    "invest_why_title": "Why join us?",
-    "invest_why_desc": "A tangible, traceable, and profitable investment in Moroccan agriculture.",
-    "invest_point_1": "No initial commitment",
-    "invest_point_2": "Confidential information",
-    "invest_point_3": "Personalized support",
-    "invest_success": "Request Sent!",
-    "invest_success_desc": "We have received your investment request.",
-    "invest_submit_another": "Submit another request",
-    "invest_success_modal_title": "Request Sent",
-    "invest_success_modal_desc": "Your request has been successfully recorded. Our team will carefully review it and contact you very soon.",
-    "invest_success_modal_btn": "Close",
-    "form_firstname": "First Name",
-    "form_lastname": "Last Name",
-    "form_email": "Email Address",
-    "form_email_unique": "This email is already used for another investment request.",
-    "form_phone": "Phone Number",
-    "form_submit": "Submit my investment request",
-    "footer_quote": "You don't need a farm to be a farmer.",
-    "footer_rights": "© {{year}} CoFarm Dairy Partners by CoFarm & Partners. All rights reserved."
-  },
-  "login": {
-    "title": "Welcome",
-    "feature_1_title": "Security & Traceability",
-    "feature_1_desc": "Protected and historical data",
-    "feature_2_title": "Real-time Profitability",
-    "feature_2_desc": "Up-to-date financial indicators",
-    "feature_3_title": "Secure Multi-roles",
-    "feature_3_desc": "Tailored access for each user",
-    "badge": "Agricultural management platform",
-    "heading": "Manage your <span class=\"text-copper\">farm</span> with precision",
-    "subheading": "Livestock tracking, traceability, investments and profitability — all in a modern and secure interface.",
-    "footer": "© {{year}} CoFarm & Partners — All rights reserved.",
-    "already_logged_in": "You are already logged in",
-    "go_to_dashboard": "Go to Dashboard",
-    "welcome_back": "Welcome back",
-    "login_desc": "Log in to your secure space",
-    "email": "Email Address",
-    "password": "Password",
-    "remember_me": "Remember me",
-    "forgot_password": "Forgot your password?",
-    "submit": "Log in"
-  },
-  "admin_login": {
-    "head_title": "Administration Login",
-    "title": "Staff Portal",
-    "subtitle": "Reserved for Administrators and Managers",
-    "email_label": "Professional email address",
-    "password_label": "Password",
-    "submit_button": "Log in to Backoffice"
-  },
-  "forgot_password": {
-    "head_title": "Forgot Password",
-    "title": "Forgot Password?",
-    "description": "Enter your email address and we will send you a link to reset your password.",
-    "email_placeholder": "your@email.com",
-    "submit_button": "Send Reset Link"
-  },
-  "reset_password": {
-    "head_title": "Reset Password",
-    "title": "New Password",
-    "subtitle": "Choose a strong and secure password",
-    "email_label": "Email address",
-    "password_label": "New password",
-    "password_confirmation_label": "Confirm password",
-    "submit_button": "Reset Password"
-  },
-  "confirm_password": {
-    "head_title": "Confirm Password",
-    "title": "Secure Area",
-    "description": "Please confirm your password before continuing.",
-    "password_label": "Password",
-    "submit_button": "Confirm"
-  },
-  "verify_email": {
-    "head_title": "Email Verification",
-    "title": "Verify Your Email",
-    "description": "Thank you for registering! Click the link we just sent to your email to verify your address.",
-    "link_sent_status": "A new verification link has been sent.",
-    "resend_button": "Resend Verification Email",
-    "logout_button": "Log Out"
-  },
-  "admin_dashboard": {
-    "app_layout_title": "Admin Dashboard - Statistics",
-    "head_title": "Admin Dashboard",
-    "stat_users": "Users",
-    "stat_total_cattle": "Total Cattle",
-    "stat_investments": "Investments",
-    "user_distribution_title": "User Distribution",
-    "platform_overview_title": "Platform Overview",
-    "tooltip_users": "Users",
-    "tooltip_quantity": "Quantity",
-    "roles": {
-      "admins": "Admins",
-      "managers": "Managers",
-      "clients": "Clients"
-    },
-    "chart_labels": {
-      "users": "Users",
-      "cattle": "Cattle",
-      "investments": "Investments"
-    }
-  },
-  "investment_requests": {
-    "title": "Investment Requests",
-    "section_title": "All Requests",
-    "subtitle": "Manage requests to join the CoFarm Dairy Partners program.",
-    "search_placeholder": "Search...",
-    "filter_all_statuses": "All Statuses",
-    "statuses": {
-      "en attente": "Pending",
-      "confirmé": "Confirmed",
-      "refusé": "Refused",
-      "annulé": "Cancelled"
-    },
-    "table": {
-      "investor": "Investor",
-      "contact": "Contact",
-      "request_date": "Request Date",
-      "status": "Status",
-      "actions": "Actions"
-    },
-    "no_requests": "No requests found.",
-    "actions": {
-      "confirm": "Confirm",
-      "refuse": "Reject",
-      "cancel": "Cancel"
-    }
-  },
-  "traceability": {
-    "app_layout_title": "Activity Traceability",
-    "head_title": "Traceability",
-    "section_title": "Managers Activity Log",
-    "load_more": "Load More",
-    "loading": "Loading...",
-    "empty_title": "No Recent Activity",
-    "empty_description": "Managers' actions will appear here."
-  },
-  "admin_visites": {
-    "title": "Visits Management",
-    "subtitle": "Visit Requests",
-    "description": "Manage customer visit requests",
-    "search_placeholder": "Search a customer...",
-    "table": {
-      "client": "Customer",
-      "date_time": "Date & Time",
-      "status": "Status",
-      "actions": "Actions"
-    },
-    "status": {
-      "pending": "Pending",
-      "accepted": "Accepted",
-      "rejected": "Rejected"
-    },
-    "actions": {
-      "accept": "Accept",
-      "reject": "Reject",
-      "view_reason": "View reason"
-    },
-    "empty_state": "No visit requests found.",
-    "confirm_accept": "Are you sure you want to accept this visit?",
-    "modal": {
-      "reason_title": "Reason for rejection",
-      "reject_title": "Reject visit",
-      "main_reason": "Main reason",
-      "additional_comment": "Additional comment",
-      "close": "Close",
-      "reason_label": "Reason for rejection (required)",
-      "select_reason": "Select a reason",
-      "comment_label": "Additional comment (optional)",
-      "comment_placeholder": "Add details if necessary...",
-      "cancel": "Cancel",
-      "confirm_reject": "Confirm rejection",
-      "rejecting": "Rejecting..."
-    },
-    "reject_reasons": {
-      "staff_unavailable": "Staff unavailable",
-      "farm_closed": "Farm closed on this date",
-      "capacity_reached": "Capacity reached",
-      "bad_weather": "Bad weather conditions",
-      "other": "Other"
-    }
-  },
-  "staff_management": {
-    "app_layout_title": "Staff Management",
-    "head_title": "Staff",
-    "section_title": "Staff Members",
-    "new_member_button": "New Member",
-    "you": "(You)",
-    "empty_state": "No staff members registered.",
-    "table": {
-      "full_name": "Full Name",
-      "role": "Role",
-      "email": "Email",
-      "phone": "Phone",
-      "actions": "Actions"
+    "nav": {
+        "dashboard": "Dashboard",
+        "cheptel": "Livestock",
+        "bilan": "Annual Report",
+        "clients": "Clients",
+        "investments": "Investments",
+        "staff": "Staff",
+        "traceability": "Traceability",
+        "visit_requests": "Visit Requests",
+        "visits": "Visits",
+        "ferme_bilan": "Farm Financials"
     },
     "roles": {
-      "manager": "Manager",
-      "admin": "Admin",
-      "super_admin": "Super Admin"
+        "super_admin": "Super Admin",
+        "admin": "Admin",
+        "manager": "Manager",
+        "client": "Client \/ Investor"
     },
-    "alerts": {
-      "cannot_delete_self": "You cannot delete yourself.",
-      "confirm_archive": "Are you sure you want to archive this staff member?"
+    "layout": {
+        "menu": "Menu",
+        "logout": "Log Out",
+        "profile": "Profile"
     },
-    "modal": {
-      "add_title": "Add Member",
-      "edit_title": "Edit Member",
-      "first_name": "First Name",
-      "last_name": "Last Name",
-      "email": "Email",
-      "phone": "Phone",
-      "role": "Role",
-      "password_section": "Password",
-      "password_help": "Leave fields empty if you do not wish to change the current password.",
-      "password": "Password",
-      "new_password": "New Password",
-      "confirm_password": "Confirm Password",
-      "cancel": "Cancel",
-      "create_button": "Create",
-      "update_button": "Update"
+    "welcome": {
+        "title": "CoFarm Dairy Partners — Investment Opportunity",
+        "nav_how_it_works": "How it works",
+        "nav_returns": "Returns",
+        "nav_market": "Market",
+        "nav_faq": "FAQ",
+        "nav_dashboard": "My Dashboard",
+        "nav_login": "Log In",
+        "hero_eyebrow": "CO-INVESTMENT OPPORTUNITY 2026",
+        "hero_desc": "Own a productive dairy cow. We raise it, sell the milk, and share the profits with you.",
+        "hero_quote": "You don't need a farm to be a farmer",
+        "hero_btn_invest": "I want to invest",
+        "hero_btn_how": "How does it work?",
+        "hero_stat_1_val": "39,000",
+        "hero_stat_1_unit": "MAD",
+        "hero_stat_1_label": "per dairy cow",
+        "hero_stat_2_val": "2.4",
+        "hero_stat_2_unit": "×",
+        "hero_stat_2_label": "over 5 years",
+        "hero_stat_3_val": "~27",
+        "hero_stat_3_unit": "months",
+        "hero_stat_3_label": "payback",
+        "hero_badge_title": "Real Asset",
+        "hero_badge_desc": "Insured & traceable Holstein cow",
+        "model_eyebrow": "MODEL",
+        "model_title": "The Co-Investment Model",
+        "model_desc": "A win-win partnership where each party brings value.",
+        "model_step_1_title": "You invest",
+        "model_step_1_desc": "39,000 MAD funds the purchase of a Holstein cow — a real, insured, and traceable asset.",
+        "model_step_2_title": "We operate",
+        "model_step_2_desc": "We provide the land, feed, labor, and veterinary care.",
+        "model_step_3_title": "We share",
+        "model_step_3_desc": "Net profit from milk and annual calf sales is shared 50\/50.",
+        "model_disclaimer": "* Returns are based on data from our partner farms. Investing involves risks. We commit to total transparency.",
+        "returns_eyebrow": "RETURNS",
+        "returns_title": "Clear numbers, honest projections",
+        "returns_desc": "Based on our actual milk production and calf sales data.",
+        "market_eyebrow": "MARKET",
+        "market_title": "A Moroccan dairy sector in high demand",
+        "market_desc": "Local production does not meet national consumption — a sustainable structural opportunity.",
+        "faq_eyebrow": "FAQ",
+        "faq_title": "Frequently Asked Questions",
+        "invest_eyebrow": "INVEST",
+        "invest_title": "Join the Adventure",
+        "invest_desc": "Fill out this form — our team will contact you shortly.",
+        "invest_why_title": "Why join us?",
+        "invest_why_desc": "A tangible, traceable, and profitable investment in Moroccan agriculture.",
+        "invest_point_1": "No initial commitment",
+        "invest_point_2": "Confidential information",
+        "invest_point_3": "Personalized support",
+        "invest_success": "Request Sent!",
+        "invest_success_desc": "We have received your investment request.",
+        "invest_submit_another": "Submit another request",
+        "invest_success_modal_title": "Request Sent",
+        "invest_success_modal_desc": "Your request has been successfully recorded. Our team will carefully review it and contact you very soon.",
+        "invest_success_modal_btn": "Close",
+        "form_firstname": "First Name",
+        "form_lastname": "Last Name",
+        "form_email": "Email Address",
+        "form_email_unique": "This email is already used for another investment request.",
+        "form_phone": "Phone Number",
+        "form_submit": "Submit my investment request",
+        "footer_quote": "You don't need a farm to be a farmer.",
+        "footer_rights": "© {{year}} CoFarm Dairy Partners by CoFarm & Partners. All rights reserved."
+    },
+    "login": {
+        "title": "Welcome",
+        "feature_1_title": "Security & Traceability",
+        "feature_1_desc": "Protected and historical data",
+        "feature_2_title": "Real-time Profitability",
+        "feature_2_desc": "Up-to-date financial indicators",
+        "feature_3_title": "Secure Multi-roles",
+        "feature_3_desc": "Tailored access for each user",
+        "badge": "Agricultural management platform",
+        "heading": "Manage your <span class=\"text-copper\">farm<\/span> with precision",
+        "subheading": "Livestock tracking, traceability, investments and profitability — all in a modern and secure interface.",
+        "footer": "© {{year}} CoFarm & Partners — All rights reserved.",
+        "already_logged_in": "You are already logged in",
+        "go_to_dashboard": "Go to Dashboard",
+        "welcome_back": "Welcome back",
+        "login_desc": "Log in to your secure space",
+        "email": "Email Address",
+        "password": "Password",
+        "remember_me": "Remember me",
+        "forgot_password": "Forgot your password?",
+        "submit": "Log in"
+    },
+    "admin_login": {
+        "head_title": "Administration Login",
+        "title": "Staff Portal",
+        "subtitle": "Reserved for Administrators and Managers",
+        "email_label": "Professional email address",
+        "password_label": "Password",
+        "submit_button": "Log in to Backoffice"
+    },
+    "forgot_password": {
+        "head_title": "Forgot Password",
+        "title": "Forgot Password?",
+        "description": "Enter your email address and we will send you a link to reset your password.",
+        "email_placeholder": "your@email.com",
+        "submit_button": "Send Reset Link"
+    },
+    "reset_password": {
+        "head_title": "Reset Password",
+        "title": "New Password",
+        "subtitle": "Choose a strong and secure password",
+        "email_label": "Email address",
+        "password_label": "New password",
+        "password_confirmation_label": "Confirm password",
+        "submit_button": "Reset Password"
+    },
+    "confirm_password": {
+        "head_title": "Confirm Password",
+        "title": "Secure Area",
+        "description": "Please confirm your password before continuing.",
+        "password_label": "Password",
+        "submit_button": "Confirm"
+    },
+    "verify_email": {
+        "head_title": "Email Verification",
+        "title": "Verify Your Email",
+        "description": "Thank you for registering! Click the link we just sent to your email to verify your address.",
+        "link_sent_status": "A new verification link has been sent.",
+        "resend_button": "Resend Verification Email",
+        "logout_button": "Log Out"
+    },
+    "admin_dashboard": {
+        "app_layout_title": "Admin Dashboard - Statistics",
+        "head_title": "Admin Dashboard",
+        "stat_users": "Users",
+        "stat_total_cattle": "Total Cattle",
+        "stat_investments": "Investments",
+        "user_distribution_title": "User Distribution",
+        "platform_overview_title": "Platform Overview",
+        "tooltip_users": "Users",
+        "tooltip_quantity": "Quantity",
+        "roles": {
+            "admins": "Admins",
+            "managers": "Managers",
+            "clients": "Clients"
+        },
+        "chart_labels": {
+            "users": "Users",
+            "cattle": "Cattle",
+            "investments": "Investments"
+        }
+    },
+    "investment_requests": {
+        "title": "Investment Requests",
+        "section_title": "All Requests",
+        "subtitle": "Manage requests to join the CoFarm Dairy Partners program.",
+        "search_placeholder": "Search...",
+        "filter_all_statuses": "All Statuses",
+        "statuses": {
+            "en attente": "Pending",
+            "confirmé": "Confirmed",
+            "refusé": "Refused",
+            "annulé": "Cancelled"
+        },
+        "table": {
+            "investor": "Investor",
+            "contact": "Contact",
+            "request_date": "Request Date",
+            "status": "Status",
+            "actions": "Actions"
+        },
+        "no_requests": "No requests found.",
+        "actions": {
+            "confirm": "Confirm",
+            "refuse": "Reject",
+            "cancel": "Cancel"
+        }
+    },
+    "traceability": {
+        "app_layout_title": "Activity Traceability",
+        "head_title": "Traceability",
+        "section_title": "Managers Activity Log",
+        "load_more": "Load More",
+        "loading": "Loading...",
+        "empty_title": "No Recent Activity",
+        "empty_description": "Managers' actions will appear here."
+    },
+    "admin_visites": {
+        "title": "Visits Management",
+        "subtitle": "Visit Requests",
+        "description": "Manage customer visit requests",
+        "search_placeholder": "Search a customer...",
+        "table": {
+            "client": "Customer",
+            "date_time": "Date & Time",
+            "status": "Status",
+            "actions": "Actions"
+        },
+        "status": {
+            "pending": "Pending",
+            "accepted": "Accepted",
+            "rejected": "Rejected"
+        },
+        "actions": {
+            "accept": "Accept",
+            "reject": "Reject",
+            "view_reason": "View reason"
+        },
+        "empty_state": "No visit requests found.",
+        "confirm_accept": "Are you sure you want to accept this visit?",
+        "modal": {
+            "reason_title": "Reason for rejection",
+            "reject_title": "Reject visit",
+            "main_reason": "Main reason",
+            "additional_comment": "Additional comment",
+            "close": "Close",
+            "reason_label": "Reason for rejection (required)",
+            "select_reason": "Select a reason",
+            "comment_label": "Additional comment (optional)",
+            "comment_placeholder": "Add details if necessary...",
+            "cancel": "Cancel",
+            "confirm_reject": "Confirm rejection",
+            "rejecting": "Rejecting..."
+        },
+        "reject_reasons": {
+            "staff_unavailable": "Staff unavailable",
+            "farm_closed": "Farm closed on this date",
+            "capacity_reached": "Capacity reached",
+            "bad_weather": "Bad weather conditions",
+            "other": "Other"
+        }
+    },
+    "staff_management": {
+        "app_layout_title": "Staff Management",
+        "head_title": "Staff",
+        "section_title": "Staff Members",
+        "new_member_button": "New Member",
+        "you": "(You)",
+        "empty_state": "No staff members registered.",
+        "table": {
+            "full_name": "Full Name",
+            "role": "Role",
+            "email": "Email",
+            "phone": "Phone",
+            "actions": "Actions"
+        },
+        "roles": {
+            "manager": "Manager",
+            "admin": "Admin",
+            "super_admin": "Super Admin"
+        },
+        "alerts": {
+            "cannot_delete_self": "You cannot delete yourself.",
+            "confirm_archive": "Are you sure you want to archive this staff member?"
+        },
+        "modal": {
+            "add_title": "Add Member",
+            "edit_title": "Edit Member",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email",
+            "phone": "Phone",
+            "role": "Role",
+            "password_section": "Password",
+            "password_help": "Leave fields empty if you do not wish to change the current password.",
+            "password": "Password",
+            "new_password": "New Password",
+            "confirm_password": "Confirm Password",
+            "cancel": "Cancel",
+            "create_button": "Create",
+            "update_button": "Update"
+        }
+    },
+    "manager_dashboard": {
+        "app_layout_title": "Farm Operations Portal (Manager)",
+        "head_title": "Manager Dashboard",
+        "global_milk_production": "Global Milk Production",
+        "liters_unit": "Liters",
+        "monitored_livestock": "Monitored Livestock",
+        "cattle_unit": "Cattle",
+        "production_evolution_title": "Production Evolution (L)",
+        "tooltip_production": "Production",
+        "no_recent_data": "No recent production data."
+    },
+    "client_dashboard": {
+        "app_layout_title": "Partner Space — Dashboard",
+        "head_title": "My Dashboard",
+        "welcome_banner": "👋 Welcome to your secure space. Your assets are presented as summary statistics.",
+        "active_contracts": "Active investment contracts",
+        "contracts_unit": "Contracts",
+        "portfolio_distribution": "Portfolio Distribution",
+        "owned_share": "Owned share",
+        "owned_share_percent": ":value% of shares",
+        "cattle_ticket": "Cattle :ticket",
+        "financial_evolution": "Financial Evolution (Gains vs Costs)",
+        "all_cattle": "All cattle",
+        "gains_net": "Net Gains (MAD)",
+        "food_costs": "Food Cost (MAD)",
+        "health_costs": "Health Cost (MAD)",
+        "no_financial_data": "No financial data available."
+    },
+    "bilan_annuel": {
+        "app_layout_title": "Annual Report",
+        "head_title": "Annual Report",
+        "banner_info": "Find here the annual report of your investments. The current year is only displayed after its closure (on January 1st of the following year).",
+        "empty_title": "No history available",
+        "empty_description": "Annual reports will be displayed here once a full year has been closed.",
+        "year_title": "Year :year",
+        "calculation_error": "Calculation error",
+        "total_costs": "Total Costs",
+        "net_milk_revenue": "Net Milk Revenue",
+        "sales_revenue": "Sales Revenue",
+        "global_benefit": "Global Profit",
+        "farm_part": "Farm Share (50%)",
+        "your_net_part": "Your Net Share"
+    },
+    "cheptel_details": {
+        "app_layout_title": "Cattle Details :ticket",
+        "head_title": "Cattle :ticket",
+        "no_photo": "No photo",
+        "ticket": "Ticket:",
+        "sold_badge": "SOLD",
+        "sold_info": "Sold for :price MAD on :date",
+        "health_status": {
+            "healthy": "Healthy",
+            "pregnancy": "Gestation",
+            "sick": "Sick"
+        },
+        "born_date": "Born on:",
+        "years_old": ":age years old",
+        "origin_label": "Origin:",
+        "origin_farm": "Born on the farm",
+        "origin_purchased": "Purchased",
+        "file_label": "File:",
+        "view_document": "View document",
+        "owners_label": "Owner(s):",
+        "owned_by_farm": "Belongs to the farm",
+        "monthly_profitability": "Monthly Profitability",
+        "liter_price_label": "Liter price:",
+        "liter_price_value": "4 MAD\/L",
+        "net_profit_prefix": "Estimated net profit:",
+        "net_profit_formula": "(Production × 4 MAD) - Costs",
+        "net_profit_middle": "After 50% for the farm, your net share is",
+        "net_profit_suffix": "of profits.",
+        "table": {
+            "month": "Month",
+            "milk_produced": "Milk Produced",
+            "milk_consumed": "Milk Consumed",
+            "net_production": "Net Production",
+            "gross_revenue": "Gross Revenue",
+            "costs": "Costs",
+            "net_profit": "Net Profit",
+            "your_share": "Your Share",
+            "no_data": "No data available."
+        },
+        "costs_section": "Costs",
+        "health_section": "Health",
+        "archive_link": "Archive →",
+        "latest_events": "Latest Events",
+        "no_events": "No recorded events",
+        "offspring_section": "Offspring (:count)",
+        "no_offspring": "No offspring.",
+        "health_types": {
+            "sickness": "Sickness",
+            "pregnancy": "Gestation",
+            "routine": "Routine visit"
+        },
+        "financial_archive_modal": {
+            "title": "Financial Archive",
+            "costs_title": "Costs",
+            "food": "Food",
+            "health": "Health",
+            "other": "Other",
+            "total": "Total",
+            "consumed_milk_title": "Consumed Milk",
+            "total_quantity": "Total Quantity",
+            "productions_title": "Productions"
+        },
+        "health_archive_modal": {
+            "title": "Health Archive",
+            "status": "Status",
+            "start": "Start",
+            "end": "End",
+            "ongoing": "Ongoing"
+        },
+        "purchase_price_label": "Purchase Price :"
+    },
+    "cheptel_list": {
+        "app_layout_title": "My Cattle Investments",
+        "head_title": "My Cattle",
+        "section_title": "My Herd",
+        "table": {
+            "ear_tag_number": "Ear Tag Number",
+            "weight": "Weight (kg)",
+            "health_status": "Health Status",
+            "actions": "Actions"
+        },
+        "health_status": {
+            "healthy": "Healthy",
+            "pregnancy": "Gestation",
+            "sick": "Sick"
+        },
+        "not_available": "N\/A",
+        "view_details": "View details →",
+        "empty_state": "You have no cattle in your herd at the moment."
+    },
+    "visites": {
+        "app_layout_title": "My Visits",
+        "head_title": "My Visits",
+        "subtitle": "Your visit history",
+        "description": "Manage your visit requests to the farm",
+        "book_visit_button": "Book a visit",
+        "status": {
+            "pending": "Pending",
+            "accepted": "Accepted",
+            "rejected": "Rejected"
+        },
+        "table": {
+            "date": "Date",
+            "time": "Time",
+            "status": "Status",
+            "details_reason": "Details \/ Reason"
+        },
+        "empty_state": "You have not made any visit requests yet.",
+        "modal": {
+            "title": "Visit request",
+            "info_banner": "Your request will be reviewed by administration. You will be notified of its acceptance or rejection.",
+            "desired_date": "Desired date",
+            "desired_time": "Desired time",
+            "cancel": "Cancel",
+            "confirm_request": "Confirm request",
+            "sending": "Sending..."
+        }
+    },
+    "admin_cheptel_details": {
+        "app_layout_title": "Cattle Details :ticket",
+        "head_title": "Cattle :ticket",
+        "no_photo": "No photo",
+        "ticket": "Ticket:",
+        "sold_badge": "SOLD",
+        "sold_info": "Sold for :price MAD on :date",
+        "health_status": {
+            "healthy": "Healthy",
+            "pregnancy": "Gestation",
+            "sick": "Sick"
+        },
+        "born_date": "Born on:",
+        "years_old": ":age years old",
+        "origin_label": "Origin:",
+        "origin_farm": "Born on the farm",
+        "origin_purchased": "Purchased",
+        "file_label": "File:",
+        "view_document": "View document",
+        "owners_label": "Owner(s):",
+        "owned_by_farm": "Belongs to the farm",
+        "actions": {
+            "edit_info": "Edit info",
+            "change_health": "Change health status",
+            "cancel_sale": "Cancel sale",
+            "mark_sold": "Mark as sold",
+            "confirm_cancel_sale": "Mark as not sold?"
+        },
+        "finances": {
+            "title": "Finances",
+            "archive_link": "Archive →",
+            "year": "Year",
+            "month": "Month",
+            "type": "Type",
+            "types": {
+                "food": "Food",
+                "veterinaire": "Veterinary",
+                "gain": "Milk production (L)",
+                "lait_consomme": "Consumed milk (L)"
+            },
+            "quantity": "Quantity (L)",
+            "amount": "Amount (MAD)",
+            "save": "Save",
+            "sold_disabled": "Actions disabled (animal sold).",
+            "unauthorized": "Insufficient permissions."
+        },
+        "health": {
+            "title": "Health",
+            "archive_link": "Archive →",
+            "status": "Status",
+            "start_date": "Start date",
+            "end_date_optional": "End date (optional)",
+            "save": "Save",
+            "types": {
+                "sickness": "Sickness",
+                "pregnancy": "Gestation"
+            }
+        },
+        "lineage": {
+            "title": "Offspring (:count)",
+            "add_button": "+ Offspring",
+            "empty": "No recorded offspring."
+        },
+        "financial_modal": {
+            "title": "Financial Archive",
+            "costs_title": "Costs",
+            "productions_title": "Productions",
+            "date": "Date",
+            "type": "Type",
+            "amount_quantity": "Amount \/ Quantity",
+            "period": "Period",
+            "quantity": "Quantity",
+            "consumed_milk": "Consumed Milk"
+        },
+        "health_modal": {
+            "title": "Health Archive",
+            "status": "Status",
+            "start": "Start",
+            "end": "End",
+            "ongoing": "Ongoing",
+            "types": {
+                "sickness": "Sickness",
+                "pregnancy": "Gestation",
+                "routine": "Routine visit"
+            }
+        },
+        "child_modal": {
+            "title": "Add offspring",
+            "sex": "Sex",
+            "female": "Female",
+            "male": "Male",
+            "birth_date": "Birth date",
+            "entry_date": "Entry date",
+            "photo_optional": "Photo (optional)",
+            "drag_drop": "Drag & drop an image or click here",
+            "cancel": "Cancel",
+            "add": "Add"
+        },
+        "edit_modal": {
+            "title": "Edit information",
+            "ear_tag": "Ear tag number",
+            "sex": "Sex",
+            "female": "Female",
+            "male": "Male",
+            "birth_date": "Birth date",
+            "photo_optional": "Photo (optional)",
+            "current_image": "Current image:",
+            "drag_drop_replace_image": "Drag & drop an image or click here to replace",
+            "file_optional": "Animal File (optional)",
+            "current_file": "Current file:",
+            "view_current_file": "View current file",
+            "drag_drop_replace_file": "Drag & drop a file or click here to replace",
+            "cancel": "Cancel",
+            "update": "Update"
+        },
+        "status_modal": {
+            "title": "Change health status",
+            "status": "Status",
+            "healthy": "Healthy",
+            "sickness": "Sick",
+            "pregnancy": "Gestation",
+            "cancel": "Cancel",
+            "update": "Update"
+        },
+        "sell_modal": {
+            "title": "Sell animal",
+            "sale_price": "Sale price (MAD)",
+            "sale_date": "Sale date",
+            "cancel": "Cancel",
+            "confirm": "Confirm sale"
+        },
+        "purchase_price_label": "Purchase Price :"
+    },
+    "admin_cheptel_list": {
+        "app_layout_title": "Livestock Management (Shared Area)",
+        "head_title": "Cattle List",
+        "section_title": "Animal Tracking",
+        "add_button": "Add",
+        "table": {
+            "ear_tag_number": "Ear Tag Number",
+            "origin": "Origin",
+            "weight": "Weight (kg)",
+            "health_status": "Health Status",
+            "sale_status": "Sale",
+            "actions": "Actions"
+        },
+        "origin_types": {
+            "farm": "Born on the farm",
+            "purchased": "Purchased"
+        },
+        "health_status": {
+            "healthy": "Healthy",
+            "pregnancy": "Gestation",
+            "sick": "Sick"
+        },
+        "sale_status": {
+            "sold": "Sold",
+            "in_herd": "In herd"
+        },
+        "not_available": "N\/A",
+        "view_details": "Details",
+        "add_modal": {
+            "title": "Add a new animal",
+            "ear_tag": "Ear tag number",
+            "sex": "Sex",
+            "female": "Female",
+            "male": "Male",
+            "birth_date": "Birth date",
+            "entry_date": "Entry date",
+            "photo_optional": "Photo (optional)",
+            "file_optional": "Animal File (optional)",
+            "image_drag_drop": "Drag & drop an image or click here",
+            "file_drag_drop": "Drag & drop a file or click here",
+            "ownership_type": "Ownership Type",
+            "ownership_full": "Full (1)",
+            "ownership_half": "Half (0.5)",
+            "owner_1": "Owner 1",
+            "owner_2": "Owner 2",
+            "choose_owner": "-- Choose --",
+            "cancel": "Cancel",
+            "add": "Add",
+            "purchase_price": "Purchase Price (DH)"
+        }
+    },
+    "profile_edit": {
+        "app_layout_title": "My Profile",
+        "head_title": "Profile"
+    },
+    "delete_user_form": {
+        "title": "Danger Zone",
+        "description": "Deleting your account is permanent. All of your data will be permanently deleted.",
+        "delete_button": "Delete Account",
+        "modal": {
+            "title": "Are you sure you want to delete your account?",
+            "description": "This action cannot be undone. Please enter your password to confirm.",
+            "password_label": "Password",
+            "password_placeholder": "Your password",
+            "cancel_button": "Cancel",
+            "confirm_button": "Confirm Deletion"
+        }
+    },
+    "update_password_form": {
+        "title": "Update Password",
+        "description": "Ensure your account is using a long, random password to stay secure.",
+        "current_password_label": "Current Password",
+        "new_password_label": "New Password",
+        "confirm_password_label": "Confirm Password",
+        "save_button": "Save",
+        "saved_message": "✓ Saved"
+    },
+    "update_profile_information": {
+        "title": "Profile Information",
+        "description": "Update your account's profile information and email address.",
+        "name_label": "Name",
+        "email_label": "Email",
+        "unverified_email": "Your email address is unverified.",
+        "resend_verification_link": "Click here to re-send the verification email.",
+        "verification_link_sent": "A new verification link has been sent to your email address.",
+        "save_button": "Save",
+        "saved_message": "✓ Saved"
+    },
+    "ferme_bilan": {
+        "title": "Farm Financials",
+        "description": "Here is the overall financial balance of the farm. It groups both the revenues generated by commissions on the net profit of other investors, and the revenues generated by direct investments of the farm.",
+        "empty_description": "No financial data available at the moment.",
+        "global_costs": "Global Costs",
+        "net_milk_revenue": "Net Milk Revenue",
+        "sales_revenue": "Sales Revenue",
+        "global_benefit": "Global Benefit",
+        "commission_part": "Benefits via Commissions (Case 1)",
+        "investment_part": "Benefits via Investments (Case 2)",
+        "total_farm_part": "Total Farm Part",
+        "table": {
+            "month": "Month",
+            "costs_cas2": "Costs (Investment)",
+            "milk_cas2": "Milk (Investment)",
+            "sales_cas2": "Sales (Investment)",
+            "net_cas2": "Investment Profit",
+            "net_cas1": "Commission Profit",
+            "total": "Total Farm Profit"
+        }
+    },
+    "admin_clients_list": {
+        "app_layout_title": "Clients Management",
+        "head_title": "Clients",
+        "section_title": "Clients List",
+        "add_button": "New Client",
+        "table": {
+            "full_name": "Full Name",
+            "email": "Email",
+            "phone": "Phone",
+            "registration_date": "Registration Date",
+            "actions": "Actions"
+        },
+        "farm_account": "Farm Account",
+        "empty": "No clients registered at the moment.",
+        "delete_confirm": "Are you sure you want to archive this client? They will no longer have access to the platform.",
+        "modal": {
+            "add_title": "Add Client",
+            "edit_title": "Edit Client",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email",
+            "phone": "Phone",
+            "registration_date": "Registration Date",
+            "password_section": "Password",
+            "password_info": "Leave fields blank if you do not want to change the current password.",
+            "new_password": "New Password",
+            "password": "Password",
+            "confirm_password": "Confirm Password",
+            "cancel": "Cancel",
+            "update": "Update",
+            "create": "Create"
+        }
     }
-  },
-  "manager_dashboard": {
-    "app_layout_title": "Farm Operations Portal (Manager)",
-    "head_title": "Manager Dashboard",
-    "global_milk_production": "Global Milk Production",
-    "liters_unit": "Liters",
-    "monitored_livestock": "Monitored Livestock",
-    "cattle_unit": "Cattle",
-    "production_evolution_title": "Production Evolution (L)",
-    "tooltip_production": "Production",
-    "no_recent_data": "No recent production data."
-  },
-  "client_dashboard": {
-    "app_layout_title": "Partner Space — Dashboard",
-    "head_title": "My Dashboard",
-    "welcome_banner": "👋 Welcome to your secure space. Your assets are presented as summary statistics.",
-    "active_contracts": "Active investment contracts",
-    "contracts_unit": "Contracts",
-    "portfolio_distribution": "Portfolio Distribution",
-    "owned_share": "Owned share",
-    "owned_share_percent": ":value% of shares",
-    "cattle_ticket": "Cattle :ticket",
-    "financial_evolution": "Financial Evolution (Gains vs Costs)",
-    "all_cattle": "All cattle",
-    "gains_net": "Net Gains (MAD)",
-    "food_costs": "Food Cost (MAD)",
-    "health_costs": "Health Cost (MAD)",
-    "no_financial_data": "No financial data available."
-  },
-  "bilan_annuel": {
-    "app_layout_title": "Annual Report",
-    "head_title": "Annual Report",
-    "banner_info": "Find here the annual report of your investments. The current year is only displayed after its closure (on January 1st of the following year).",
-    "empty_title": "No history available",
-    "empty_description": "Annual reports will be displayed here once a full year has been closed.",
-    "year_title": "Year :year",
-    "calculation_error": "Calculation error",
-    "total_costs": "Total Costs",
-    "net_milk_revenue": "Net Milk Revenue",
-    "sales_revenue": "Sales Revenue",
-    "global_benefit": "Global Profit",
-    "farm_part": "Farm Share (50%)",
-    "your_net_part": "Your Net Share"
-  },
-  "cheptel_details": {
-    "app_layout_title": "Cattle Details :ticket",
-    "head_title": "Cattle :ticket",
-    "no_photo": "No photo",
-    "ticket": "Ticket:",
-    "sold_badge": "SOLD",
-    "sold_info": "Sold for :price MAD on :date",
-    "health_status": {
-      "healthy": "Healthy",
-      "pregnancy": "Gestation",
-      "sick": "Sick"
-    },
-    "born_date": "Born on:",
-    "years_old": ":age years old",
-    "origin_label": "Origin:",
-    "origin_farm": "Born on the farm",
-    "origin_purchased": "Purchased",
-    "file_label": "File:",
-    "view_document": "View document",
-    "owners_label": "Owner(s):",
-    "owned_by_farm": "Belongs to the farm",
-    "monthly_profitability": "Monthly Profitability",
-    "liter_price_label": "Liter price:",
-    "liter_price_value": "4 MAD/L",
-    "net_profit_prefix": "Estimated net profit:",
-    "net_profit_formula": "(Production × 4 MAD) - Costs",
-    "net_profit_middle": "After 50% for the farm, your net share is",
-    "net_profit_suffix": "of profits.",
-    "table": {
-      "month": "Month",
-      "milk_produced": "Milk Produced",
-      "milk_consumed": "Milk Consumed",
-      "net_production": "Net Production",
-      "gross_revenue": "Gross Revenue",
-      "costs": "Costs",
-      "net_profit": "Net Profit",
-      "your_share": "Your Share",
-      "no_data": "No data available."
-    },
-    "costs_section": "Costs",
-    "health_section": "Health",
-    "archive_link": "Archive →",
-    "latest_events": "Latest Events",
-    "no_events": "No recorded events",
-    "offspring_section": "Offspring (:count)",
-    "no_offspring": "No offspring.",
-    "health_types": {
-      "sickness": "Sickness",
-      "pregnancy": "Gestation",
-      "routine": "Routine visit"
-    },
-    "financial_archive_modal": {
-      "title": "Financial Archive",
-      "costs_title": "Costs",
-      "food": "Food",
-      "health": "Health",
-      "other": "Other",
-      "total": "Total",
-      "consumed_milk_title": "Consumed Milk",
-      "total_quantity": "Total Quantity",
-      "productions_title": "Productions"
-    },
-    "health_archive_modal": {
-      "title": "Health Archive",
-      "status": "Status",
-      "start": "Start",
-      "end": "End",
-      "ongoing": "Ongoing"
-    }
-  },
-  "cheptel_list": {
-    "app_layout_title": "My Cattle Investments",
-    "head_title": "My Cattle",
-    "section_title": "My Herd",
-    "table": {
-      "ear_tag_number": "Ear Tag Number",
-      "weight": "Weight (kg)",
-      "health_status": "Health Status",
-      "actions": "Actions"
-    },
-    "health_status": {
-      "healthy": "Healthy",
-      "pregnancy": "Gestation",
-      "sick": "Sick"
-    },
-    "not_available": "N/A",
-    "view_details": "View details →",
-    "empty_state": "You have no cattle in your herd at the moment."
-  },
-  "visites": {
-    "app_layout_title": "My Visits",
-    "head_title": "My Visits",
-    "subtitle": "Your visit history",
-    "description": "Manage your visit requests to the farm",
-    "book_visit_button": "Book a visit",
-    "status": {
-      "pending": "Pending",
-      "accepted": "Accepted",
-      "rejected": "Rejected"
-    },
-    "table": {
-      "date": "Date",
-      "time": "Time",
-      "status": "Status",
-      "details_reason": "Details / Reason"
-    },
-    "empty_state": "You have not made any visit requests yet.",
-    "modal": {
-      "title": "Visit request",
-      "info_banner": "Your request will be reviewed by administration. You will be notified of its acceptance or rejection.",
-      "desired_date": "Desired date",
-      "desired_time": "Desired time",
-      "cancel": "Cancel",
-      "confirm_request": "Confirm request",
-      "sending": "Sending..."
-    }
-  },
-  "admin_cheptel_details": {
-    "app_layout_title": "Cattle Details :ticket",
-    "head_title": "Cattle :ticket",
-    "no_photo": "No photo",
-    "ticket": "Ticket:",
-    "sold_badge": "SOLD",
-    "sold_info": "Sold for :price MAD on :date",
-    "health_status": {
-      "healthy": "Healthy",
-      "pregnancy": "Gestation",
-      "sick": "Sick"
-    },
-    "born_date": "Born on:",
-    "years_old": ":age years old",
-    "origin_label": "Origin:",
-    "origin_farm": "Born on the farm",
-    "origin_purchased": "Purchased",
-    "file_label": "File:",
-    "view_document": "View document",
-    "owners_label": "Owner(s):",
-    "owned_by_farm": "Belongs to the farm",
-    "actions": {
-      "edit_info": "Edit info",
-      "change_health": "Change health status",
-      "cancel_sale": "Cancel sale",
-      "mark_sold": "Mark as sold",
-      "confirm_cancel_sale": "Mark as not sold?"
-    },
-    "finances": {
-      "title": "Finances",
-      "archive_link": "Archive →",
-      "year": "Year",
-      "month": "Month",
-      "type": "Type",
-      "types": {
-        "food": "Food",
-        "veterinaire": "Veterinary",
-        "gain": "Milk production (L)",
-        "lait_consomme": "Consumed milk (L)"
-      },
-      "quantity": "Quantity (L)",
-      "amount": "Amount (MAD)",
-      "save": "Save",
-      "sold_disabled": "Actions disabled (animal sold).",
-      "unauthorized": "Insufficient permissions."
-    },
-    "health": {
-      "title": "Health",
-      "archive_link": "Archive →",
-      "status": "Status",
-      "start_date": "Start date",
-      "end_date_optional": "End date (optional)",
-      "save": "Save",
-      "types": {
-        "sickness": "Sickness",
-        "pregnancy": "Gestation"
-      }
-    },
-    "lineage": {
-      "title": "Offspring (:count)",
-      "add_button": "+ Offspring",
-      "empty": "No recorded offspring."
-    },
-    "financial_modal": {
-      "title": "Financial Archive",
-      "costs_title": "Costs",
-      "productions_title": "Productions",
-      "date": "Date",
-      "type": "Type",
-      "amount_quantity": "Amount / Quantity",
-      "period": "Period",
-      "quantity": "Quantity",
-      "consumed_milk": "Consumed Milk"
-    },
-    "health_modal": {
-      "title": "Health Archive",
-      "status": "Status",
-      "start": "Start",
-      "end": "End",
-      "ongoing": "Ongoing",
-      "types": {
-        "sickness": "Sickness",
-        "pregnancy": "Gestation",
-        "routine": "Routine visit"
-      }
-    },
-    "child_modal": {
-      "title": "Add offspring",
-      "sex": "Sex",
-      "female": "Female",
-      "male": "Male",
-      "birth_date": "Birth date",
-      "entry_date": "Entry date",
-      "photo_optional": "Photo (optional)",
-      "drag_drop": "Drag & drop an image or click here",
-      "cancel": "Cancel",
-      "add": "Add"
-    },
-    "edit_modal": {
-      "title": "Edit information",
-      "ear_tag": "Ear tag number",
-      "sex": "Sex",
-      "female": "Female",
-      "male": "Male",
-      "birth_date": "Birth date",
-      "photo_optional": "Photo (optional)",
-      "current_image": "Current image:",
-      "drag_drop_replace_image": "Drag & drop an image or click here to replace",
-      "file_optional": "Animal File (optional)",
-      "current_file": "Current file:",
-      "view_current_file": "View current file",
-      "drag_drop_replace_file": "Drag & drop a file or click here to replace",
-      "cancel": "Cancel",
-      "update": "Update"
-    },
-    "status_modal": {
-      "title": "Change health status",
-      "status": "Status",
-      "healthy": "Healthy",
-      "sickness": "Sick",
-      "pregnancy": "Gestation",
-      "cancel": "Cancel",
-      "update": "Update"
-    },
-    "sell_modal": {
-      "title": "Sell animal",
-      "sale_price": "Sale price (MAD)",
-      "sale_date": "Sale date",
-      "cancel": "Cancel",
-      "confirm": "Confirm sale"
-    }
-  },
-  "admin_cheptel_list": {
-    "app_layout_title": "Livestock Management (Shared Area)",
-    "head_title": "Cattle List",
-    "section_title": "Animal Tracking",
-    "add_button": "Add",
-    "table": {
-      "ear_tag_number": "Ear Tag Number",
-      "origin": "Origin",
-      "weight": "Weight (kg)",
-      "health_status": "Health Status",
-      "sale_status": "Sale",
-      "actions": "Actions"
-    },
-    "origin_types": {
-      "farm": "Born on the farm",
-      "purchased": "Purchased"
-    },
-    "health_status": {
-      "healthy": "Healthy",
-      "pregnancy": "Gestation",
-      "sick": "Sick"
-    },
-    "sale_status": {
-      "sold": "Sold",
-      "in_herd": "In herd"
-    },
-    "not_available": "N/A",
-    "view_details": "Details",
-    "add_modal": {
-      "title": "Add a new animal",
-      "ear_tag": "Ear tag number",
-      "sex": "Sex",
-      "female": "Female",
-      "male": "Male",
-      "birth_date": "Birth date",
-      "entry_date": "Entry date",
-      "photo_optional": "Photo (optional)",
-      "file_optional": "Animal File (optional)",
-      "image_drag_drop": "Drag & drop an image or click here",
-      "file_drag_drop": "Drag & drop a file or click here",
-      "ownership_type": "Ownership Type",
-      "ownership_full": "Full (1)",
-      "ownership_half": "Half (0.5)",
-      "owner_1": "Owner 1",
-      "owner_2": "Owner 2",
-      "choose_owner": "-- Choose --",
-      "cancel": "Cancel",
-      "add": "Add"
-    }
-  },
-  "profile_edit": {
-    "app_layout_title": "My Profile",
-    "head_title": "Profile"
-  },
-  "delete_user_form": {
-    "title": "Danger Zone",
-    "description": "Deleting your account is permanent. All of your data will be permanently deleted.",
-    "delete_button": "Delete Account",
-    "modal": {
-      "title": "Are you sure you want to delete your account?",
-      "description": "This action cannot be undone. Please enter your password to confirm.",
-      "password_label": "Password",
-      "password_placeholder": "Your password",
-      "cancel_button": "Cancel",
-      "confirm_button": "Confirm Deletion"
-    }
-  },
-  "update_password_form": {
-    "title": "Update Password",
-    "description": "Ensure your account is using a long, random password to stay secure.",
-    "current_password_label": "Current Password",
-    "new_password_label": "New Password",
-    "confirm_password_label": "Confirm Password",
-    "save_button": "Save",
-    "saved_message": "✓ Saved"
-  },
-  "update_profile_information": {
-    "title": "Profile Information",
-    "description": "Update your account's profile information and email address.",
-    "name_label": "Name",
-    "email_label": "Email",
-    "unverified_email": "Your email address is unverified.",
-    "resend_verification_link": "Click here to re-send the verification email.",
-    "verification_link_sent": "A new verification link has been sent to your email address.",
-    "save_button": "Save",
-    "saved_message": "✓ Saved"
-  }
 }

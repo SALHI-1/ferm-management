@@ -47,6 +47,7 @@ class CheptelController extends Controller
             'client_1_id' => 'required_if:type_investissement,complet,demi|nullable|exists:clients,id',
             'client_2_id' => 'required_if:type_investissement,demi|nullable|exists:clients,id|different:client_1_id',
             'part_ferme_net' => 'nullable|numeric|min:0.1|max:0.6',
+            'prix_achat' => 'required_without:mother_id|nullable|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'fichier_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
         ]);
@@ -96,7 +97,8 @@ class CheptelController extends Controller
             'statut_sante' => 'healthy',
             'image' => $imagePath,
             'fichier_documents' => $fichierPath,
-            'part_ferme_net' => $part_ferme_net
+            'part_ferme_net' => $part_ferme_net,
+            'prix_achat' => $request->prix_achat
         ]);
 
         if ($request->mother_id) {
@@ -158,11 +160,12 @@ class CheptelController extends Controller
             'numero_ticket' => 'required|string|unique:vaches,numero_ticket,'.$id,
             'sexe' => 'required|in:male,female',
             'date_naissance' => 'required|date',
+            'prix_achat' => 'nullable|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'fichier_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
         ]);
 
-        $data = $request->only(['numero_ticket', 'sexe', 'date_naissance']);
+        $data = $request->only(['numero_ticket', 'sexe', 'date_naissance', 'prix_achat']);
         $mediaDisk = config('filesystems.media_disk', 'public');
         
         if ($request->hasFile('image')) {

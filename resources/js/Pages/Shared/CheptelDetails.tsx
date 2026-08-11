@@ -10,7 +10,7 @@ interface Client { id: number; user: { nom: string; prenom: string; }; pivot: { 
 interface Cost { id: number; type: string; price: number; date_facture: string; }
 interface Production { id: number; quantite_litres: number; periode_mois: string; }
 interface HealthStatus { id: number; type: string; date_debut: string; date_fin: string | null; }
-interface Vache { id: number; numero_ticket: string; image: string | null; fichier_documents: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; prix_vente?: number; date_vente?: string; }
+interface Vache { id: number; numero_ticket: string; image: string | null; fichier_documents: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; prix_vente?: number; date_vente?: string; pivot: { type_investissement: string; part_possedee: number; date_investissement: string; }; part_ferme_net?: string | null; prix_achat?: number | null; }
 interface Props { vache: Vache; canEdit: boolean; coordonneesEspace: 'admin' | 'manager'; }
 
 export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Props) {
@@ -28,7 +28,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
     const { data: finData, setData: setFinData, post: postFin, processing: finProcessing, reset: resetFin, errors: finErrors } = useForm({ annee: new Date().getFullYear(), mois: new Date().getMonth() + 1, price: '', type: 'food' });
     const { data: healthData, setData: setHealthData, post: postHealth, processing: healthProcessing, reset: resetHealth, errors: healthErrors } = useForm({ type: 'sickness', date_debut: new Date().toISOString().split('T')[0], date_fin: '' });
     const { data: childData, setData: setChildData, post: postChild, processing: childProcessing, reset: resetChild, errors: childErrors } = useForm({ numero_ticket: '', sexe: 'female', origine: 'ne_sur_ferme', date_naissance: '', date_entree: new Date().toISOString().split('T')[0], mother_id: vache.id, image: null as File | null });
-    const { data: editData, setData: setEditData, post: postEdit, processing: editProcessing, errors: editErrors, clearErrors: clearEditErrors } = useForm({ numero_ticket: vache.numero_ticket, sexe: vache.sexe, date_naissance: vache.date_naissance ? vache.date_naissance.substring(0, 10) : '', image: null as File | null, fichier_documents: null as File | null });
+    const { data: editData, setData: setEditData, post: postEdit, processing: editProcessing, errors: editErrors, clearErrors: clearEditErrors } = useForm({ numero_ticket: vache.numero_ticket, sexe: vache.sexe, date_naissance: vache.date_naissance ? vache.date_naissance.substring(0, 10) : '', prix_achat: vache.prix_achat || '', image: null as File | null, fichier_documents: null as File | null });
     const { data: statusData, setData: setStatusData, put: putStatus, processing: statusProcessing } = useForm({ statut_sante: vache.statut_sante });
     const { data: sellData, setData: setSellData, put: putSell, processing: sellProcessing, errors: sellErrors } = useForm({ statut_vente: 'vendue', prix_vente: vache.prix_vente || '', date_vente: vache.date_vente || new Date().toISOString().split('T')[0] });
 
@@ -105,6 +105,11 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                     <p className="text-slate-500 text-sm">
                                         <strong>{t('admin_cheptel_details.origin_label')}</strong> {vache.origine === 'ne_sur_ferme' ? t('admin_cheptel_details.origin_farm') : t('admin_cheptel_details.origin_purchased')}
                                     </p>
+                                    {vache.prix_achat && (
+                                        <p className="text-slate-500 text-sm">
+                                            <strong>{t('admin_cheptel_details.purchase_price_label')}</strong> {vache.prix_achat} DH
+                                        </p>
+                                    )}
                                     {vache.fichier_documents && (
                                         <p className="text-slate-500 text-sm mt-2">
                                             <strong>{t('admin_cheptel_details.file_label')}</strong>{' '}
@@ -130,6 +135,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                             numero_ticket: vache.numero_ticket,
                                             sexe: vache.sexe,
                                             date_naissance: vache.date_naissance ? vache.date_naissance.substring(0, 10) : '',
+                                            prix_achat: vache.prix_achat || '',
                                             image: null,
                                             fichier_documents: null
                                         });
@@ -374,6 +380,11 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                 </select>
                             </div>
                             <div><label className="label-premium">{t('admin_cheptel_details.edit_modal.birth_date')}</label><input type="date" value={editData.date_naissance} onChange={e => setEditData('date_naissance', e.target.value)} className="input-premium" required /></div>
+                            <div>
+                                <label className="label-premium">{t('admin_cheptel_details.purchase_price_label')}</label>
+                                <input type="number" step="0.01" min="0" value={editData.prix_achat} onChange={e => setEditData('prix_achat', e.target.value)} className="input-premium" />
+                                {editErrors.prix_achat && <p className="text-rose-500 text-xs mt-1">{editErrors.prix_achat}</p>}
+                            </div>
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_details.edit_modal.photo_optional')}</label>
                                 {vache.image && !editData.image && (

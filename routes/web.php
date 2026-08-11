@@ -65,6 +65,9 @@ Route::prefix('admin')->middleware(['auth', 'role:admin,super_admin'])->as('admi
     // Gestion des demandes d'investissement
     Route::get('/investment-requests', [AdminInvestmentRequestController::class, 'index'])->name('investment-requests.index');
     Route::patch('/investment-requests/{id}/status', [AdminInvestmentRequestController::class, 'updateStatus'])->name('investment-requests.status');
+
+    // Bilan de la Ferme
+    Route::get('/ferme-bilan', [\App\Http\Controllers\Admin\FermeBilanController::class, 'index'])->name('ferme-bilan');
 });
 
 // 🚜 Espace unique : Managers

@@ -21,7 +21,7 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
         numero_ticket: '', sexe: 'female', origine: 'achete', date_naissance: '',
         date_entree: new Date().toISOString().split('T')[0], mother_id: '',
         type_investissement: 'complet', client_1_id: '', client_2_id: '',
-        part_ferme_net: '0.5',
+        part_ferme_net: '0.5', prix_achat: '',
         image: null as File | null, fichier_documents: null as File | null
     });
 
@@ -140,6 +140,11 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                                     <label className="label-premium">{t('admin_cheptel_list.add_modal.entry_date')}</label>
                                     <input type="date" value={data.date_entree} onChange={e => setData('date_entree', e.target.value)} className="input-premium" required />
                                 </div>
+                            </div>
+                            <div>
+                                <label className="label-premium">{t('admin_cheptel_list.add_modal.purchase_price')}</label>
+                                <input type="number" step="0.01" min="0" value={data.prix_achat} onChange={e => setData('prix_achat', e.target.value)} className="input-premium" required />
+                                {errors.prix_achat && <p className="text-rose-500 text-xs mt-1">{errors.prix_achat}</p>}
                             </div>
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_list.add_modal.photo_optional')}</label>

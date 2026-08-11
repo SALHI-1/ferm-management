@@ -81,20 +81,11 @@ export default function BilanAnnuel({ bilans }: Props) {
                                 </div>
 
                                 <div className="bg-gradient-to-r from-brand-50 to-indigo-50 rounded-xl p-5 border border-brand-100/50">
-                                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                                        <div className="text-center md:text-left">
-                                            <p className="text-sm font-semibold text-slate-500 mb-1">{t('bilan_annuel.farm_part')}</p>
-                                            <p className="text-xl font-bold text-slate-700">{bilan.farm_part.toFixed(2)} DH</p>
-                                        </div>
-
-                                        <div className="hidden md:block h-12 w-px bg-brand-200"></div>
-
-                                        <div className="text-center md:text-right">
-                                            <p className="text-sm font-semibold text-brand-600 mb-1">{t('bilan_annuel.your_net_part')}</p>
-                                            <p className={`text-2xl font-black ${bilan.client_part >= 0 ? 'text-forest' : 'text-rose-600'}`}>
-                                                {bilan.client_part > 0 ? '+' : ''}{bilan.client_part.toFixed(2)} DH
-                                            </p>
-                                        </div>
+                                    <div className="flex flex-col items-center justify-center gap-2 text-center">
+                                        <p className="text-sm font-semibold text-brand-600 mb-1">{t('bilan_annuel.your_net_part')}</p>
+                                        <p className={`text-3xl font-black ${bilan.client_part >= 0 ? 'text-forest' : 'text-rose-600'}`}>
+                                            {bilan.client_part > 0 ? '+' : ''}{bilan.client_part.toFixed(2)} DH
+                                        </p>
                                     </div>
                                 </div>
                             </div>

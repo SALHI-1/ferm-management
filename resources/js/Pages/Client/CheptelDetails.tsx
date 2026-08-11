@@ -9,7 +9,7 @@ interface Client { id: number; user: { nom: string; prenom: string; }; pivot: { 
 interface Cost { id: number; type: string; price: number; date_facture: string; }
 interface Production { id: number; quantite_litres: number; periode_mois: string; }
 interface HealthStatus { id: number; type: string; date_debut: string; date_fin: string | null; }
-interface Vache { id: number; numero_ticket: string; image: string | null; fichier_documents: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; pivot?: { part_possedee: number; }; prix_vente?: number; date_vente?: string; }
+interface Vache { id: number; numero_ticket: string; image: string | null; fichier_documents: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; pivot?: { part_possedee: number; }; prix_vente?: number; date_vente?: string; part_ferme_net?: string | null; prix_achat?: number | null; }
 interface Props { vache: Vache; }
 
 export default function CheptelDetails({ vache }: Props) {
@@ -21,6 +21,8 @@ export default function CheptelDetails({ vache }: Props) {
     const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
     const isSold = vache.statut_vente === 'vendue';
     const partPossedee = vache.pivot?.part_possedee || 0;
+    const partFermeNet = vache.part_ferme_net ? parseFloat(vache.part_ferme_net) : 0;
+    const clientNetMultiplier = 1 - partFermeNet;
 
     const yearsSet = new Set<string>();
     vache.costs.forEach(c => yearsSet.add(c.date_facture.substring(0, 4)));
@@ -77,6 +79,11 @@ export default function CheptelDetails({ vache }: Props) {
                             <p className="text-slate-500 text-sm">
                                 <strong>{t('cheptel_details.origin_label')}</strong> {vache.origine === 'ne_sur_ferme' ? t('cheptel_details.origin_farm') : t('cheptel_details.origin_purchased')}
                             </p>
+                            {vache.prix_achat && (
+                                <p className="text-slate-500 text-sm">
+                                    <strong>{t('cheptel_details.purchase_price_label')}</strong> {vache.prix_achat} DH
+                                </p>
+                            )}
                             {vache.fichier_documents && (
                                 <p className="text-slate-500 text-sm mt-2">
                                     <strong>{t('cheptel_details.file_label')}</strong>{' '}
@@ -119,7 +126,7 @@ export default function CheptelDetails({ vache }: Props) {
                             </div>
                         </div>
                         <p className="text-slate-500 text-sm mb-4">
-                            {t('cheptel_details.net_profit_prefix')} <strong>{t('cheptel_details.net_profit_formula')}</strong>. {t('cheptel_details.net_profit_middle')} <strong>{((partPossedee * 0.5) * 100).toFixed(0)}%</strong> {t('cheptel_details.net_profit_suffix')}
+                            {t('cheptel_details.net_profit_prefix')} <strong>{t('cheptel_details.net_profit_formula')}</strong>. {t('cheptel_details.net_profit_middle')} <strong>{((partPossedee * clientNetMultiplier) * 100).toFixed(0)}%</strong> {t('cheptel_details.net_profit_suffix')}
                         </p>
                         <div className="overflow-x-auto">
                             <table className="table-premium">
@@ -139,7 +146,7 @@ export default function CheptelDetails({ vache }: Props) {
                                     {monthlyStats.length > 0 ? monthlyStats.map(stat => {
                                         const rev = stat.production * 4;
                                         const ben = rev - stat.costs;
-                                        const part = ben > 0 ? ben * 0.5 * partPossedee : ben * partPossedee;
+                                        const part = ben > 0 ? ben * clientNetMultiplier * partPossedee : ben * partPossedee;
                                         return (
                                             <tr key={stat.month}>
                                                 <td className="font-medium text-slate-700">
