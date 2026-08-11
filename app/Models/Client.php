@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 
 class Client extends Model {
-    protected $fillable = ['date_inscription'];
+    protected $fillable = ['date_inscription', 'is_ferme'];
 
     public function user() {
         return $this->morphOne(User::class, 'userable');

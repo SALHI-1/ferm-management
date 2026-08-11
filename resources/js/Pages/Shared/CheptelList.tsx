@@ -6,7 +6,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import { Plus, Eye, Scale, FileDown, X } from 'lucide-react';
 import { useTrans } from '@/Hooks/useTrans';
 
-interface Client { id: number; user: { nom: string; prenom: string; }; }
+interface Client { id: number; is_ferme?: boolean; user: { nom: string; prenom: string; }; }
 interface Props {
     vaches: Array<{ id: number; numero_ticket: string; poids: number; statut_sante: string; statut_vente: string; origine: string }>;
     coordonneesEspace: 'admin' | 'manager';
@@ -21,8 +21,15 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
         numero_ticket: '', sexe: 'female', origine: 'achete', date_naissance: '',
         date_entree: new Date().toISOString().split('T')[0], mother_id: '',
         type_investissement: 'complet', client_1_id: '', client_2_id: '',
+        part_ferme_net: '0.5',
         image: null as File | null, fichier_documents: null as File | null
     });
+
+    const isFarmSelected = () => {
+        const client1 = clientsDisponibles?.find(c => c.id.toString() === data.client_1_id);
+        const client2 = clientsDisponibles?.find(c => c.id.toString() === data.client_2_id);
+        return (client1?.is_ferme) || (client2?.is_ferme);
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -185,6 +192,22 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                                         <option value="">{t('admin_cheptel_list.add_modal.choose_owner')}</option>
                                         {clientsDisponibles?.map(c => <option key={c.id} value={c.id}>{c.user?.nom} {c.user?.prenom}</option>)}
                                     </select>
+                                </div>
+                            )}
+                            {!isFarmSelected() && (
+                                <div className="border-t border-slate-100 pt-4">
+                                    <label className="label-premium">Commission de la ferme sur le bénéfice Net (0.1 à 0.6)</label>
+                                    <input 
+                                        type="number" 
+                                        step="0.01" 
+                                        min="0.1" 
+                                        max="0.6" 
+                                        value={data.part_ferme_net} 
+                                        onChange={e => setData('part_ferme_net', e.target.value)} 
+                                        className="input-premium" 
+                                        required 
+                                    />
+                                    {errors.part_ferme_net && <p className="text-rose-500 text-xs mt-1">{errors.part_ferme_net}</p>}
                                 </div>
                             )}
                             <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">

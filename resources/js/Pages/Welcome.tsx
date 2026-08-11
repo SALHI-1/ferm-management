@@ -27,8 +27,8 @@ const C = {
     onForest2: '#d8e0d4',
 };
 
-/* ── font import (injected once via <style>) ── */
-const FONTS = `
+/* ── font import & global styles (injected once via <style>) ── */
+const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@500&display=swap');
 .cf-eyebrow{font-family:'Spline Sans Mono',monospace;font-size:0.77rem;letter-spacing:0.22em;text-transform:uppercase;}
 .cf-serif{font-family:'Spectral',Georgia,serif;}
@@ -36,6 +36,54 @@ const FONTS = `
 @keyframes cfRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .cf-rise{animation:cfRise 0.75s ease both;}
 .cf-rise-2{animation:cfRise 0.85s 0.1s ease both;}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: ${C.cream};
+}
+::-webkit-scrollbar-thumb {
+  background: ${C.copper300};
+  border-radius: 8px;
+  border: 2px solid ${C.cream};
+}
+::-webkit-scrollbar-thumb:hover {
+  background: ${C.copper};
+}
+
+/* Nav links custom hover */
+.nav-link {
+    color: ${C.muted500};
+    font-size: 15.5px;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s ease;
+}
+.nav-link:hover {
+    color: ${C.ink};
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: ${C.copper};
+    transition: width 0.3s ease, transform 0.3s ease;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+.nav-link:hover::after {
+    width: 100%;
+}
 `;
 
 export default function Welcome({ auth }: any) {
@@ -96,7 +144,7 @@ export default function Welcome({ auth }: any) {
 
     return (
         <>
-            <style>{FONTS}</style>
+            <style>{STYLES}</style>
             <Head title={t('welcome.title')} />
 
             <div className="cf-sans min-h-screen" style={{ background: C.cream, color: C.ink }}>
@@ -117,8 +165,7 @@ export default function Welcome({ auth }: any) {
                             <div className="hidden items-center gap-7 lg:flex">
                                 {[['#fonctionnement',t('welcome.nav_how_it_works')],['#rendements',t('welcome.nav_returns')],['#marche',t('welcome.nav_market')],['#faq',t('welcome.nav_faq')]].map(([href,label]) => (
                                     <a key={href} href={href}
-                                       style={{ color: C.muted500, fontSize: 15 }}
-                                       className="transition-colors hover:text-ink">{label}</a>
+                                       className="nav-link">{label}</a>
                                 ))}
                             </div>
                             
@@ -164,14 +211,14 @@ export default function Welcome({ auth }: any) {
 
                             {auth.user ? (
                                 <Link href={route('dashboard')}
-                                      className="rounded-full px-5 py-2.5 text-sm font-semibold transition-opacity hover:opacity-80"
-                                      style={{ background: C.forest, color: C.cream }}>
+                                      className="rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                                      style={{ background: C.forest, color: C.cream, boxShadow: `0 4px 14px ${C.forest}40` }}>
                                     {t('welcome.nav_dashboard')}
                                 </Link>
                             ) : (
                                 <Link href={route('login')}
-                                      className="rounded-full px-5 py-2.5 text-sm font-semibold transition-opacity hover:opacity-80"
-                                      style={{ background: C.forest, color: C.cream }}>
+                                      className="rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                                      style={{ background: C.forest, color: C.cream, boxShadow: `0 4px 14px ${C.forest}40` }}>
                                     {t('welcome.nav_login')}
                                 </Link>
                             )}

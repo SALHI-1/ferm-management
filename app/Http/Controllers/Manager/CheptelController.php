@@ -46,6 +46,7 @@ class CheptelController extends Controller
             'type_investissement' => 'required_without:mother_id|in:complet,demi',
             'client_1_id' => 'required_if:type_investissement,complet,demi|nullable|exists:clients,id',
             'client_2_id' => 'required_if:type_investissement,demi|nullable|exists:clients,id|different:client_1_id',
+            'part_ferme_net' => 'nullable|numeric|min:0.1|max:0.6',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'fichier_documents' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
         ]);
@@ -70,6 +71,20 @@ class CheptelController extends Controller
                 : '/storage/' . $path;
         }
 
+        $part_ferme_net = null;
+        if ($request->mother_id) {
+            if (isset($mother) && $mother) {
+                $part_ferme_net = $mother->part_ferme_net;
+            }
+        } else {
+            $part_ferme_net = $request->part_ferme_net;
+            $client1 = \App\Models\Client::find($request->client_1_id);
+            $client2 = \App\Models\Client::find($request->client_2_id);
+            if (($client1 && $client1->is_ferme) || ($client2 && $client2->is_ferme)) {
+                $part_ferme_net = null;
+            }
+        }
+
         $vache = \App\Models\Vache::create([
             'numero_ticket' => $request->numero_ticket,
             'sexe' => $request->sexe,
@@ -80,7 +95,8 @@ class CheptelController extends Controller
             'statut_vente' => 'non_vendue',
             'statut_sante' => 'healthy',
             'image' => $imagePath,
-            'fichier_documents' => $fichierPath
+            'fichier_documents' => $fichierPath,
+            'part_ferme_net' => $part_ferme_net
         ]);
 
         if ($request->mother_id) {
