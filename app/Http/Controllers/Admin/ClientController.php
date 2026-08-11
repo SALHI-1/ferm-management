@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AccountCreated;
 
 class ClientController extends Controller
 {
@@ -36,7 +38,7 @@ class ClientController extends Controller
             'date_inscription' => $request->date_inscription
         ]);
 
-        User::create([
+        $user = User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
@@ -45,6 +47,8 @@ class ClientController extends Controller
             'userable_id' => $client->id,
             'userable_type' => Client::class
         ]);
+
+        Mail::to($user->email)->send(new AccountCreated($user, $request->password));
 
         return redirect()->back()->with('success', 'Client créé avec succès.');
     }

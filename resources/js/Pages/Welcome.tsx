@@ -1,12 +1,13 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useState, useEffect } from 'react';
 import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useTrans } from '@/Hooks/useTrans';
-import { Globe, Check } from 'lucide-react';
+import { Globe, Check, AlertCircle, CheckCircle2 } from 'lucide-react';
 import Dropdown from '@/Components/Dropdown';
+import Modal from '@/Components/Modal';
 
 /* ── inline brand tokens (no Tailwind config change needed) ── */
 const C = {
@@ -40,7 +41,14 @@ const FONTS = `
 export default function Welcome({ auth }: any) {
     const { flash, locale } = usePage().props as any;
     const [openFaq, setOpenFaq] = useState<number>(0);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const { t } = useTrans();
+
+    useEffect(() => {
+        if (flash?.success) {
+            setShowSuccessModal(true);
+        }
+    }, [flash]);
 
     const toggleLocale = locale === 'en' ? 'fr' : 'en';
     const toggleLabel = locale === 'en' ? 'FR' : 'EN';
@@ -54,7 +62,10 @@ export default function Welcome({ auth }: any) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('investment.store'), { onSuccess: () => reset() });
+        post(route('investment.store'), { 
+            preserveScroll: true,
+            onSuccess: () => reset() 
+        });
     };
 
     const steps = [
@@ -378,87 +389,79 @@ export default function Welcome({ auth }: any) {
 
                             {/* Right panel — form */}
                             <div className="p-10 md:w-7/12" style={{ background: C.cream50 }}>
-                                {flash?.success ? (
-                                    <div className="flex h-full flex-col items-center justify-center space-y-4 py-12 text-center animate-fade-in">
-                                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full"
-                                             style={{ background: '#d1fae5' }}>
-                                            <span className="text-2xl">✓</span>
+                                {errors.email && (
+                                    <div className="mb-6 rounded-[14px] p-4 flex items-start gap-3.5 border shadow-sm animate-fade-in"
+                                         style={{ background: '#fdf4f4', borderColor: '#fca5a5', color: '#991b1b' }}>
+                                        <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" style={{ color: '#ef4444' }} />
+                                        <div className="text-[14.5px] font-medium leading-relaxed">
+                                            {t(errors.email)}
                                         </div>
-                                        <h3 className="cf-serif text-[24px] font-bold">{t('welcome.invest_success')}</h3>
-                                        <p style={{ color: C.muted }}>{t('welcome.invest_success_desc')}</p>
-                                        <button onClick={() => window.location.reload()}
-                                                className="mt-8 font-medium transition-colors"
-                                                style={{ color: C.copper }}>
-                                            {t('welcome.invest_submit_another')}
-                                        </button>
                                     </div>
-                                ) : (
-                                    <form onSubmit={submit} className="space-y-6">
-                                        <div className="grid grid-cols-2 gap-6">
-                                            <div>
-                                                <InputLabel htmlFor="prenom" value={t('welcome.form_firstname')} className="text-slate-700 font-semibold" />
-                                                <TextInput
-                                                    id="prenom"
-                                                    type="text"
-                                                    name="prenom"
-                                                    value={data.prenom}
-                                                    className="mt-2 block w-full rounded-xl border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm"
-                                                    onChange={(e) => setData('prenom', e.target.value)}
-                                                    required
-                                                />
-                                                <InputError message={errors.prenom} className="mt-2" />
-                                            </div>
-                                            <div>
-                                                <InputLabel htmlFor="nom" value={t('welcome.form_lastname')} className="text-slate-700 font-semibold" />
-                                                <TextInput
-                                                    id="nom"
-                                                    type="text"
-                                                    name="nom"
-                                                    value={data.nom}
-                                                    className="mt-2 block w-full rounded-xl border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm"
-                                                    onChange={(e) => setData('nom', e.target.value)}
-                                                    required
-                                                />
-                                                <InputError message={errors.nom} className="mt-2" />
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <InputLabel htmlFor="email" value={t('welcome.form_email')} className="text-slate-700 font-semibold" />
-                                            <TextInput
-                                                id="email"
-                                                type="email"
-                                                name="email"
-                                                value={data.email}
-                                                className="mt-2 block w-full rounded-xl border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm"
-                                                onChange={(e) => setData('email', e.target.value)}
-                                                required
-                                            />
-                                            <InputError message={errors.email} className="mt-2" />
-                                        </div>
-
-                                        <div>
-                                            <InputLabel htmlFor="telephone" value={t('welcome.form_phone')} className="text-slate-700 font-semibold" />
-                                            <TextInput
-                                                id="telephone"
-                                                type="tel"
-                                                name="telephone"
-                                                value={data.telephone}
-                                                className="mt-2 block w-full rounded-xl border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm"
-                                                onChange={(e) => setData('telephone', e.target.value)}
-                                                required
-                                            />
-                                            <InputError message={errors.telephone} className="mt-2" />
-                                        </div>
-
-                                        <PrimaryButton
-                                            className="w-full justify-center !py-4 !text-base !rounded-xl !bg-slate-900 hover:!bg-indigo-600 transition-colors duration-300 mt-4 shadow-lg shadow-slate-900/10"
-                                            disabled={processing}
-                                        >
-                                            {t('welcome.form_submit')}
-                                        </PrimaryButton>
-                                    </form>
                                 )}
+                                <form onSubmit={submit} className="space-y-6">
+                                    <div className="grid grid-cols-2 gap-6">
+                                        <div>
+                                            <InputLabel htmlFor="prenom" value={t('welcome.form_firstname')} className="text-slate-700 font-semibold" />
+                                            <TextInput
+                                                id="prenom"
+                                                type="text"
+                                                name="prenom"
+                                                value={data.prenom}
+                                                className="mt-2 block w-full rounded-xl border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm"
+                                                onChange={(e) => setData('prenom', e.target.value)}
+                                                required
+                                            />
+                                            <InputError message={errors.prenom} className="mt-2" />
+                                        </div>
+                                        <div>
+                                            <InputLabel htmlFor="nom" value={t('welcome.form_lastname')} className="text-slate-700 font-semibold" />
+                                            <TextInput
+                                                id="nom"
+                                                type="text"
+                                                name="nom"
+                                                value={data.nom}
+                                                className="mt-2 block w-full rounded-xl border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm"
+                                                onChange={(e) => setData('nom', e.target.value)}
+                                                required
+                                            />
+                                            <InputError message={errors.nom} className="mt-2" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <InputLabel htmlFor="email" value={t('welcome.form_email')} className="text-slate-700 font-semibold" />
+                                        <TextInput
+                                            id="email"
+                                            type="email"
+                                            name="email"
+                                            value={data.email}
+                                            className={`mt-2 block w-full rounded-xl border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm transition-colors ${errors.email ? '!border-red-400 focus:!ring-red-500/20 focus:!border-red-500 bg-red-50/30' : ''}`}
+                                            onChange={(e) => setData('email', e.target.value)}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <InputLabel htmlFor="telephone" value={t('welcome.form_phone')} className="text-slate-700 font-semibold" />
+                                        <TextInput
+                                            id="telephone"
+                                            type="tel"
+                                            name="telephone"
+                                            value={data.telephone}
+                                            className="mt-2 block w-full rounded-xl border-slate-200 text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 shadow-sm"
+                                            onChange={(e) => setData('telephone', e.target.value)}
+                                            required
+                                        />
+                                        <InputError message={errors.telephone} className="mt-2" />
+                                    </div>
+
+                                    <PrimaryButton
+                                        className="w-full justify-center !py-4 !text-base !rounded-xl !bg-slate-900 hover:!bg-indigo-600 transition-colors duration-300 mt-4 shadow-lg shadow-slate-900/10"
+                                        disabled={processing}
+                                    >
+                                        {t('welcome.form_submit')}
+                                    </PrimaryButton>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -483,6 +486,27 @@ export default function Welcome({ auth }: any) {
                 </footer>
 
             </div>
+
+            <Modal show={showSuccessModal} onClose={() => setShowSuccessModal(false)} maxWidth="md">
+                <div className="p-10 text-center flex flex-col items-center">
+                    <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-[20px] bg-emerald-50 text-emerald-500 shadow-inner">
+                        <CheckCircle2 className="h-10 w-10" />
+                    </div>
+                    <h3 className="cf-serif text-[28px] font-bold text-slate-900 mb-3 tracking-tight">
+                        {t('welcome.invest_success_modal_title')}
+                    </h3>
+                    <p className="text-slate-600 text-[16px] leading-relaxed mb-8 max-w-[280px]">
+                        {t('welcome.invest_success_modal_desc')}
+                    </p>
+                    <button
+                        onClick={() => setShowSuccessModal(false)}
+                        className="w-full rounded-xl py-3.5 text-[15px] font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+                        style={{ background: C.copper, boxShadow: '0 8px 25px rgba(188,107,67,0.25)' }}
+                    >
+                        {t('welcome.invest_success_modal_btn')}
+                    </button>
+                </div>
+            </Modal>
         </>
     );
 }

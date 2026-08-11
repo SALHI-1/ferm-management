@@ -42,6 +42,10 @@ class HandleInertiaRequests extends Middleware
                 $path = lang_path($locale . '.json');
                 return file_exists($path) ? json_decode(file_get_contents($path), true) : [];
             },
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
         ];
     }
 }
