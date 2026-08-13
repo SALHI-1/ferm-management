@@ -114,7 +114,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                         </div>
                         <h1 className="text-4xl lg:text-5xl xl:text-6xl font-semibold text-cream leading-[1.1] tracking-tight mb-6 font-display" dangerouslySetInnerHTML={{ __html: t('login.heading') }}>
                         </h1>
-                        <p className="text-lg text-onForest2 leading-relaxed mb-12 max-w-lg">
+                        <p className="text-lg text-onForest-2 leading-relaxed mb-12 max-w-lg">
                             {t('login.subheading')}
                         </p>
 

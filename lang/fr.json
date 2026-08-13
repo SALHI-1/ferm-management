@@ -477,7 +477,20 @@
             "change_health": "Changer statut santé",
             "cancel_sale": "Annuler la vente",
             "mark_sold": "Marquer comme vendue",
-            "confirm_cancel_sale": "Marquer comme non vendu ?"
+            "confirm_cancel_sale": "Marquer comme non vendu ?",
+            "change_subvention": "Modifier subvention"
+        },
+        "subvention": {
+            "label": "Subvention d'état",
+            "accepted": "Acceptée",
+            "rejected": "Refusée",
+            "pending": "En attente"
+        },
+        "subvention_modal": {
+            "title": "Statut de la subvention",
+            "status": "Statut",
+            "cancel": "Annuler",
+            "update": "Mettre à jour"
         },
         "finances": {
             "title": "Finances",

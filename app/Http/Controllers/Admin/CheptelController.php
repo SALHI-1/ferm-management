@@ -110,7 +110,8 @@ class CheptelController extends Controller
             'image' => $imagePath,
             'fichier_documents' => $fichierPath,
             'part_ferme_net' => $part_ferme_net,
-            'prix_achat' => $request->prix_achat
+            'prix_achat' => $request->prix_achat,
+            'subvention_status' => $request->origine === 'achete' ? 'pending' : null
         ]);
 
         if ($request->mother_id) {
@@ -347,5 +348,20 @@ class CheptelController extends Controller
         $vache->update(['statut_sante' => $request->statut_sante]);
 
         return redirect()->back()->with('success', 'Statut de santé mis à jour directement.');
+    }
+    public function updateSubvention(Request $request, $id) {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user->userable_type === \App\Models\Admin::class && $user->userable->role === 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $vache = \App\Models\Vache::findOrFail($id);
+        $request->validate([
+            'subvention_status' => 'required|in:pending,accepted,rejected'
+        ]);
+
+        $vache->update(['subvention_status' => $request->subvention_status]);
+
+        return redirect()->back()->with('success', 'Statut de la subvention mis à jour.');
     }
 }

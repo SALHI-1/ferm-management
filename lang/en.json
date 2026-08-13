@@ -477,7 +477,20 @@
             "change_health": "Change health status",
             "cancel_sale": "Cancel sale",
             "mark_sold": "Mark as sold",
-            "confirm_cancel_sale": "Mark as not sold?"
+            "confirm_cancel_sale": "Mark as not sold?",
+            "change_subvention": "Change subsidy"
+        },
+        "subvention": {
+            "label": "State Subsidy",
+            "accepted": "Accepted",
+            "rejected": "Rejected",
+            "pending": "Pending"
+        },
+        "subvention_modal": {
+            "title": "Subsidy Status",
+            "status": "Status",
+            "cancel": "Cancel",
+            "update": "Update"
         },
         "finances": {
             "title": "Finances",

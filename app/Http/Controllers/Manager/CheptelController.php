@@ -98,7 +98,8 @@ class CheptelController extends Controller
             'image' => $imagePath,
             'fichier_documents' => $fichierPath,
             'part_ferme_net' => $part_ferme_net,
-            'prix_achat' => $request->prix_achat
+            'prix_achat' => $request->prix_achat,
+            'subvention_status' => $request->origine === 'achete' ? 'pending' : null
         ]);
 
         if ($request->mother_id) {
@@ -330,5 +331,23 @@ class CheptelController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Statut de santé mis à jour directement.');
+    }
+    public function updateSubvention(Request $request, $id) {
+        $vache = \App\Models\Vache::findOrFail($id);
+        $request->validate([
+            'subvention_status' => 'required|in:pending,accepted,rejected'
+        ]);
+
+        $vache->update(['subvention_status' => $request->subvention_status]);
+
+        \App\Models\Traceability::create([
+            'manager_id' => \Illuminate\Support\Facades\Auth::id(),
+            'action_type' => 'UPDATE',
+            'model_type' => \App\Models\Vache::class,
+            'model_id' => $id,
+            'description' => 'A modifié le statut de la subvention du bovin ' . $vache->numero_ticket . ' à : ' . $request->subvention_status
+        ]);
+
+        return redirect()->back()->with('success', 'Statut de la subvention mis à jour.');
     }
 }

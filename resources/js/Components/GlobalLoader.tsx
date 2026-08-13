@@ -6,15 +6,11 @@ export default function GlobalLoader() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        let timeout: NodeJS.Timeout;
-
         const handleStart = () => {
-            // Slight delay to prevent flickering on very fast requests
-            timeout = setTimeout(() => setLoading(true), 250);
+            setLoading(true);
         };
 
         const handleFinish = () => {
-            clearTimeout(timeout);
             setLoading(false);
         };
 
@@ -24,7 +20,6 @@ export default function GlobalLoader() {
         return () => {
             unsubscribeStart();
             unsubscribeFinish();
-            clearTimeout(timeout);
         };
     }, []);
 

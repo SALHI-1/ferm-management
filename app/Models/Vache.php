@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vache extends Model {
     protected $fillable = [
-        'mother_id', 'sexe', 'origine','statut_vente','statut_sante','numero_ticket', 'image', 'fichier_documents', 'date_naissance', 'date_entree', 'prix_vente', 'date_vente', 'part_ferme_net', 'prix_achat'
+        'mother_id', 'sexe', 'origine','statut_vente','statut_sante','numero_ticket', 'image', 'fichier_documents', 'date_naissance', 'date_entree', 'prix_vente', 'date_vente', 'part_ferme_net', 'prix_achat', 'subvention_status'
     ];
 
     protected $casts = [

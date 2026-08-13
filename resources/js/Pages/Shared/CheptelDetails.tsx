@@ -11,7 +11,7 @@ interface Client { id: number; user: { nom: string; prenom: string; }; pivot: { 
 interface Cost { id: number; type: string; price: number; date_facture: string; }
 interface Production { id: number; quantite_litres: number; periode_mois: string; }
 interface HealthStatus { id: number; type: string; date_debut: string; date_fin: string | null; }
-interface Vache { id: number; numero_ticket: string; image: string | null; fichier_documents: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; prix_vente?: number; date_vente?: string; pivot: { type_investissement: string; part_possedee: number; date_investissement: string; }; part_ferme_net?: string | null; prix_achat?: number | null; }
+interface Vache { id: number; numero_ticket: string; image: string | null; fichier_documents: string | null; statut_sante: string; statut_vente: string; sexe: 'male' | 'female'; origine: string; date_naissance: string | null; age: number | null; clients: Client[]; costs: Cost[]; productions: Production[]; health_statuses: HealthStatus[]; enfants: Vache[]; prix_vente?: number; date_vente?: string; pivot: { type_investissement: string; part_possedee: number; date_investissement: string; }; part_ferme_net?: string | null; prix_achat?: number | null; subvention_status?: 'pending' | 'accepted' | 'rejected' | null; }
 interface Props { vache: Vache; canEdit: boolean; coordonneesEspace: 'admin' | 'manager'; }
 
 export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Props) {
@@ -24,6 +24,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
     const [showEditModal, setShowEditModal] = useState(false);
     const [showChangeStatusModal, setShowChangeStatusModal] = useState(false);
     const [showSellModal, setShowSellModal] = useState(false);
+    const [showSubventionModal, setShowSubventionModal] = useState(false);
     const isSold = vache.statut_vente === 'vendue';
 
     const { data: finData, setData: setFinData, post: postFin, processing: finProcessing, reset: resetFin, errors: finErrors } = useForm({ annee: new Date().getFullYear(), mois: new Date().getMonth() + 1, price: '', type: 'food' });
@@ -32,6 +33,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
     const { data: editData, setData: setEditData, post: postEdit, processing: editProcessing, errors: editErrors, clearErrors: clearEditErrors } = useForm({ numero_ticket: vache.numero_ticket, sexe: vache.sexe, date_naissance: vache.date_naissance ? vache.date_naissance.substring(0, 10) : '', prix_achat: vache.prix_achat || '', image: null as File | null, fichier_documents: null as File | null });
     const { data: statusData, setData: setStatusData, put: putStatus, processing: statusProcessing } = useForm({ statut_sante: vache.statut_sante });
     const { data: sellData, setData: setSellData, put: putSell, processing: sellProcessing, errors: sellErrors } = useForm({ statut_vente: 'vendue', prix_vente: vache.prix_vente || '', date_vente: vache.date_vente || new Date().toISOString().split('T')[0] });
+    const { data: subventionData, setData: setSubventionData, put: putSubvention, processing: subventionProcessing } = useForm({ subvention_status: vache.subvention_status || 'pending' });
 
     const handleFinancialSubmit = (e: React.FormEvent) => { e.preventDefault(); postFin(`/${coordonneesEspace}/cheptel/${vache.id}/financial`, { onSuccess: () => resetFin('price') }); };
     const handleHealthSubmit = (e: React.FormEvent) => { e.preventDefault(); postHealth(`/${coordonneesEspace}/cheptel/${vache.id}/health`, { onSuccess: () => resetHealth('date_fin') }); };
@@ -39,6 +41,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
     const handleEditSubmit = (e: React.FormEvent) => { e.preventDefault(); postEdit(`/${coordonneesEspace}/cheptel/${vache.id}`, { onSuccess: () => setShowEditModal(false) }); };
     const handleStatusSubmit = (e: React.FormEvent) => { e.preventDefault(); putStatus(`/${coordonneesEspace}/cheptel/${vache.id}/sante`, { onSuccess: () => setShowChangeStatusModal(false) }); };
     const handleSellSubmit = (e: React.FormEvent) => { e.preventDefault(); putSell(`/${coordonneesEspace}/cheptel/${vache.id}/vente`, { onSuccess: () => setShowSellModal(false) }); };
+    const handleSubventionSubmit = (e: React.FormEvent) => { e.preventDefault(); putSubvention(`/${coordonneesEspace}/cheptel/${vache.id}/subvention`, { onSuccess: () => setShowSubventionModal(false) }); };
 
     const toggleVente = () => {
         if (isSold) {
@@ -70,6 +73,12 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
         if (s === 'healthy') return <span className="badge-success">{t('admin_cheptel_details.health_status.healthy')}</span>;
         if (s === 'pregnancy') return <span className="badge-info">{t('admin_cheptel_details.health_status.pregnancy')}</span>;
         return <span className="badge-danger">{t('admin_cheptel_details.health_status.sick')}</span>;
+    };
+
+    const subventionBadge = (s: string | null | undefined) => {
+        if (s === 'accepted') return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">{t('admin_cheptel_details.subvention.accepted')}</span>;
+        if (s === 'rejected') return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-700">{t('admin_cheptel_details.subvention.rejected')}</span>;
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">{t('admin_cheptel_details.subvention.pending')}</span>;
     };
 
     return (
@@ -111,6 +120,11 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                             <strong>{t('admin_cheptel_details.purchase_price_label')}</strong> {vache.prix_achat} DH
                                         </p>
                                     )}
+                                    {vache.origine === 'achete' && (
+                                        <p className="text-slate-500 text-sm flex items-center gap-2">
+                                            <strong>{t('admin_cheptel_details.subvention.label')}</strong> (6000 DH) {subventionBadge(vache.subvention_status)}
+                                        </p>
+                                    )}
                                     {vache.fichier_documents && (
                                         <p className="text-slate-500 text-sm mt-2">
                                             <strong>{t('admin_cheptel_details.file_label')}</strong>{' '}
@@ -148,6 +162,11 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                     <button onClick={() => setShowChangeStatusModal(true)} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5">
                                         <Heart className="h-3.5 w-3.5" /> {t('admin_cheptel_details.actions.change_health')}
                                     </button>
+                                    {vache.origine === 'achete' && (
+                                        <button onClick={() => setShowSubventionModal(true)} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5">
+                                            <DollarSign className="h-3.5 w-3.5" /> {t('admin_cheptel_details.actions.change_subvention')}
+                                        </button>
+                                    )}
                                     <button onClick={toggleVente} className={`btn-premium-secondary text-xs ${isSold ? '' : '!text-red-500 !border-red-200 hover:!bg-red-50'}`}>
                                         {isSold ? t('admin_cheptel_details.actions.cancel_sale') : t('admin_cheptel_details.actions.mark_sold')}
                                     </button>
@@ -470,6 +489,33 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                             <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
                                 <button type="button" onClick={() => setShowSellModal(false)} className="btn-premium-secondary">{t('admin_cheptel_details.sell_modal.cancel')}</button>
                                 <button type="submit" disabled={sellProcessing} className="btn-premium !bg-emerald-600 hover:!bg-emerald-700">{t('admin_cheptel_details.sell_modal.confirm')}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>,
+                document.body
+            )}
+
+            {/* Subvention Modal */}
+            {showSubventionModal && createPortal(
+                <div className="modal-overlay">
+                    <div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto">
+                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
+                            <h3 className="text-lg font-bold font-display">{t('admin_cheptel_details.subvention_modal.title')}</h3>
+                            <button onClick={() => setShowSubventionModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button>
+                        </div>
+                        <form onSubmit={handleSubventionSubmit} className="p-6 space-y-4">
+                            <div>
+                                <label className="label-premium">{t('admin_cheptel_details.subvention_modal.status')}</label>
+                                <select value={subventionData.subvention_status} onChange={e => setSubventionData('subvention_status', e.target.value)} className="select-premium">
+                                    <option value="pending">{t('admin_cheptel_details.subvention.pending')}</option>
+                                    <option value="accepted">{t('admin_cheptel_details.subvention.accepted')}</option>
+                                    <option value="rejected">{t('admin_cheptel_details.subvention.rejected')}</option>
+                                </select>
+                            </div>
+                            <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowSubventionModal(false)} className="btn-premium-secondary">{t('admin_cheptel_details.subvention_modal.cancel')}</button>
+                                <button type="submit" disabled={subventionProcessing} className="btn-premium">{t('admin_cheptel_details.subvention_modal.update')}</button>
                             </div>
                         </form>
                     </div>
