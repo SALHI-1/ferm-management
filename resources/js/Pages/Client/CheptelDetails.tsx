@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import AppLayout from '@/Layouts/AppLayout';
 import { X, Heart, DollarSign, Baby, TrendingUp } from 'lucide-react';
 import { useTrans } from '@/Hooks/useTrans';
+import ImageWithLoader from '@/Components/ImageWithLoader';
 
 interface Client { id: number; user: { nom: string; prenom: string; }; pivot: { part_possedee: number; }; }
 interface Cost { id: number; type: string; price: number; date_facture: string; }
@@ -54,7 +55,7 @@ export default function CheptelDetails({ vache }: Props) {
                 {/* Header */}
                 <div className="card-premium flex flex-col md:flex-row items-start gap-6">
                     <div className="w-28 h-28 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
-                        {vache.image ? <img src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">{t('cheptel_details.no_photo')}</span>}
+                        {vache.image ? <ImageWithLoader src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">{t('cheptel_details.no_photo')}</span>}
                     </div>
                     <div className="flex-1">
                         <h1 className="text-xl font-bold text-forest font-display flex items-center gap-3 mb-2">

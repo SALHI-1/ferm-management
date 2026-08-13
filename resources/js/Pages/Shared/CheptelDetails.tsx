@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import AppLayout from '@/Layouts/AppLayout';
 import { X, Heart, DollarSign, Baby, Edit2 } from 'lucide-react';
 import { useTrans } from '@/Hooks/useTrans';
+import ImageWithLoader from '@/Components/ImageWithLoader';
 
 interface Client { id: number; user: { nom: string; prenom: string; }; pivot: { part_possedee: number; }; }
 interface Cost { id: number; type: string; price: number; date_facture: string; }
@@ -78,7 +79,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                 {/* Header */}
                 <div className="card-premium flex flex-col md:flex-row items-start gap-6">
                     <div className="w-28 h-28 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
-                        {vache.image ? <img src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">{t('admin_cheptel_details.no_photo')}</span>}
+                        {vache.image ? <ImageWithLoader src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">{t('admin_cheptel_details.no_photo')}</span>}
                     </div>
                     <div className="flex-1">
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
@@ -388,7 +389,7 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_details.edit_modal.photo_optional')}</label>
                                 {vache.image && !editData.image && (
-                                    <div className="mb-2"><p className="text-xs text-slate-500 mb-1">{t('admin_cheptel_details.edit_modal.current_image')}</p><img src={vache.image} alt="Actuelle" className="h-16 w-16 object-cover rounded-lg border border-slate-200" /></div>
+                                    <div className="mb-2"><p className="text-xs text-slate-500 mb-1">{t('admin_cheptel_details.edit_modal.current_image')}</p><ImageWithLoader src={vache.image} alt="Actuelle" containerClassName="h-16 w-16" className="rounded-lg border border-slate-200" /></div>
                                 )}
                                 <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files[0]) handleEditImageChange(e.dataTransfer.files[0]) }} className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer mt-1" onClick={() => document.getElementById('image-upload-edit')?.click()}>
                                     <input type="file" id="image-upload-edit" className="hidden" accept="image/*" onChange={e => handleEditImageChange(e.target.files ? e.target.files[0] : null)} />

@@ -4,6 +4,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import { Activity, Clock, Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { useTrans } from '@/Hooks/useTrans';
+import Loader from '@/Components/Loader';
 
 interface TraceabilityLog {
     id: number;
@@ -109,7 +110,7 @@ export default function Traceability({ initialLogs }: Props) {
                                         >
                                             {loading ? (
                                                 <>
-                                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                                    <Loader size="sm" className="w-4 h-4 mr-2" />
                                                     {t('traceability.loading')}
                                                 </>
                                             ) : (
