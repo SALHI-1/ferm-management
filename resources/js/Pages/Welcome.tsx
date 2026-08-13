@@ -8,6 +8,7 @@ import { useTrans } from '@/Hooks/useTrans';
 import { Globe, Check, AlertCircle, CheckCircle2 } from 'lucide-react';
 import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
+import VideoWithLoader from '@/Components/VideoWithLoader';
 
 /* ── inline brand tokens (no Tailwind config change needed) ── */
 const C = {
@@ -277,7 +278,7 @@ export default function Welcome({ auth }: any) {
 
                         {/* Right — video / image */}
                         <div className="cf-rise-2 relative aspect-[4/5] overflow-hidden rounded-[20px] shadow-2xl">
-                            <video
+                            <VideoWithLoader
                                 className="h-full w-full object-cover"
                                 src="/videos/ferm-video.mp4"
                                 autoPlay loop muted playsInline
