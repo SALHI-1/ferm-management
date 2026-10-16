@@ -170,6 +170,7 @@ export default function Welcome({ auth }: any) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [cowsCount, setCowsCount] = useState<number>(2); // Default to 2 cows in simulator
     const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+    const [isScrolled, setIsScrolled] = useState(false);
     const lastScrollYRef = useRef(0);
     const { t } = useTrans();
 
@@ -197,24 +198,31 @@ export default function Welcome({ auth }: any) {
             const currentScrollY = window.scrollY;
 
             // Sticky bottom bar
-            if (currentScrollY > 450) {
-                setShowStickyBar(true);
-            } else {
-                setShowStickyBar(false);
+            setShowStickyBar(currentScrollY > 450);
+
+            // Collapse top announcement bar when scrolled past 50px
+            setIsScrolled(currentScrollY > 50);
+
+            // At the very top of the page, always show header
+            if (currentScrollY <= 40) {
+                setIsHeaderVisible(true);
+                lastScrollYRef.current = currentScrollY;
+                return;
             }
 
-            // Headroom navbar: always show at the top or when scrolling up, hide on scroll down
-            if (currentScrollY <= 60) {
-                setIsHeaderVisible(true);
-            } else if (currentScrollY > lastScrollYRef.current + 10) {
-                // Scrolling DOWN
-                setIsHeaderVisible(false);
-            } else if (currentScrollY < lastScrollYRef.current - 10) {
-                // Scrolling UP
-                setIsHeaderVisible(true);
-            }
+            const diff = currentScrollY - lastScrollYRef.current;
 
-            lastScrollYRef.current = currentScrollY;
+            // When scroll delta exceeds threshold (6px), react immediately
+            if (Math.abs(diff) >= 6) {
+                if (diff > 0) {
+                    // Scrolling DOWN -> hide header
+                    setIsHeaderVisible(false);
+                } else {
+                    // Scrolling UP (even at footer) -> immediately reveal header!
+                    setIsHeaderVisible(true);
+                }
+                lastScrollYRef.current = currentScrollY;
+            }
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -371,67 +379,79 @@ export default function Welcome({ auth }: any) {
                          style={{ background: 'radial-gradient(circle, #8ea38a 0%, rgba(142,163,138,0) 70%)' }} />
                 </div>
 
-                {/* ── TOP ANNOUNCEMENT BAR ── */}
-                <aside aria-label="Announcement" className="relative z-50 text-[11px] sm:text-xs font-medium py-2 px-3 sm:px-4 border-b border-white/20"
-                     style={{ background: C.forestSurface, color: C.onForest2 }}>
-                    <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-2">
-                        <div className="flex items-center gap-2 truncate">
-                            <span className="flex h-2 w-2 shrink-0 rounded-full bg-emerald-400 cf-pulse-dot" />
-                            <span className="font-semibold tracking-wide text-white truncate">
-                                {t('welcome.hero_campaign_badge')}
-                            </span>
-                            <span className="hidden sm:inline text-white/40">•</span>
-                            <span className="hidden sm:inline text-white/80 truncate">
-                                {t('welcome.hero_campaign_desc')}
-                            </span>
+                {/* ── FIXED SITE HEADER (HEADROOM: SHOW ON SCROLL UP, HIDE ON SCROLL DOWN) ── */}
+                <header 
+                    id="site-header"
+                    className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 ease-in-out ${
+                        isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
+                    }`}
+                >
+                    {/* Top Announcement Bar (Collapses cleanly when scrolled) */}
+                    <aside 
+                        aria-label="Announcement" 
+                        className={`transition-all duration-300 text-[11px] sm:text-xs font-medium border-b border-white/20 ${
+                            isScrolled ? 'max-h-0 py-0 opacity-0 overflow-hidden' : 'max-h-12 py-2 px-3 sm:px-4 opacity-100'
+                        }`}
+                        style={{ background: C.forestSurface, color: C.onForest2 }}
+                    >
+                        <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-2">
+                            <div className="flex items-center gap-2 truncate">
+                                <span className="flex h-2 w-2 shrink-0 rounded-full bg-emerald-400 cf-pulse-dot" />
+                                <span className="font-semibold tracking-wide text-white truncate">
+                                    {t('welcome.hero_campaign_badge')}
+                                </span>
+                                <span className="hidden sm:inline text-white/40">•</span>
+                                <span className="hidden sm:inline text-white/80 truncate">
+                                    {t('welcome.hero_campaign_desc')}
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-3 shrink-0 text-[11px] sm:text-[11.5px] text-white/70">
+                                <span className="hidden md:flex items-center gap-1.5">
+                                    <MapPin className="h-3 w-3 text-amber-400" />
+                                    {t('welcome.hero_pilot_farm')}
+                                </span>
+                                <a href="#demande" className="text-amber-300 hover:text-white font-semibold underline underline-offset-2">
+                                    {locale === 'en' ? 'Join →' : 'Rejoindre →'}
+                                </a>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-3 shrink-0 text-[11px] sm:text-[11.5px] text-white/70">
-                            <span className="hidden md:flex items-center gap-1.5">
-                                <MapPin className="h-3 w-3 text-amber-400" />
-                                {t('welcome.hero_pilot_farm')}
-                            </span>
-                            <a href="#demande" className="text-amber-300 hover:text-white font-semibold underline underline-offset-2">
-                                {locale === 'en' ? 'Join →' : 'Rejoindre →'}
-                            </a>
-                        </div>
-                    </div>
-                </aside>
+                    </aside>
 
-                {/* ── NAVBAR ── */}
-                <nav style={{ background: `${C.cream}f2`, borderBottom: `1px solid ${C.ink}14` }}
-                     className={`sticky top-0 z-40 backdrop-blur-md shadow-[0_2px_15px_-4px_rgba(34,29,25,0.04)] transition-transform duration-300 ease-in-out ${
-                         isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
-                     }`}>
-                    <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
-                        
-                        {/* Left: Mobile Menu Button (lg:hidden) + Logo */}
-                        <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-1">
-                            {/* Mobile Hamburger Button on the Left */}
-                            <button
-                                type="button"
-                                onClick={() => setMobileMenuOpen(true)}
-                                aria-label="Ouvrir le menu de navigation"
-                                aria-expanded={mobileMenuOpen}
-                                className="lg:hidden p-1.5 sm:p-2 rounded-xl text-stone-700 hover:bg-stone-200/60 border border-stone-300/50 transition-colors flex items-center justify-center shrink-0"
-                            >
-                                <Menu className="h-5 w-5" />
-                            </button>
+                    {/* Main Navigation Bar */}
+                    <nav 
+                        style={{ background: `${C.cream}f8`, borderBottom: `1px solid ${C.ink}14` }}
+                        className="backdrop-blur-md shadow-[0_2px_15px_-4px_rgba(34,29,25,0.06)]"
+                    >
+                        <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
+                            
+                            {/* Left: Mobile Menu Button (lg:hidden) + Logo */}
+                            <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-1">
+                                {/* Mobile Hamburger Button on the Left */}
+                                <button
+                                    type="button"
+                                    onClick={() => setMobileMenuOpen(true)}
+                                    aria-label="Ouvrir le menu de navigation"
+                                    aria-expanded={mobileMenuOpen}
+                                    className="lg:hidden p-1.5 sm:p-2 rounded-xl text-stone-700 hover:bg-stone-200/60 border border-stone-300/50 transition-colors flex items-center justify-center shrink-0"
+                                >
+                                    <Menu className="h-5 w-5" />
+                                </button>
 
-                            {/* Logo */}
-                            <a href="#top" className="flex items-center gap-2 sm:gap-2.5 group min-w-0">
-                                <div className="relative flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-xs border border-stone-200/60 overflow-hidden p-1 transition-transform group-hover:scale-105">
-                                    <img src="/images/logo.png" alt="Logo" className="h-full w-full object-contain" />
-                                </div>
-                                <div className="flex flex-col min-w-0">
-                                    <span className="cf-serif text-[15px] xs:text-[17px] sm:text-[21px] font-bold tracking-tight leading-none truncate" style={{ color: C.ink }}>
-                                        CoFarm <span style={{ color: C.copper }}>&amp;</span> Partners
-                                    </span>
-                                    <span className="cf-eyebrow text-[8px] sm:text-[9px] text-stone-500 tracking-widest mt-0.5 hidden xs:block">
-                                        Dairy Co-Investment
-                                    </span>
-                                </div>
-                            </a>
-                        </div>
+                                {/* Logo */}
+                                <a href="#top" className="flex items-center gap-2 sm:gap-2.5 group min-w-0">
+                                    <div className="relative flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-xs border border-stone-200/60 overflow-hidden p-1 transition-transform group-hover:scale-105">
+                                        <img src="/images/logo.png" alt="Logo" className="h-full w-full object-contain" />
+                                    </div>
+                                    <div className="flex flex-col min-w-0">
+                                        <span className="cf-serif text-[15px] xs:text-[17px] sm:text-[21px] font-bold tracking-tight leading-none truncate" style={{ color: C.ink }}>
+                                            CoFarm <span style={{ color: C.copper }}>&amp;</span> Partners
+                                        </span>
+                                        <span className="cf-eyebrow text-[8px] sm:text-[9px] text-stone-500 tracking-widest mt-0.5 hidden xs:block">
+                                            Dairy Co-Investment
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
 
                         {/* Desktop Navigation Links */}
                         <div className="hidden items-center gap-7 lg:flex">
@@ -512,6 +532,7 @@ export default function Welcome({ auth }: any) {
                         </div>
                     </div>
                 </nav>
+            </header>
 
                 {/* ── MOBILE SLIDE-OVER MODAL (LEFT SIDE, ~3/4 WIDTH, FIXED ON SCROLL) ── */}
                 <div 
@@ -644,7 +665,7 @@ export default function Welcome({ auth }: any) {
                 </div>
 
                 {/* ── HERO SECTION ── */}
-                <header id="top" className="relative z-10 pt-6 sm:pt-12 lg:pt-16 pb-12 sm:pb-20 lg:pb-24">
+                <section id="top" className="relative z-10 pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-20 lg:pb-24">
                     <div className="mx-auto grid w-full max-w-[1180px] items-center gap-8 sm:gap-12 px-4 sm:px-6 lg:grid-cols-12">
                         
                         {/* Left Column (7 cols) */}
@@ -775,7 +796,7 @@ export default function Welcome({ auth }: any) {
                         </div>
 
                     </div>
-                </header>
+                </section>
 
                 {/* ── INTERACTIVE ROI SIMULATOR SECTION ── */}
                 <section id="simulation" className="relative z-10 py-14 sm:py-20 border-y"
