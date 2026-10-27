@@ -9,7 +9,7 @@ import {
     Globe, Check, AlertCircle, CheckCircle2, TrendingUp, ShieldCheck,
     Activity, Award, Users, ChevronRight, Sparkles, Sliders, Calendar,
     ArrowRight, Phone, Mail, MapPin, Eye, Zap, Lock, Star, ChevronDown,
-    Menu, X, Coins, BarChart3
+    Menu, X, Coins, BarChart3, User, FileText
 } from 'lucide-react';
 import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
@@ -96,6 +96,13 @@ const STYLES = `
 
 .cf-reveal-scale {
     transform: scale(0.93) translateY(20px);
+}
+
+@media (max-width: 640px) {
+    .cf-reveal-left,
+    .cf-reveal-right {
+        transform: translateY(20px);
+    }
 }
 
 /* Revealed active state (triggered by IntersectionObserver or in-viewport check) */
@@ -877,60 +884,61 @@ export default function Welcome({ auth }: any) {
                 </div>
 
                 {/* ── HERO SECTION ── */}
-                <section id="top" className="relative z-10 pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-20 lg:pb-24">
+                <section id="top" className="relative z-10 pt-24 sm:pt-36 lg:pt-40 pb-12 sm:pb-20 lg:pb-24 overflow-hidden w-full">
                     <div className="mx-auto grid w-full max-w-[1180px] items-center gap-8 sm:gap-12 px-4 sm:px-6 lg:grid-cols-12">
 
                         {/* Left Column (7 cols) */}
-                        <div className="cf-rise lg:col-span-7">
+                        <div className="cf-rise lg:col-span-7 min-w-0">
 
-                            {/* Live Cohort Badge (Responsive: single-line, perfectly centered, never wraps or distorts) */}
+                            {/* Live Cohort Badge (Responsive: compact on mobile, expanded on desktop) */}
                             <div 
-                                className="inline-flex items-center gap-1.5 xs:gap-2 sm:gap-2.5 rounded-full px-3 sm:px-4 py-1.5 mb-5 sm:mb-6 border shadow-xs max-w-full whitespace-nowrap transition-all"
+                                className="inline-flex items-center gap-1.5 xs:gap-2 sm:gap-2.5 rounded-full px-2.5 xs:px-3 sm:px-4 py-1.5 mb-4 sm:mb-6 border shadow-xs max-w-full transition-all"
                                 style={{ background: C.cream50, borderColor: `${C.copper}40` }}
                             >
                                 <span className="relative flex h-2 w-2 shrink-0">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                                 </span>
-                                <span className="cf-eyebrow text-[9.5px] xs:text-[10.5px] sm:text-[11px] font-bold tracking-wider sm:tracking-widest shrink-0" style={{ color: C.copper }}>
-                                    <span className="sm:hidden">{locale === 'en' ? 'CO-INVESTMENT 2026' : 'CO-INVESTISSEMENT 2026'}</span>
+                                <span className="text-[10px] xs:text-[10.5px] sm:text-[11px] font-bold font-mono tracking-wide sm:tracking-widest uppercase shrink-0" style={{ color: C.copper }}>
+                                    <span className="xs:hidden">{locale === 'en' ? 'COHORT 2026' : 'COHORTE 2026'}</span>
+                                    <span className="hidden xs:inline sm:hidden">{locale === 'en' ? 'CO-INVEST. 2026' : 'CO-INVEST. 2026'}</span>
                                     <span className="hidden sm:inline">{t('welcome.hero_eyebrow')}</span>
                                 </span>
-                                <span className="text-stone-300 text-[11px] sm:text-xs shrink-0">•</span>
-                                <span className="text-[10.5px] xs:text-[11px] sm:text-xs font-semibold text-stone-600 truncate shrink-0">
-                                    30 {locale === 'en' ? 'Cows' : 'Vaches'} <span className="hidden xs:inline">{locale === 'en' ? '/ Cohort' : '/ Cohorte'}</span>
+                                <span className="text-stone-300 text-[10px] sm:text-xs shrink-0">•</span>
+                                <span className="text-[10px] xs:text-[11px] sm:text-xs font-semibold text-stone-600 shrink-0">
+                                    30 {locale === 'en' ? 'Cows' : 'Vaches'} <span className="hidden sm:inline">{locale === 'en' ? '/ Cohort' : '/ Cohorte'}</span>
                                 </span>
                             </div>
 
                             {/* Headline */}
-                            <h1 className="cf-serif mb-4 sm:mb-6 text-[34px] xs:text-[40px] sm:text-[52px] lg:text-[62px] font-bold leading-[1.08] tracking-tight text-stone-900 break-words"
+                            <h1 className="cf-serif mb-4 sm:mb-6 text-[30px] xs:text-[38px] sm:text-[50px] lg:text-[62px] font-bold leading-[1.1] tracking-tight text-stone-900 break-words"
                                 style={{ color: C.ink }}>
                                 CoFarm Dairy<br />
                                 <span style={{ color: C.forest }}>Partners</span>
                                 <span className="text-amber-600">.</span>
                             </h1>
 
-                            <p className="mb-6 sm:mb-8 max-w-[32em] text-[16px] sm:text-[19px] leading-relaxed text-stone-700">
+                            <p className="mb-6 sm:mb-8 max-w-[32em] text-[15px] sm:text-[19px] leading-relaxed text-stone-700">
                                 {t('welcome.hero_desc')}
                             </p>
 
                             {/* Quote with Luxury Card Style */}
-                            <div className="mb-6 sm:mb-9 rounded-2xl p-4 sm:p-5 border shadow-xs relative overflow-hidden"
+                            <div className="mb-6 sm:mb-9 rounded-2xl p-3.5 sm:p-5 border shadow-xs relative overflow-hidden w-full"
                                 style={{ background: `${C.cream50}cc`, borderColor: `${C.copper}30` }}>
                                 <div className="absolute top-0 left-0 bottom-0 w-1.5" style={{ background: C.copper }} />
-                                <p className="italic text-stone-700 text-[14.5px] sm:text-[16px] pl-2 font-medium">
+                                <p className="italic text-stone-700 text-[13.5px] sm:text-[16px] pl-2 font-medium leading-relaxed">
                                     "{t('welcome.hero_quote')}"
                                 </p>
-                                <div className="mt-2 pl-2 flex flex-col xs:flex-row xs:items-center justify-between text-xs font-semibold gap-1">
+                                <div className="mt-2 pl-2 flex flex-col sm:flex-row sm:items-center justify-between text-[11px] sm:text-xs font-semibold gap-1">
                                     <span style={{ color: C.copper }}>— Y. Manyani, {locale === 'en' ? 'Founder' : 'Fondateur'}</span>
                                     <span className="text-stone-400">{locale === 'en' ? 'Chaouia Pilot Farm' : 'Ferme Pilote Chaouia'}</span>
                                 </div>
                             </div>
 
                             {/* Action Buttons */}
-                            <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4">
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
                                 <a href="#demande"
-                                    className="group flex items-center justify-center gap-2.5 rounded-full px-6 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[16px] font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl text-center"
+                                    className="group w-full sm:w-auto flex items-center justify-center gap-2.5 rounded-full px-6 sm:px-8 py-3.5 sm:py-4 text-[14.5px] sm:text-[16px] font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl text-center"
                                     style={{
                                         background: `linear-gradient(135deg, ${C.copper} 0%, #c96e3e 100%)`,
                                         color: C.cream50,
@@ -941,7 +949,7 @@ export default function Welcome({ auth }: any) {
                                 </a>
 
                                 <button onClick={() => scrollToSection('simulation')}
-                                    className="flex items-center justify-center gap-2 rounded-full px-5 sm:px-6 py-3.5 sm:py-4 text-[14.5px] sm:text-[15.5px] font-semibold transition-all hover:bg-stone-200/60"
+                                    className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-full px-5 sm:px-6 py-3.5 sm:py-4 text-[14px] sm:text-[15.5px] font-semibold transition-all hover:bg-stone-200/60 text-center"
                                     style={{ border: `1.5px solid ${C.forest}55`, color: C.forest }}>
                                     <Sliders className="h-4 w-4 text-emerald-700" />
                                     <span>{locale === 'en' ? 'Simulate Returns' : 'Simuler mes rendements'}</span>
@@ -956,16 +964,16 @@ export default function Welcome({ auth }: any) {
                                     { v: t('welcome.hero_stat_3_val'), u: t('welcome.hero_stat_3_unit'), l: t('welcome.hero_stat_3_label') },
                                 ].map(({ v, u, l, accent }) => (
                                     <div key={l} className="flex flex-col">
-                                        <div className="cf-serif text-[22px] xs:text-[26px] sm:text-[34px] font-bold leading-none" style={{ color: C.forest }}>
+                                        <div className="cf-serif text-[18px] xs:text-[22px] sm:text-[34px] font-bold leading-none" style={{ color: C.forest }}>
                                             {v}
                                             {u && (
-                                                <span className="ml-1 text-[11px] sm:text-[14px] font-bold tracking-normal"
+                                                <span className="ml-0.5 sm:ml-1 text-[10px] xs:text-[11px] sm:text-[14px] font-bold tracking-normal"
                                                     style={{ color: accent ? C.copper : C.muted400 }}>
                                                     {u}
                                                 </span>
                                             )}
                                         </div>
-                                        <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-[13px] font-medium leading-tight text-stone-600">
+                                        <div className="mt-1.5 sm:mt-2 text-[10px] xs:text-[11.5px] sm:text-[13px] font-medium leading-tight text-stone-600">
                                             {l}
                                         </div>
                                     </div>
@@ -1965,180 +1973,426 @@ export default function Welcome({ auth }: any) {
                     </div>
                 </section>
 
-                {/* ── INVESTMENT REQUEST FORM (FINTECH LUXE RELOOKING) ── */}
-                <section id="demande" style={{ background: C.cream }}>
-                    <div className="mx-auto w-full max-w-[1020px] px-4 sm:px-6 py-14 sm:py-20 lg:py-24">
+                {/* ── INVESTMENT REQUEST FORM (LUXURY PRIVATE PLACEMENT FOLIO) ── */}
+                <section id="demande" className="relative py-16 sm:py-24 lg:py-28 overflow-hidden"
+                    style={{ background: 'linear-gradient(180deg, #f7f2e8 0%, #ece3d2 100%)' }}>
 
-                        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 cf-reveal">
-                            <p className="cf-eyebrow mb-2 sm:mb-3" style={{ color: C.copper }}>{t('welcome.invest_eyebrow')}</p>
-                            <h2 className="cf-serif mb-2 sm:mb-3 text-[28px] xs:text-[34px] sm:text-[44px] font-bold leading-tight tracking-tight"
+                    {/* Ambient Architectural Lighting Mesh */}
+                    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+                        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[550px] w-[850px] rounded-full opacity-35 blur-[130px]"
+                            style={{ background: 'radial-gradient(circle, #e9c394 0%, rgba(37,56,42,0.18) 60%, transparent 75%)' }} />
+                        <div className="absolute bottom-10 -right-40 h-[400px] w-[400px] rounded-full opacity-20 blur-[100px]"
+                            style={{ background: C.copper }} />
+                    </div>
+
+                    <div className="relative z-10 mx-auto w-full max-w-[1140px] px-4 sm:px-6">
+
+                        {/* Section Header */}
+                        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14 cf-reveal">
+                            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-3.5 text-xs font-bold uppercase tracking-wider shadow-xs border"
+                                style={{ background: C.copperLight, color: C.copper, borderColor: `${C.copper}35` }}>
+                                <Sparkles className="h-3.5 w-3.5" />
+                                <span>{locale === 'en' ? 'PRIVATE ALLOCATION DESK' : "BUREAU D'INVESTISSEMENT PRIVÉ"}</span>
+                                <span className="text-stone-300">•</span>
+                                <span className="text-[11px] font-semibold text-stone-600 lowercase tracking-normal">
+                                    {locale === 'en' ? '2026 cohort open' : 'cohorte 2026 ouverte'}
+                                </span>
+                            </div>
+
+                            <h2 className="cf-serif text-[32px] xs:text-[38px] sm:text-[48px] font-bold leading-[1.12] tracking-tight text-stone-900"
                                 style={{ color: C.ink }}>
-                                {t('welcome.invest_title')}
+                                {locale === 'en' ? 'Reserve Your Herd Allocation' : 'Souscrire à Votre Quota de Cheptel'}
+                                <span className="text-amber-600">.</span>
                             </h2>
-                            <p className="text-[15px] sm:text-[17px] text-stone-600">
-                                {t('welcome.invest_desc')}
+                            <p className="mt-3 text-[15px] sm:text-[17px] text-stone-600 leading-relaxed">
+                                {locale === 'en'
+                                    ? 'Zero upfront bank debit. A dedicated agricultural investment director will deliver your notarized allocation prospectus within 24 business hours.'
+                                    : 'Sans aucun débit bancaire immédiat. Un conseiller d\'investissement dédié vous transmet votre dossier notarié et la convention ONSSA sous 24h ouvrées.'}
                             </p>
                         </div>
 
-                        <div className="overflow-hidden rounded-[22px] sm:rounded-[26px] border shadow-2xl md:flex bg-white cf-reveal-scale cf-delay-150"
-                            style={{ borderColor: `${C.ink}14`, boxShadow: '0 30px 70px rgba(34,29,25,0.12)' }}>
+                        {/* Main Luxury Folio Card */}
+                        <div className="relative rounded-[28px] sm:rounded-[36px] border overflow-hidden shadow-2xl lg:grid lg:grid-cols-12 bg-white cf-reveal-scale"
+                            style={{
+                                borderColor: 'rgba(180, 93, 52, 0.22)',
+                                boxShadow: '0 30px 90px -15px rgba(34, 29, 25, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.9) inset'
+                            }}>
 
-                            {/* Left panel */}
-                            <div className="flex flex-col justify-between p-6 sm:p-8 md:p-10 md:w-5/12"
-                                style={{ background: `linear-gradient(155deg, ${C.forest} 0%, #1a271e 100%)`, color: C.cream }}>
-                                <div>
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-5 sm:mb-6 bg-white/10 text-amber-300">
-                                        <Lock className="h-3 w-3" />
-                                        {locale === 'en' ? 'Confidential Application' : 'Dossier Confidentiel'}
+                            {/* Top Golden Accent Ribbon */}
+                            <div className="absolute top-0 left-0 right-0 h-1.5 z-20 bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500" />
+
+                            {/* ── LEFT EXECUTIVE BRIEF PANEL (5 cols) ── */}
+                            <div className="p-4 xs:p-6 sm:p-8 lg:p-10 lg:col-span-5 flex flex-col justify-between relative overflow-hidden text-white"
+                                style={{ background: 'linear-gradient(155deg, #1b2d20 0%, #101c13 100%)' }}>
+
+                                {/* Ambient light behind ticket */}
+                                <div className="pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full opacity-20 blur-3xl"
+                                    style={{ background: C.gold }} />
+
+                                <div className="relative z-10">
+                                    <div className="flex items-center justify-between gap-2 mb-6">
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-wider bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                                            <Lock className="h-3 w-3 text-amber-300" />
+                                            {locale === 'en' ? 'Confidential Dossier' : 'Dossier Confidentiel'}
+                                        </span>
+                                        <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400">
+                                            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                                            {locale === 'en' ? 'ONSSA Registered' : 'Agréé ONSSA'}
+                                        </span>
                                     </div>
 
-                                    <h3 className="cf-serif mb-3 sm:mb-4 text-[22px] sm:text-[26px] font-bold text-white leading-snug">
-                                        {t('welcome.invest_why_title')}
+                                    <h3 className="cf-serif text-[22px] sm:text-[26px] font-bold text-white mb-2 leading-snug">
+                                        {locale === 'en' ? 'Direct Asset Co-Ownership' : 'Co-Propriété Réelle du Cheptel'}
                                     </h3>
-                                    <p className="mb-6 sm:mb-8 text-[14px] sm:text-[15px] leading-relaxed" style={{ color: C.onForest2 }}>
-                                        {t('welcome.invest_why_desc')}
+                                    <p className="text-xs sm:text-[13.5px] leading-relaxed text-stone-300 mb-6">
+                                        {locale === 'en'
+                                            ? 'Acquire identified and insured high-pedigree dairy cows. Real biological equity generating quarterly milk cashflow.'
+                                            : 'Votre investissement acquiert des génisses identifiées et assurées. Un actif biologique tangible qui verse des dividendes trimestriels audités.'}
                                     </p>
-                                </div>
 
-                                <div className="space-y-3 sm:space-y-4 text-[13.5px] sm:text-[14px]" style={{ color: C.onForest }}>
-                                    {[t('welcome.invest_point_1'), t('welcome.invest_point_2'), t('welcome.invest_point_3')].map((point) => (
-                                        <div key={point} className="flex items-center gap-2.5 sm:gap-3">
-                                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold"
-                                                style={{ background: C.copper, color: C.cream }}>✓</span>
-                                            <span className="font-medium text-white/90">{point}</span>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-white/10 text-xs text-white/60">
-                                    {locale === 'en'
-                                        ? 'Personalized response guaranteed by our team within 24 business hours.'
-                                        : 'Réponse personnalisée assurée par notre équipe sous 24h ouvrées.'}
-                                </div>
-                            </div>
-
-                            {/* Right panel — Form */}
-                            <div className="p-6 sm:p-8 md:p-10 md:w-7/12" style={{ background: C.cream50 }}>
-
-                                {/* Notification of selected simulation context */}
-                                <div className="mb-5 sm:mb-6 p-3 sm:p-3.5 rounded-xl border flex flex-col xs:flex-row xs:items-center justify-between gap-2 text-xs"
-                                    style={{ background: '#fdf8f4', borderColor: `${C.copper}30`, color: C.ink }}>
-                                    <div className="flex items-center gap-2 truncate">
-                                        <Sliders className="h-4 w-4 shrink-0" style={{ color: C.copper }} />
-                                        <span className="truncate">
-                                            {locale === 'en' ? 'Simulated allocation:' : 'Quota simulé :'} <strong>{cowsCount} {cowsCount > 1 ? (locale === 'en' ? 'cows' : 'vaches') : (locale === 'en' ? 'cow' : 'vache')}</strong> (~{(cowsCount * 39000).toLocaleString()} MAD)
-                                        </span>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => scrollToSection('simulation')}
-                                        className="font-bold underline text-amber-800 hover:text-amber-950 shrink-0 self-end xs:self-auto"
-                                    >
-                                        {locale === 'en' ? 'Modify' : 'Modifier'}
-                                    </button>
-                                </div>
-
-                                {errors.email && (
-                                    <div className="mb-5 sm:mb-6 rounded-[14px] p-3.5 sm:p-4 flex items-start gap-3 border shadow-xs"
-                                        style={{ background: '#fdf4f4', borderColor: '#fca5a5', color: '#991b1b' }}>
-                                        <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" style={{ color: '#ef4444' }} />
-                                        <div className="text-[13.5px] sm:text-[14px] font-medium leading-relaxed">
-                                            {t(errors.email)}
-                                        </div>
-                                    </div>
-                                )}
-
-                                <form onSubmit={submit} className="space-y-4 sm:space-y-5">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                                        <div>
-                                            <label htmlFor="prenom" className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">
-                                                {t('welcome.form_firstname')}
-                                            </label>
-                                            <TextInput
-                                                id="prenom"
-                                                type="text"
-                                                name="prenom"
-                                                value={data.prenom}
-                                                className="w-full rounded-xl border-stone-300 text-stone-900 shadow-xs focus:border-[#b45d34] focus:ring-2 focus:ring-[#b45d34]/20 py-2.5 px-3.5 text-sm"
-                                                onChange={(e) => setData('prenom', e.target.value)}
-                                                required
-                                            />
-                                            <InputError message={errors.prenom} className="mt-1" />
-                                        </div>
-                                        <div>
-                                            <label htmlFor="nom" className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">
-                                                {t('welcome.form_lastname')}
-                                            </label>
-                                            <TextInput
-                                                id="nom"
-                                                type="text"
-                                                name="nom"
-                                                value={data.nom}
-                                                className="w-full rounded-xl border-stone-300 text-stone-900 shadow-xs focus:border-[#b45d34] focus:ring-2 focus:ring-[#b45d34]/20 py-2.5 px-3.5 text-sm"
-                                                onChange={(e) => setData('nom', e.target.value)}
-                                                required
-                                            />
-                                            <InputError message={errors.nom} className="mt-1" />
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">
-                                            {t('welcome.form_email')}
-                                        </label>
-                                        <TextInput
-                                            id="email"
-                                            type="email"
-                                            name="email"
-                                            value={data.email}
-                                            className={`w-full rounded-xl border-stone-300 text-stone-900 shadow-xs focus:border-[#b45d34] focus:ring-2 focus:ring-[#b45d34]/20 py-2.5 px-3.5 text-sm ${errors.email ? '!border-red-400 bg-red-50/30' : ''
-                                                }`}
-                                            onChange={(e) => setData('email', e.target.value)}
-                                            required
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label htmlFor="telephone" className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">
-                                            {t('welcome.form_phone')}
-                                        </label>
-                                        <TextInput
-                                            id="telephone"
-                                            type="tel"
-                                            name="telephone"
-                                            placeholder="+212 6..."
-                                            value={data.telephone}
-                                            className="w-full rounded-xl border-stone-300 text-stone-900 shadow-xs focus:border-[#b45d34] focus:ring-2 focus:ring-[#b45d34]/20 py-2.5 px-3.5 text-sm"
-                                            onChange={(e) => setData('telephone', e.target.value)}
-                                            required
-                                        />
-                                        <InputError message={errors.telephone} className="mt-1" />
-                                    </div>
-
-                                    <button
-                                        type="submit"
-                                        disabled={processing}
-                                        className="w-full flex items-center justify-center gap-2 rounded-xl py-3.5 sm:py-4 text-sm sm:text-base font-bold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 mt-4 cursor-pointer"
+                                    {/* ── Live Investment Order Ticket ── */}
+                                    <div className="p-4 sm:p-5 rounded-2xl border backdrop-blur-md mb-6 relative overflow-hidden"
                                         style={{
-                                            background: `linear-gradient(135deg, ${C.copper} 0%, #cb703f 100%)`,
-                                            boxShadow: '0 8px 24px rgba(180, 93, 52, 0.3)'
-                                        }}
-                                    >
-                                        <span>{t('welcome.form_submit')}</span>
-                                        <ArrowRight className="h-4 w-4" />
-                                    </button>
+                                            background: 'rgba(255, 255, 255, 0.06)',
+                                            borderColor: 'rgba(212, 162, 89, 0.35)',
+                                            boxShadow: '0 10px 30px rgba(0,0,0,0.25)'
+                                        }}>
+                                        <div className="flex items-center justify-between text-[10.5px] font-bold uppercase tracking-wider text-amber-300/90 pb-2.5 border-b border-white/10 mb-3">
+                                            <span className="flex items-center gap-1.5">
+                                                <FileText className="h-3.5 w-3.5 text-amber-400" />
+                                                {locale === 'en' ? 'Selected Allocation' : 'Allocation Sélectionnée'}
+                                            </span>
+                                            <span className="font-mono text-stone-400 text-[10px]">#CF-COHORTE-2026</span>
+                                        </div>
 
-                                    <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2 text-[10.5px] sm:text-[11px] text-stone-500 font-medium text-center">
-                                        <span className="flex items-center gap-1">
-                                            <Lock className="h-3 w-3 text-stone-400" />
-                                            {locale === 'en' ? '256-bit Encryption' : 'Chiffrement 256-bit'}
-                                        </span>
-                                        <span className="hidden xs:inline">•</span>
-                                        <span>{locale === 'en' ? 'No immediate commitment' : 'Sans engagement immédiat'}</span>
+                                        <div className="flex items-baseline justify-between mb-3">
+                                            <div>
+                                                <span className="cf-serif text-3xl sm:text-4xl font-extrabold text-white leading-none">
+                                                    {cowsCount}
+                                                </span>
+                                                <span className="ml-1.5 text-sm sm:text-base font-bold text-amber-300">
+                                                    {cowsCount > 1 ? (locale === 'en' ? 'Cows' : 'Vaches') : (locale === 'en' ? 'Cow' : 'Vache')}
+                                                </span>
+                                            </div>
+                                            <div className="text-right">
+                                                <div className="cf-serif text-xl sm:text-2xl font-bold text-white leading-none">
+                                                    {(cowsCount * 39000).toLocaleString()} <span className="text-xs text-stone-300">MAD</span>
+                                                </div>
+                                                <span className="text-[10px] text-amber-200/70 font-medium">
+                                                    39 000 MAD / {locale === 'en' ? 'unit' : 'unité'}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Financial Highlights */}
+                                        <div className="grid grid-cols-2 gap-2 pt-2.5 border-t border-white/10 text-xs">
+                                            <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
+                                                <span className="text-stone-400 block text-[10px] mb-0.5">
+                                                    {locale === 'en' ? 'Est. Annual Cashflow' : 'Cashflow Annuel Est.'}
+                                                </span>
+                                                <strong className="text-emerald-400 font-bold text-[13px] block">
+                                                    ~{(cowsCount * 19000).toLocaleString()} MAD
+                                                </strong>
+                                                <span className="text-[9.5px] text-stone-400">{locale === 'en' ? 'Milk + Calves' : 'Lait + Veaux'}</span>
+                                            </div>
+                                            <div className="bg-white/5 rounded-xl p-2.5 border border-white/5">
+                                                <span className="text-stone-400 block text-[10px] mb-0.5">
+                                                    {locale === 'en' ? '5-Year Equity' : 'Projection 5 Ans'}
+                                                </span>
+                                                <strong className="text-amber-300 font-bold text-[13px] block">
+                                                    ~{Math.round(cowsCount * 39000 * 2.4).toLocaleString()} MAD
+                                                </strong>
+                                                <span className="text-[9.5px] text-amber-200/70 font-semibold">~2.4× Multiplier</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </form>
+
+                                    {/* 3 Premium Institutional Seals */}
+                                    <div className="space-y-3.5 pt-1 text-xs text-stone-200">
+                                        <div className="flex items-start gap-2.5">
+                                            <div className="h-5 w-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                                                style={{ background: 'rgba(212, 162, 89, 0.25)', color: '#f3d9a2' }}>
+                                                <Check className="h-3 w-3 stroke-[3]" />
+                                            </div>
+                                            <div>
+                                                <strong className="text-white block font-semibold text-[13px]">{locale === 'en' ? 'Notarized Master Agreement' : 'Convention Notariée Cadre'}</strong>
+                                                <span className="text-stone-400 text-[11.5px] leading-tight block">{locale === 'en' ? 'Official property title drafted under Moroccan commercial law.' : 'Acte authentique notarié attestant de la propriété exclusive de votre bétail.'}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start gap-2.5">
+                                            <div className="h-5 w-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                                                style={{ background: 'rgba(212, 162, 89, 0.25)', color: '#f3d9a2' }}>
+                                                <Check className="h-3 w-3 stroke-[3]" />
+                                            </div>
+                                            <div>
+                                                <strong className="text-white block font-semibold text-[13px]">{locale === 'en' ? 'MAMDA Insurance & ONSSA Telemetry' : 'Assurance MAMDA & Boucle ONSSA'}</strong>
+                                                <span className="text-stone-400 text-[11.5px] leading-tight block">{locale === 'en' ? '100% replacement value coverage and individual digital ear tag.' : 'Remplacement bétail garanti et puce RFID individuelle officielle.'}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start gap-2.5">
+                                            <div className="h-5 w-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                                                style={{ background: 'rgba(212, 162, 89, 0.25)', color: '#f3d9a2' }}>
+                                                <Check className="h-3 w-3 stroke-[3]" />
+                                            </div>
+                                            <div>
+                                                <strong className="text-white block font-semibold text-[13px]">{locale === 'en' ? 'Quarterly Audited Distribution' : 'Dividendes Versés par Trimestre'}</strong>
+                                                <span className="text-stone-400 text-[11.5px] leading-tight block">{locale === 'en' ? 'Milk collection revenues audited and wired directly to your RIB.' : 'Revenus de laiterie audités et versés directement sur votre compte bancaire.'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Bottom Reassurance Seal */}
+                                <div className="mt-8 pt-5 border-t border-white/10 flex items-center gap-3 text-xs text-stone-300 relative z-10">
+                                    <div className="h-9 w-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-amber-300">
+                                        <ShieldCheck className="h-5 w-5" />
+                                    </div>
+                                    <div className="text-[11px] leading-snug">
+                                        <strong className="text-white block font-semibold">
+                                            {locale === 'en' ? 'Guaranteed 24h Concierge Response' : 'Accompagnement Privé Sous 24h'}
+                                        </strong>
+                                        <span className="text-stone-400">
+                                            {locale === 'en' ? 'Zero automated debits • Guided farm visit arranged upon request.' : 'Sans prélèvement bancaire immédiat • Visite sur site possible.'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* ── RIGHT APPLICATION FORM PANEL (7 cols) ── */}
+                            <div className="p-4 xs:p-6 sm:p-8 lg:p-10 lg:col-span-7 flex flex-col justify-between bg-[#fdfcf9]">
+
+                                <div>
+                                    {/* Form Header with Step Indicator */}
+                                    <div className="mb-5 sm:mb-6 pb-3.5 sm:pb-4 border-b border-stone-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+                                        <div>
+                                            <span className="cf-eyebrow text-[9.5px] sm:text-[10px] font-bold text-amber-800 tracking-wider uppercase block">
+                                                {locale === 'en' ? 'STEP 1 OF 2 • ALLOCATION INTAKE' : 'ÉTAPE 1 SUR 2 • ENREGISTREMENT'}
+                                            </span>
+                                            <h4 className="cf-serif text-lg sm:text-2xl font-bold text-stone-900 mt-0.5">
+                                                {locale === 'en' ? 'Investor Registration' : 'Formulaire de Souscription'}
+                                            </h4>
+                                        </div>
+
+                                        {/* 2-Step indicator badge */}
+                                        <div className="inline-flex items-center gap-1.5 self-start sm:self-auto bg-stone-100/80 px-2.5 py-1 rounded-full border border-stone-200/60 text-xs">
+                                            <span className="flex h-5 w-5 items-center justify-center rounded-full text-[10.5px] font-bold text-white shadow-xs"
+                                                style={{ background: C.copper }}>1</span>
+                                            <span className="text-[11px] font-bold text-stone-800">
+                                                {locale === 'en' ? 'Contact' : 'Coordonnées'}
+                                            </span>
+                                            <span className="text-stone-300">•</span>
+                                            <span className="flex h-5 w-5 items-center justify-center rounded-full text-[10.5px] font-bold text-stone-400 bg-white">2</span>
+                                            <span className="text-[11px] font-medium text-stone-500">
+                                                {locale === 'en' ? 'Agreement' : 'Convention'}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* ── Interactive Herd Quota Selector Pills (Mobile Bulletproof) ── */}
+                                    <div className="mb-5 sm:mb-6 p-3 xs:p-4 rounded-2xl bg-amber-50/40 border border-amber-200/70">
+                                        <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-1 mb-2.5">
+                                            <label className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
+                                                <Sliders className="h-3.5 w-3.5 text-amber-700" />
+                                                <span>{locale === 'en' ? 'Adjust Quota:' : 'Ajuster votre quota :'}</span>
+                                            </label>
+                                            <span className="text-[11px] sm:text-xs font-bold text-stone-900 font-mono">
+                                                {cowsCount} {cowsCount > 1 ? (locale === 'en' ? 'cows' : 'vaches') : (locale === 'en' ? 'cow' : 'vache')} <span className="text-stone-500 font-normal text-[10px] sm:text-[11px]">(~{(cowsCount * 39000).toLocaleString()} MAD)</span>
+                                            </span>
+                                        </div>
+
+                                        <div className="grid grid-cols-5 gap-1 xs:gap-1.5 sm:gap-2 pt-2">
+                                            {[1, 2, 3, 5, 10].map((num) => (
+                                                <button
+                                                    key={num}
+                                                    type="button"
+                                                    onClick={() => setCowsCount(num)}
+                                                    className={`relative flex flex-col items-center justify-center py-2 px-0.5 xs:px-1 rounded-xl transition-all duration-200 text-center ${
+                                                        cowsCount === num
+                                                            ? 'text-white shadow-md ring-2 ring-emerald-600/40 transform scale-[1.03]'
+                                                            : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50 hover:border-stone-300'
+                                                    }`}
+                                                    style={{
+                                                        background: cowsCount === num ? C.forest : undefined,
+                                                    }}
+                                                >
+                                                    {num === 2 && (
+                                                        <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-stone-950 text-[7px] xs:text-[7.5px] sm:text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-tighter whitespace-nowrap shadow-xs">
+                                                            {locale === 'en' ? 'Popular' : 'Conseillé'}
+                                                        </span>
+                                                    )}
+                                                    <span className="text-sm xs:text-base sm:text-lg font-extrabold leading-none">
+                                                        {num}
+                                                    </span>
+                                                    <span className={`text-[8.5px] xs:text-[9.5px] sm:text-[10px] font-semibold mt-1 leading-none ${cowsCount === num ? 'text-amber-200' : 'text-stone-500'}`}>
+                                                        {num > 1 ? (locale === 'en' ? 'cows' : 'vaches') : (locale === 'en' ? 'cow' : 'vache')}
+                                                    </span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Global Backend Error Alert */}
+                                    {errors.email && (
+                                        <div className="mb-5 rounded-2xl p-4 flex items-start gap-3 border shadow-xs"
+                                            style={{ background: '#fdf4f4', borderColor: '#fca5a5', color: '#991b1b' }}>
+                                            <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" style={{ color: '#ef4444' }} />
+                                            <div className="text-[13.5px] font-medium leading-relaxed">
+                                                {t(errors.email)}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* ── Form Inputs ── */}
+                                    <form onSubmit={submit} className="space-y-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                                            {/* First Name */}
+                                            <div>
+                                                <label htmlFor="prenom" className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
+                                                    {t('welcome.form_firstname')} <span className="text-amber-600">*</span>
+                                                </label>
+                                                <div className="relative rounded-xl transition-all focus-within:ring-4 focus-within:ring-amber-500/15">
+                                                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                                                        <User className="h-4 w-4" />
+                                                    </div>
+                                                    <input
+                                                        id="prenom"
+                                                        type="text"
+                                                        name="prenom"
+                                                        placeholder={locale === 'en' ? 'e.g. Karim' : 'Ex. Karim'}
+                                                        autoComplete="given-name"
+                                                        value={data.prenom}
+                                                        className="w-full rounded-xl border border-stone-300 bg-white text-stone-900 shadow-xs focus:border-[#b45d34] focus:outline-hidden py-3 pl-10 pr-3.5 text-sm font-medium placeholder:text-stone-400 transition-colors"
+                                                        onChange={(e) => setData('prenom', e.target.value)}
+                                                        required
+                                                    />
+                                                </div>
+                                                <InputError message={errors.prenom} className="mt-1" />
+                                            </div>
+
+                                            {/* Last Name */}
+                                            <div>
+                                                <label htmlFor="nom" className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
+                                                    {t('welcome.form_lastname')} <span className="text-amber-600">*</span>
+                                                </label>
+                                                <div className="relative rounded-xl transition-all focus-within:ring-4 focus-within:ring-amber-500/15">
+                                                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                                                        <User className="h-4 w-4" />
+                                                    </div>
+                                                    <input
+                                                        id="nom"
+                                                        type="text"
+                                                        name="nom"
+                                                        placeholder={locale === 'en' ? 'e.g. Bennani' : 'Ex. Bennani'}
+                                                        autoComplete="family-name"
+                                                        value={data.nom}
+                                                        className="w-full rounded-xl border border-stone-300 bg-white text-stone-900 shadow-xs focus:border-[#b45d34] focus:outline-hidden py-3 pl-10 pr-3.5 text-sm font-medium placeholder:text-stone-400 transition-colors"
+                                                        onChange={(e) => setData('nom', e.target.value)}
+                                                        required
+                                                    />
+                                                </div>
+                                                <InputError message={errors.nom} className="mt-1" />
+                                            </div>
+                                        </div>
+
+                                        {/* Email */}
+                                        <div>
+                                            <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
+                                                {t('welcome.form_email')} <span className="text-amber-600">*</span>
+                                            </label>
+                                            <div className="relative rounded-xl transition-all focus-within:ring-4 focus-within:ring-amber-500/15">
+                                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                                                    <Mail className="h-4 w-4" />
+                                                </div>
+                                                <input
+                                                    id="email"
+                                                    type="email"
+                                                    name="email"
+                                                    placeholder={locale === 'en' ? 'karim.bennani@company.com' : 'karim.bennani@domaine.ma'}
+                                                    autoComplete="email"
+                                                    value={data.email}
+                                                    className={`w-full rounded-xl border border-stone-300 bg-white text-stone-900 shadow-xs focus:border-[#b45d34] focus:outline-hidden py-3 pl-10 pr-3.5 text-sm font-medium placeholder:text-stone-400 transition-colors ${
+                                                        errors.email ? '!border-red-400 bg-red-50/20' : ''
+                                                    }`}
+                                                    onChange={(e) => setData('email', e.target.value)}
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Phone */}
+                                        <div>
+                                            <label htmlFor="telephone" className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
+                                                {t('welcome.form_phone')} <span className="text-amber-600">*</span>
+                                            </label>
+                                            <div className="relative rounded-xl transition-all focus-within:ring-4 focus-within:ring-amber-500/15">
+                                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
+                                                    <Phone className="h-4 w-4" />
+                                                </div>
+                                                <input
+                                                    id="telephone"
+                                                    type="tel"
+                                                    name="telephone"
+                                                    placeholder="+212 6 XX XX XX XX"
+                                                    autoComplete="tel"
+                                                    inputMode="tel"
+                                                    value={data.telephone}
+                                                    className="w-full rounded-xl border border-stone-300 bg-white text-stone-900 shadow-xs focus:border-[#b45d34] focus:outline-hidden py-3 pl-10 pr-3.5 text-sm font-medium placeholder:text-stone-400 transition-colors"
+                                                    onChange={(e) => setData('telephone', e.target.value)}
+                                                    required
+                                                />
+                                            </div>
+                                            <InputError message={errors.telephone} className="mt-1" />
+                                        </div>
+
+                                        {/* ── High-Impact Submit Button ── */}
+                                        <div className="pt-2">
+                                            <button
+                                                type="submit"
+                                                disabled={processing}
+                                                className="group relative w-full rounded-2xl py-4 px-6 text-white font-bold shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 active:scale-[0.99] disabled:opacity-60 cursor-pointer overflow-hidden"
+                                                style={{
+                                                    background: `linear-gradient(135deg, ${C.copper} 0%, #cb703f 50%, #a24b23 100%)`,
+                                                    boxShadow: '0 14px 35px -5px rgba(180, 93, 52, 0.45)'
+                                                }}
+                                            >
+                                                {/* Shimmer sweep effect */}
+                                                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform pointer-events-none" />
+
+                                                <div className="relative z-10 flex items-center justify-center gap-3">
+                                                    <span className="text-[15px] sm:text-base tracking-wide">
+                                                        {locale === 'en'
+                                                            ? `Submit Allocation Request (${cowsCount} ${cowsCount > 1 ? 'Cows' : 'Cow'})`
+                                                            : `Confirmer ma demande d'allocation (${cowsCount} ${cowsCount > 1 ? 'vaches' : 'vache'})`}
+                                                    </span>
+                                                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        {/* 3 Reassurance Badges */}
+                                        <div className="pt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-stone-500 font-medium text-center">
+                                            <span className="flex items-center gap-1.5">
+                                                <Lock className="h-3 w-3 text-emerald-600" />
+                                                {locale === 'en' ? '256-bit SSL Encryption' : 'Chiffrement SSL 256-bit'}
+                                            </span>
+                                            <span className="hidden xs:inline text-stone-300">•</span>
+                                            <span className="flex items-center gap-1.5">
+                                                <ShieldCheck className="h-3.5 w-3.5 text-amber-700" />
+                                                {locale === 'en' ? 'No automated charges' : 'Sans débit bancaire'}
+                                            </span>
+                                            <span className="hidden xs:inline text-stone-300">•</span>
+                                            <span className="flex items-center gap-1.5">
+                                                <Sparkles className="h-3 w-3 text-amber-600" />
+                                                {locale === 'en' ? 'CNDP & RGPD Compliant' : 'Conforme CNDP & RGPD'}
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
 
                             </div>
+
                         </div>
 
                     </div>
