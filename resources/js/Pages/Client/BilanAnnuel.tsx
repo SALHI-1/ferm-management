@@ -44,46 +44,46 @@ export default function BilanAnnuel({ bilans }: Props) {
                         </p>
                     </div>
                 ) : (
-                    <div className="grid gap-6">
+                    <div className="grid gap-4 sm:gap-6">
                         {bilans.map(bilan => (
                             <div key={bilan.year} className="card-premium">
-                                <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
-                                    <h2 className="text-xl font-bold text-forest font-display flex items-center gap-2">
+                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 sm:mb-6 pb-4 border-b border-slate-100">
+                                    <h2 className="text-lg sm:text-xl font-bold text-forest font-display flex items-center gap-2">
                                         {t('bilan_annuel.year_title', { year: bilan.year })}
                                     </h2>
                                     {bilan.has_error && (
-                                        <div className="flex items-center gap-2 text-rose-600 bg-rose-50 px-3 py-1 rounded-full text-sm font-semibold">
+                                        <div className="flex items-center gap-1.5 text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full text-xs sm:text-sm font-semibold">
                                             <AlertTriangle className="h-4 w-4" />
                                             {t('bilan_annuel.calculation_error')}
                                         </div>
                                     )}
                                 </div>
 
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('bilan_annuel.total_costs')}</p>
-                                        <p className="text-lg font-bold text-rose-600">-{bilan.total_costs.toFixed(2)} DH</p>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 mb-4 sm:mb-6">
+                                    <div className="p-3 sm:p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                        <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 truncate">{t('bilan_annuel.total_costs')}</p>
+                                        <p className="text-sm sm:text-lg font-bold text-rose-600 truncate">-{bilan.total_costs.toFixed(2)} DH</p>
                                     </div>
-                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('bilan_annuel.net_milk_revenue')}</p>
-                                        <p className="text-lg font-bold text-forest">+{bilan.net_milk_revenue.toFixed(2)} DH</p>
+                                    <div className="p-3 sm:p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                        <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 truncate">{t('bilan_annuel.net_milk_revenue')}</p>
+                                        <p className="text-sm sm:text-lg font-bold text-forest truncate">+{bilan.net_milk_revenue.toFixed(2)} DH</p>
                                     </div>
-                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('bilan_annuel.sales_revenue')}</p>
-                                        <p className="text-lg font-bold text-forest">+{bilan.sales_revenue.toFixed(2)} DH</p>
+                                    <div className="p-3 sm:p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                        <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 truncate">{t('bilan_annuel.sales_revenue')}</p>
+                                        <p className="text-sm sm:text-lg font-bold text-forest truncate">+{bilan.sales_revenue.toFixed(2)} DH</p>
                                     </div>
-                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">{t('bilan_annuel.global_benefit')}</p>
-                                        <p className={`text-lg font-bold ${bilan.net_benefit >= 0 ? 'text-forest' : 'text-rose-600'}`}>
+                                    <div className="p-3 sm:p-4 bg-slate-50 rounded-xl border border-slate-100">
+                                        <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 truncate">{t('bilan_annuel.global_benefit')}</p>
+                                        <p className={`text-sm sm:text-lg font-bold truncate ${bilan.net_benefit >= 0 ? 'text-forest' : 'text-rose-600'}`}>
                                             {bilan.net_benefit > 0 ? '+' : ''}{bilan.net_benefit.toFixed(2)} DH
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className="bg-gradient-to-r from-brand-50 to-indigo-50 rounded-xl p-5 border border-brand-100/50">
-                                    <div className="flex flex-col items-center justify-center gap-2 text-center">
-                                        <p className="text-sm font-semibold text-brand-600 mb-1">{t('bilan_annuel.your_net_part')}</p>
-                                        <p className={`text-3xl font-black ${bilan.client_part >= 0 ? 'text-forest' : 'text-rose-600'}`}>
+                                <div className="bg-gradient-to-r from-brand-50 to-indigo-50 rounded-xl p-4 sm:p-5 border border-brand-100/50">
+                                    <div className="flex flex-col items-center justify-center gap-1.5 sm:gap-2 text-center">
+                                        <p className="text-xs sm:text-sm font-semibold text-brand-600">{t('bilan_annuel.your_net_part')}</p>
+                                        <p className={`text-2xl sm:text-3xl font-black ${bilan.client_part >= 0 ? 'text-forest' : 'text-rose-600'}`}>
                                             {bilan.client_part > 0 ? '+' : ''}{bilan.client_part.toFixed(2)} DH
                                         </p>
                                     </div>

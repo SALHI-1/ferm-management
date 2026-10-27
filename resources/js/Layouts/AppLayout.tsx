@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { useTrans } from '@/Hooks/useTrans';
-import { LayoutDashboard, Users, ShieldAlert, LogOut, Milestone, ClipboardList, ChevronLeft, Menu, PawPrint, Calendar, TrendingUp, Globe, Check } from 'lucide-react';
+import { LayoutDashboard, Users, ShieldAlert, LogOut, Milestone, ClipboardList, ChevronLeft, Menu, X, PawPrint, Calendar, TrendingUp, Globe, Check } from 'lucide-react';
 import Dropdown from '@/Components/Dropdown';
 
 interface NavItem {
@@ -116,32 +116,45 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
             {/* SIDEBAR */}
             <aside
                 className={`fixed lg:static inset-y-0 left-0 z-40 flex flex-col justify-between bg-cream border-r border-ink/10 shadow-sm transition-all duration-300 ease-in-out ${
-                    collapsed ? 'w-20' : 'w-72'
+                    collapsed ? 'w-20' : 'w-[84%] sm:w-72 max-w-[300px]'
                 } ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
             >
-                <div className={`${collapsed ? 'p-4' : 'p-6 pt-8'}`}>
+                <div className={`${collapsed ? 'p-4' : 'p-5 sm:p-6 pt-6 sm:pt-8'}`}>
                     {/* Logo */}
-                    <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between'} mb-10`}>
-                        <Link href={`${getBaseRoute()}/dashboard`} className="flex items-center gap-3">
-                            <img src="/images/logo.png" alt="Logo" className="w-9 h-9 object-contain flex-shrink-0" />
+                    <div className={`flex items-center ${collapsed ? 'justify-center' : 'justify-between'} mb-8 sm:mb-10`}>
+                        <Link 
+                            href={`${getBaseRoute()}/dashboard`} 
+                            onClick={() => setMobileOpen(false)}
+                            className="flex items-center gap-3 min-w-0"
+                        >
+                            <img src="/images/logo.png" alt="Logo" className="w-8 h-8 sm:w-9 sm:h-9 object-contain flex-shrink-0" />
                             {!collapsed && (
-                                <span className="font-display text-xl font-bold text-ink-900 tracking-tight">
+                                <span className="font-display text-lg sm:text-xl font-bold text-ink-900 tracking-tight truncate">
                                     CoFarm & Partners
                                 </span>
                             )}
                         </Link>
+                        {/* Desktop collapse toggle */}
                         <button
                             onClick={() => setCollapsed(!collapsed)}
                             className="hidden lg:flex items-center justify-center h-8 w-8 rounded-lg text-ink/50 hover:text-ink/80 hover:bg-cream-50 transition-all duration-200"
                         >
                             <ChevronLeft className={`h-4 w-4 transition-transform duration-300 ${collapsed ? 'rotate-180' : ''}`} />
                         </button>
+                        {/* Mobile close button */}
+                        <button
+                            onClick={() => setMobileOpen(false)}
+                            className="flex lg:hidden items-center justify-center h-8 w-8 rounded-lg text-ink/50 hover:text-ink/80 hover:bg-cream-50 transition-all duration-200"
+                            aria-label="Fermer le menu"
+                        >
+                            <X className="h-5 w-5" />
+                        </button>
                     </div>
 
                     {/* Navigation */}
-                    <nav className="space-y-1.5">
+                    <nav className="space-y-1 sm:space-y-1.5">
                         {!collapsed && (
-                            <div className="text-[11px] font-bold text-ink/50 uppercase tracking-widest mb-4 px-3">
+                            <div className="text-[11px] font-bold text-ink/50 uppercase tracking-widest mb-3 sm:mb-4 px-3">
                                 {t('layout.menu')}
                             </div>
                         )}
@@ -152,6 +165,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                                 <Link
                                     key={item.href}
                                     href={item.href}
+                                    onClick={() => setMobileOpen(false)}
                                     className={`flex items-center gap-3.5 px-3.5 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 group ${
                                         active
                                             ? 'text-forest bg-forest/10 shadow-sm'
@@ -162,7 +176,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                                     <Icon className={`h-[18px] w-[18px] flex-shrink-0 transition-colors duration-200 ${
                                         active ? 'text-forest' : 'text-ink/60 group-hover:text-ink/80'
                                     }`} />
-                                    {!collapsed && <span>{item.label}</span>}
+                                    {!collapsed && <span className="truncate">{item.label}</span>}
                                 </Link>
                             );
                         })}
@@ -170,13 +184,13 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                 </div>
 
                 {/* Profile & Logout */}
-                <div className={`border-t border-ink/10 bg-cream-50/50 ${collapsed ? 'p-3' : 'p-5'}`}>
+                <div className={`border-t border-ink/10 bg-cream-50/50 ${collapsed ? 'p-3' : 'p-4 sm:p-5'}`}>
                     {!collapsed && (
-                        <div className="mb-4">
+                        <div className="mb-3 sm:mb-4">
                             <p className="text-sm font-bold text-ink-900 truncate">
                                 {auth.user.prenom} {auth.user.nom}
                             </p>
-                            <span className="inline-block mt-1.5 text-[11px] font-bold bg-forest/10 text-forest px-2.5 py-0.5 rounded-full tracking-wide ring-1 ring-forest/20">
+                            <span className="inline-block mt-1 text-[11px] font-bold bg-forest/10 text-forest px-2.5 py-0.5 rounded-full tracking-wide ring-1 ring-forest/20 truncate max-w-full">
                                 {getRoleName()}
                             </span>
                         </div>
@@ -185,12 +199,13 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                         href={route('logout')}
                         method="post"
                         as="button"
+                        onClick={() => setMobileOpen(false)}
                         className={`w-full flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200 group ${
                             collapsed ? 'justify-center' : ''
                         }`}
                         title={collapsed ? t('layout.logout') : undefined}
                     >
-                        <LogOut className="h-[18px] w-[18px] group-hover:-translate-x-0.5 transition-transform duration-200" />
+                        <LogOut className="h-[18px] w-[18px] flex-shrink-0 group-hover:-translate-x-0.5 transition-transform duration-200" />
                         {!collapsed && <span>{t('layout.logout')}</span>}
                     </Link>
                 </div>
@@ -199,15 +214,16 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
             {/* MAIN CONTENT */}
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Top Header */}
-                <header className="h-16 bg-white/80 backdrop-blur-md border-b border-ink/10 flex items-center justify-between px-6 lg:px-10 z-10 flex-shrink-0">
-                    <div className="flex items-center gap-4">
+                <header className="h-14 sm:h-16 bg-white/80 backdrop-blur-md border-b border-ink/10 flex items-center justify-between px-3.5 sm:px-6 lg:px-10 z-10 flex-shrink-0">
+                    <div className="flex items-center gap-2.5 sm:gap-4 min-w-0 flex-1 mr-2">
                         <button
                             onClick={() => setMobileOpen(true)}
-                            className="lg:hidden p-2 rounded-lg text-ink/50 hover:text-ink/80 hover:bg-cream-50 transition-all duration-200"
+                            className="lg:hidden p-2 rounded-lg text-ink/50 hover:text-ink/80 hover:bg-cream-50 transition-all duration-200 flex-shrink-0"
+                            aria-label="Ouvrir le menu"
                         >
                             <Menu className="h-5 w-5" />
                         </button>
-                        <h1 className="text-lg lg:text-xl font-bold text-forest tracking-tight font-display">
+                        <h1 className="text-base sm:text-lg lg:text-xl font-bold text-forest tracking-tight font-display truncate">
                             {title}
                         </h1>
                     </div>
@@ -255,8 +271,8 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 overflow-y-auto p-6 lg:p-10">
-                    <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
+                <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 lg:p-10">
+                    <div className="max-w-7xl mx-auto space-y-5 sm:space-y-8 animate-fade-in">
                         {children}
                     </div>
                 </main>

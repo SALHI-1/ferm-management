@@ -61,18 +61,18 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
         <AppLayout title={t('admin_cheptel_list.app_layout_title')}>
             <Head title={t('admin_cheptel_list.head_title')} />
             <div className="card-premium">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 pb-4 border-b border-slate-100">
                     <h2 className="text-lg font-bold text-forest font-display">{t('admin_cheptel_list.section_title')}</h2>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                         {canEdit && (
-                            <button onClick={() => setShowAddModal(true)} className="btn-premium flex items-center gap-2 text-xs">
+                            <button onClick={() => setShowAddModal(true)} className="btn-premium flex items-center justify-center gap-2 text-xs w-full sm:w-auto">
                                 <Plus className="h-4 w-4" /> {t('admin_cheptel_list.add_button')}
                             </button>
                         )}
                     </div>
                 </div>
-                <div className="overflow-x-auto">
-                    <table className="table-premium">
+                <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                    <table className="table-premium min-w-[600px]">
                         <thead>
                             <tr>
                                 <th>{t('admin_cheptel_list.table.ear_tag_number')}</th>
@@ -114,11 +114,11 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
             {showAddModal && createPortal(
                 <div className="modal-overlay">
                     <div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-slate-100">
                             <h3 className="text-lg font-bold text-forest font-display">{t('admin_cheptel_list.add_modal.title')}</h3>
-                            <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button>
+                            <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors p-1"><X className="h-5 w-5" /></button>
                         </div>
-                        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_list.add_modal.ear_tag')}</label>
                                 <input type="text" value={data.numero_ticket} onChange={e => setData('numero_ticket', e.target.value)} className="input-premium" required />
@@ -131,7 +131,7 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                                     <option value="male">{t('admin_cheptel_list.add_modal.male')}</option>
                                 </select>
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                 <div>
                                     <label className="label-premium">{t('admin_cheptel_list.add_modal.birth_date')}</label>
                                     <input type="date" value={data.date_naissance} onChange={e => setData('date_naissance', e.target.value)} className="input-premium" required />
@@ -215,11 +215,11 @@ export default function CheptelList({ vaches, coordonneesEspace, canEdit, client
                                     {errors.part_ferme_net && <p className="text-rose-500 text-xs mt-1">{errors.part_ferme_net}</p>}
                                 </div>
                             )}
-                            <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
-                                <button type="button" onClick={() => setShowAddModal(false)} className="btn-premium-secondary">
+                            <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowAddModal(false)} className="btn-premium-secondary w-full sm:w-auto">
                                     {t('admin_cheptel_list.add_modal.cancel')}
                                 </button>
-                                <button type="submit" disabled={processing} className="btn-premium">
+                                <button type="submit" disabled={processing} className="btn-premium w-full sm:w-auto">
                                     {t('admin_cheptel_list.add_modal.add')}
                                 </button>
                             </div>

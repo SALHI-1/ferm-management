@@ -64,7 +64,7 @@
 
   /* ─── CARDS ─── */
   .card-premium {
-    @apply bg-white rounded-2xl shadow-sm border border-ink/5 p-8;
+    @apply bg-white rounded-2xl shadow-sm border border-ink/5 p-4 sm:p-6 lg:p-8;
     transition: box-shadow 0.2s ease;
   }
   .card-premium:hover {
@@ -100,7 +100,7 @@
     @apply bg-gray-50/80 border-y border-ink/10 text-muted uppercase tracking-wider text-xs font-bold;
   }
   .table-premium thead th {
-    @apply p-4 first:rounded-tl-xl last:rounded-tr-xl;
+    @apply p-3 sm:p-4 first:rounded-tl-xl last:rounded-tr-xl whitespace-nowrap;
   }
   .table-premium tbody {
     @apply divide-y divide-ink/5;
@@ -112,7 +112,7 @@
     @apply bg-gray-50/60;
   }
   .table-premium tbody td {
-    @apply p-4 text-sm;
+    @apply p-3 sm:p-4 text-sm whitespace-nowrap;
   }
 
   /* ─── BADGES ─── */
@@ -140,17 +140,17 @@
 
   /* ─── MODAL OVERLAY ─── */
   .modal-overlay {
-    @apply fixed inset-0 bg-ink/40 backdrop-blur-sm flex items-center justify-center z-50 p-4;
+    @apply fixed inset-0 bg-ink/40 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4;
     animation: fadeIn 0.2s ease;
   }
   .modal-panel {
-    @apply bg-white rounded-2xl shadow-2xl w-full overflow-hidden border border-ink/5;
+    @apply bg-white rounded-2xl shadow-2xl w-full max-h-[90vh] overflow-y-auto border border-ink/5;
     animation: slideUp 0.25s ease;
   }
 
   /* ─── STAT CARD ─── */
   .stat-card {
-    @apply bg-white rounded-2xl border border-ink/5 p-6 flex items-center gap-5 shadow-sm;
+    @apply bg-white rounded-2xl border border-ink/5 p-4 sm:p-6 flex items-center gap-3.5 sm:gap-5 shadow-sm;
     transition: all 0.2s ease;
   }
   .stat-card:hover {
@@ -158,7 +158,7 @@
     transform: translateY(-2px);
   }
   .stat-card-icon {
-    @apply p-3.5 rounded-xl bg-gray-50;
+    @apply p-2.5 sm:p-3.5 rounded-xl bg-gray-50 flex-shrink-0;
   }
 }
 

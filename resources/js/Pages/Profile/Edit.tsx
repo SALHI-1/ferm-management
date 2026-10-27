@@ -18,8 +18,8 @@ export default function Edit({ mustVerifyEmail, status }: any) {
         >
             <Head title={t('profile_edit.head_title')} />
 
-            <div className="py-10">
-                <div className="mx-auto max-w-3xl space-y-6 sm:px-6 lg:px-8">
+            <div className="py-6 sm:py-10">
+                <div className="mx-auto max-w-3xl space-y-6 px-3.5 sm:px-6 lg:px-8">
                     <div className="card-premium">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}

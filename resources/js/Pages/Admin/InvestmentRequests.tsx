@@ -75,25 +75,25 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
             )}
 
             {/* Header / Filters */}
-            <div className="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="mb-6 sm:mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-xl font-bold text-forest">{t('investment_requests.section_title')}</h2>
-                    <p className="text-sm text-slate-500 mt-1">{t('investment_requests.subtitle')}</p>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1">{t('investment_requests.subtitle')}</p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3">
-                    <div className="relative">
+                <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                    <div className="relative w-full sm:w-64">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                         <input
                             type="text"
                             placeholder={t('investment_requests.search_placeholder')}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 w-full sm:w-64 transition-all"
+                            className="pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 w-full transition-all"
                         />
                     </div>
 
-                    <div className="relative group">
+                    <div className="relative group w-full sm:w-auto">
                         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                             <Filter className="h-4 w-4 text-slate-400" />
                         </div>
@@ -116,42 +116,42 @@ export default function InvestmentRequests({ requests }: { requests: RequestData
             {/* Table */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm text-slate-600">
+                    <table className="w-full min-w-[650px] text-left text-sm text-slate-600">
                         <thead className="bg-slate-50/50 text-slate-500 uppercase text-[11px] font-bold tracking-wider">
                             <tr>
-                                <th className="px-6 py-4">{t('investment_requests.table.investor')}</th>
-                                <th className="px-6 py-4">{t('investment_requests.table.contact')}</th>
-                                <th className="px-6 py-4">{t('investment_requests.table.request_date')}</th>
-                                <th className="px-6 py-4">{t('investment_requests.table.status')}</th>
-                                <th className="px-6 py-4 text-right">{t('investment_requests.table.actions')}</th>
+                                <th className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">{t('investment_requests.table.investor')}</th>
+                                <th className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">{t('investment_requests.table.contact')}</th>
+                                <th className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">{t('investment_requests.table.request_date')}</th>
+                                <th className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">{t('investment_requests.table.status')}</th>
+                                <th className="px-4 sm:px-6 py-3.5 sm:py-4 text-right whitespace-nowrap">{t('investment_requests.table.actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {filteredRequests.length > 0 ? (
                                 filteredRequests.map((req) => (
                                     <tr key={req.id} className="hover:bg-slate-50/50 transition-colors">
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                                             <div className="font-semibold text-slate-800">{req.prenom} {req.nom}</div>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                                             <div className="flex flex-col gap-1 text-xs">
                                                 <div className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-slate-400" /> {req.email}</div>
                                                 <div className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-slate-400" /> {req.telephone}</div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-slate-500">
+                                        <td className="px-4 sm:px-6 py-3.5 sm:py-4 text-slate-500 whitespace-nowrap">
                                             <div className="flex items-center gap-1.5">
                                                 <Calendar className="w-4 h-4 text-slate-400" />
                                                 {new Date(req.created_at).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                                             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${getStatusStyle(req.status)}`}>
                                                 {getStatusIcon(req.status)}
                                                 {t(`investment_requests.statuses.${req.status}`)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">
                                             <div className="flex justify-end gap-2">
                                                 {req.status === 'en attente' && (
                                                     <>

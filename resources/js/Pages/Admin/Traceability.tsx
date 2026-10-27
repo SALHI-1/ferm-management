@@ -71,18 +71,18 @@ export default function Traceability({ initialLogs }: Props) {
             <div className="space-y-8">
                 <div className="card-premium">
                     <div className="flex items-center space-x-3 mb-6 border-b border-slate-100 pb-4">
-                        <div className="bg-brand-100 p-2 rounded-lg">
-                            <Activity className="h-6 w-6 text-brand-600" />
+                        <div className="bg-brand-100 p-2 rounded-lg flex-shrink-0">
+                            <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-brand-600" />
                         </div>
-                        <h2 className="text-2xl font-bold text-forest tracking-tight">{t('traceability.section_title')}</h2>
+                        <h2 className="text-xl sm:text-2xl font-bold text-forest tracking-tight">{t('traceability.section_title')}</h2>
                     </div>
 
                     <div className="space-y-6">
                         {logs.length > 0 ? (
                             <>
-                                <div className="relative border-l border-slate-200 ml-4 space-y-8">
+                                <div className="relative border-l border-slate-200 ml-2 sm:ml-4 space-y-6 sm:space-y-8">
                                     {logs.map((log) => (
-                                        <div key={log.id} className="relative pl-8">
+                                        <div key={log.id} className="relative pl-5 sm:pl-8">
                                             <div className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-brand-500 bg-white ring-4 ring-white"></div>
                                             <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-1">
                                                 <h3 className="text-base font-bold text-forest">

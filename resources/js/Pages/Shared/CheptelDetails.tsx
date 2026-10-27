@@ -86,65 +86,65 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
             <Head title={t('admin_cheptel_details.head_title', { ticket: vache.numero_ticket })} />
             <div className="space-y-6">
                 {/* Header */}
-                <div className="card-premium flex flex-col md:flex-row items-start gap-6">
-                    <div className="w-28 h-28 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div className="card-premium flex flex-col md:flex-row items-start gap-4 sm:gap-6">
+                    <div className="w-20 h-20 sm:w-28 sm:h-28 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
                         {vache.image ? <ImageWithLoader src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">{t('admin_cheptel_details.no_photo')}</span>}
                     </div>
-                    <div className="flex-1">
-                        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                            <div>
-                                <h1 className="text-xl font-bold text-forest font-display flex items-center gap-3 mb-2">
-                                    {t('admin_cheptel_details.ticket')} {vache.numero_ticket}
+                    <div className="flex-1 w-full min-w-0">
+                        <div className="flex flex-col lg:flex-row justify-between items-start gap-4">
+                            <div className="min-w-0 flex-1">
+                                <h1 className="text-lg sm:text-xl font-bold text-forest font-display flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                                    <span>{t('admin_cheptel_details.ticket')} {vache.numero_ticket}</span>
                                     {isSold && <span className="badge-danger">{t('admin_cheptel_details.sold_badge')}</span>}
                                 </h1>
                                 {isSold && vache.prix_vente && (
-                                    <div className="mb-2 text-sm text-slate-600 font-medium bg-red-50 text-red-700 px-3 py-1.5 rounded-lg inline-flex items-center gap-2">
+                                    <div className="mb-2 text-xs sm:text-sm text-slate-600 font-medium bg-red-50 text-red-700 px-3 py-1.5 rounded-lg inline-flex items-center gap-2">
                                         {t('admin_cheptel_details.sold_info', {
                                             price: String(vache.prix_vente),
                                             date: new Date(vache.date_vente!).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-FR')
                                         })}
                                     </div>
                                 )}
-                                <div className="space-y-2 mb-3">{healthBadge(vache.statut_sante)}
+                                <div className="space-y-1.5 sm:space-y-2 mb-3">{healthBadge(vache.statut_sante)}
                                     {vache.date_naissance && (
-                                        <p className="text-slate-500 text-sm">
+                                        <p className="text-slate-500 text-xs sm:text-sm">
                                             <strong>{t('admin_cheptel_details.born_date')}</strong> {new Date(vache.date_naissance).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-FR')}
                                             {vache.age !== null ? ` (${t('admin_cheptel_details.years_old', { age: String(vache.age) })})` : ''}
                                         </p>
                                     )}
-                                    <p className="text-slate-500 text-sm">
+                                    <p className="text-slate-500 text-xs sm:text-sm">
                                         <strong>{t('admin_cheptel_details.origin_label')}</strong> {vache.origine === 'ne_sur_ferme' ? t('admin_cheptel_details.origin_farm') : t('admin_cheptel_details.origin_purchased')}
                                     </p>
                                     {vache.prix_achat && (
-                                        <p className="text-slate-500 text-sm">
+                                        <p className="text-slate-500 text-xs sm:text-sm">
                                             <strong>{t('admin_cheptel_details.purchase_price_label')}</strong> {vache.prix_achat} DH
                                         </p>
                                     )}
                                     {vache.origine === 'achete' && (
-                                        <p className="text-slate-500 text-sm flex items-center gap-2">
+                                        <p className="text-slate-500 text-xs sm:text-sm flex flex-wrap items-center gap-2">
                                             <strong>{t('admin_cheptel_details.subvention.label')}</strong> (6000 DH) {subventionBadge(vache.subvention_status)}
                                         </p>
                                     )}
                                     {vache.fichier_documents && (
-                                        <p className="text-slate-500 text-sm mt-2">
+                                        <p className="text-slate-500 text-xs sm:text-sm mt-2">
                                             <strong>{t('admin_cheptel_details.file_label')}</strong>{' '}
                                             <a href={vache.fichier_documents} target="_blank" rel="noreferrer" className="text-brand-600 hover:text-brand-800 underline">{t('admin_cheptel_details.view_document')}</a>
                                         </p>
                                     )}
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-semibold text-slate-600 mb-1">{t('admin_cheptel_details.owners_label')}</h3>
+                                    <h3 className="text-xs sm:text-sm font-semibold text-slate-600 mb-1">{t('admin_cheptel_details.owners_label')}</h3>
                                     {vache.clients.length > 0 ? (
-                                        <ul className="text-sm text-slate-600 space-y-0.5">
+                                        <ul className="text-xs sm:text-sm text-slate-600 space-y-0.5">
                                             {vache.clients.map(c => <li key={c.id}>• {c.user?.nom} {c.user?.prenom} ({(c.pivot.part_possedee * 100).toFixed(0)}%)</li>)}
                                         </ul>
                                     ) : (
-                                        <p className="text-slate-400 text-sm">{t('admin_cheptel_details.owned_by_farm')}</p>
+                                        <p className="text-slate-400 text-xs sm:text-sm">{t('admin_cheptel_details.owned_by_farm')}</p>
                                     )}
                                 </div>
                             </div>
                             {canEdit && (
-                                <div className="flex flex-col gap-2">
+                                <div className="grid grid-cols-2 sm:flex sm:flex-wrap lg:flex-col gap-2 w-full lg:w-auto mt-2 lg:mt-0">
                                     <button onClick={() => {
                                         setEditData({
                                             numero_ticket: vache.numero_ticket,
@@ -156,18 +156,18 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                         });
                                         clearEditErrors();
                                         setShowEditModal(true);
-                                    }} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5">
+                                    }} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5 py-2">
                                         <Edit2 className="h-3.5 w-3.5" /> {t('admin_cheptel_details.actions.edit_info')}
                                     </button>
-                                    <button onClick={() => setShowChangeStatusModal(true)} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5">
+                                    <button onClick={() => setShowChangeStatusModal(true)} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5 py-2">
                                         <Heart className="h-3.5 w-3.5" /> {t('admin_cheptel_details.actions.change_health')}
                                     </button>
                                     {vache.origine === 'achete' && (
-                                        <button onClick={() => setShowSubventionModal(true)} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5">
+                                        <button onClick={() => setShowSubventionModal(true)} className="btn-premium-secondary text-xs flex items-center justify-center gap-1.5 py-2">
                                             <DollarSign className="h-3.5 w-3.5" /> {t('admin_cheptel_details.actions.change_subvention')}
                                         </button>
                                     )}
-                                    <button onClick={toggleVente} className={`btn-premium-secondary text-xs ${isSold ? '' : '!text-red-500 !border-red-200 hover:!bg-red-50'}`}>
+                                    <button onClick={toggleVente} className={`btn-premium-secondary text-xs py-2 ${isSold ? '' : '!text-red-500 !border-red-200 hover:!bg-red-50'}`}>
                                         {isSold ? t('admin_cheptel_details.actions.cancel_sale') : t('admin_cheptel_details.actions.mark_sold')}
                                     </button>
                                 </div>
@@ -350,11 +350,11 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
             {showAddChildModal && createPortal(
                 <div className="modal-overlay">
                     <div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-slate-100">
                             <h3 className="text-lg font-bold font-display">{t('admin_cheptel_details.child_modal.title')}</h3>
                             <button onClick={() => setShowAddChildModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button>
                         </div>
-                        <form onSubmit={handleChildSubmit} className="p-6 space-y-4">
+                        <form onSubmit={handleChildSubmit} className="p-4 sm:p-6 space-y-4">
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_details.child_modal.sex')}</label>
                                 <select value={childData.sexe} onChange={e => setChildData('sexe', e.target.value as 'male' | 'female')} className="select-premium">
@@ -372,9 +372,9 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                 </div>
                                 {childErrors.image && <p className="text-rose-500 text-xs mt-1">{childErrors.image}</p>}
                             </div>
-                            <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
-                                <button type="button" onClick={() => setShowAddChildModal(false)} className="btn-premium-secondary">{t('admin_cheptel_details.child_modal.cancel')}</button>
-                                <button type="submit" disabled={childProcessing} className="btn-premium">{t('admin_cheptel_details.child_modal.add')}</button>
+                            <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2.5 sm:gap-3 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowAddChildModal(false)} className="btn-premium-secondary w-full sm:w-auto">{t('admin_cheptel_details.child_modal.cancel')}</button>
+                                <button type="submit" disabled={childProcessing} className="btn-premium w-full sm:w-auto">{t('admin_cheptel_details.child_modal.add')}</button>
                             </div>
                         </form>
                     </div>
@@ -386,11 +386,11 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
             {showEditModal && createPortal(
                 <div className="modal-overlay">
                     <div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-slate-100">
                             <h3 className="text-lg font-bold font-display">{t('admin_cheptel_details.edit_modal.title')}</h3>
                             <button onClick={() => setShowEditModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button>
                         </div>
-                        <form onSubmit={handleEditSubmit} className="p-6 space-y-4">
+                        <form onSubmit={handleEditSubmit} className="p-4 sm:p-6 space-y-4">
                             <div><label className="label-premium">{t('admin_cheptel_details.edit_modal.ear_tag')}</label><input type="text" value={editData.numero_ticket} onChange={e => setEditData('numero_ticket', e.target.value)} className="input-premium" required />{editErrors.numero_ticket && <p className="text-rose-500 text-xs mt-1">{editErrors.numero_ticket}</p>}</div>
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_details.edit_modal.sex')}</label>
@@ -430,9 +430,9 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                 </div>
                                 {editErrors.fichier_documents && <p className="text-rose-500 text-xs mt-1">{editErrors.fichier_documents}</p>}
                             </div>
-                            <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
-                                <button type="button" onClick={() => setShowEditModal(false)} className="btn-premium-secondary">{t('admin_cheptel_details.edit_modal.cancel')}</button>
-                                <button type="submit" disabled={editProcessing} className="btn-premium">{t('admin_cheptel_details.edit_modal.update')}</button>
+                            <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2.5 sm:gap-3 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowEditModal(false)} className="btn-premium-secondary w-full sm:w-auto">{t('admin_cheptel_details.edit_modal.cancel')}</button>
+                                <button type="submit" disabled={editProcessing} className="btn-premium w-full sm:w-auto">{t('admin_cheptel_details.edit_modal.update')}</button>
                             </div>
                         </form>
                     </div>
@@ -444,11 +444,11 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
             {showChangeStatusModal && createPortal(
                 <div className="modal-overlay">
                     <div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-slate-100">
                             <h3 className="text-lg font-bold font-display">{t('admin_cheptel_details.status_modal.title')}</h3>
                             <button onClick={() => setShowChangeStatusModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button>
                         </div>
-                        <form onSubmit={handleStatusSubmit} className="p-6 space-y-4">
+                        <form onSubmit={handleStatusSubmit} className="p-4 sm:p-6 space-y-4">
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_details.status_modal.status')}</label>
                                 <select value={statusData.statut_sante} onChange={e => setStatusData('statut_sante', e.target.value)} className="select-premium">
@@ -457,9 +457,9 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                     {vache.sexe !== 'male' && <option value="pregnancy">{t('admin_cheptel_details.status_modal.pregnancy')}</option>}
                                 </select>
                             </div>
-                            <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
-                                <button type="button" onClick={() => setShowChangeStatusModal(false)} className="btn-premium-secondary">{t('admin_cheptel_details.status_modal.cancel')}</button>
-                                <button type="submit" disabled={statusProcessing} className="btn-premium">{t('admin_cheptel_details.status_modal.update')}</button>
+                            <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2.5 sm:gap-3 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowChangeStatusModal(false)} className="btn-premium-secondary w-full sm:w-auto">{t('admin_cheptel_details.status_modal.cancel')}</button>
+                                <button type="submit" disabled={statusProcessing} className="btn-premium w-full sm:w-auto">{t('admin_cheptel_details.status_modal.update')}</button>
                             </div>
                         </form>
                     </div>
@@ -471,11 +471,11 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
             {showSellModal && createPortal(
                 <div className="modal-overlay">
                     <div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-slate-100">
                             <h3 className="text-lg font-bold font-display">{t('admin_cheptel_details.sell_modal.title')}</h3>
                             <button onClick={() => setShowSellModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button>
                         </div>
-                        <form onSubmit={handleSellSubmit} className="p-6 space-y-4">
+                        <form onSubmit={handleSellSubmit} className="p-4 sm:p-6 space-y-4">
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_details.sell_modal.sale_price')}</label>
                                 <input type="number" step="0.01" min="0" value={sellData.prix_vente} onChange={e => setSellData('prix_vente', e.target.value)} className="input-premium" required />
@@ -486,9 +486,9 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
                                 <input type="date" value={sellData.date_vente} onChange={e => setSellData('date_vente', e.target.value)} className="input-premium" required />
                                 {sellErrors.date_vente && <p className="text-rose-500 text-xs mt-1">{sellErrors.date_vente}</p>}
                             </div>
-                            <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
-                                <button type="button" onClick={() => setShowSellModal(false)} className="btn-premium-secondary">{t('admin_cheptel_details.sell_modal.cancel')}</button>
-                                <button type="submit" disabled={sellProcessing} className="btn-premium !bg-emerald-600 hover:!bg-emerald-700">{t('admin_cheptel_details.sell_modal.confirm')}</button>
+                            <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2.5 sm:gap-3 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowSellModal(false)} className="btn-premium-secondary w-full sm:w-auto">{t('admin_cheptel_details.sell_modal.cancel')}</button>
+                                <button type="submit" disabled={sellProcessing} className="btn-premium !bg-emerald-600 hover:!bg-emerald-700 w-full sm:w-auto">{t('admin_cheptel_details.sell_modal.confirm')}</button>
                             </div>
                         </form>
                     </div>
@@ -500,22 +500,22 @@ export default function CheptelDetails({ vache, canEdit, coordonneesEspace }: Pr
             {showSubventionModal && createPortal(
                 <div className="modal-overlay">
                     <div className="modal-panel max-w-md max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-slate-100">
                             <h3 className="text-lg font-bold font-display">{t('admin_cheptel_details.subvention_modal.title')}</h3>
                             <button onClick={() => setShowSubventionModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors"><X className="h-5 w-5" /></button>
                         </div>
-                        <form onSubmit={handleSubventionSubmit} className="p-6 space-y-4">
+                        <form onSubmit={handleSubventionSubmit} className="p-4 sm:p-6 space-y-4">
                             <div>
                                 <label className="label-premium">{t('admin_cheptel_details.subvention_modal.status')}</label>
-                                <select value={subventionData.subvention_status} onChange={e => setSubventionData('subvention_status', e.target.value)} className="select-premium">
+                                <select value={subventionData.subvention_status} onChange={e => setSubventionData('subvention_status', e.target.value as 'pending' | 'accepted' | 'rejected')} className="select-premium">
                                     <option value="pending">{t('admin_cheptel_details.subvention.pending')}</option>
                                     <option value="accepted">{t('admin_cheptel_details.subvention.accepted')}</option>
                                     <option value="rejected">{t('admin_cheptel_details.subvention.rejected')}</option>
                                 </select>
                             </div>
-                            <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
-                                <button type="button" onClick={() => setShowSubventionModal(false)} className="btn-premium-secondary">{t('admin_cheptel_details.subvention_modal.cancel')}</button>
-                                <button type="submit" disabled={subventionProcessing} className="btn-premium">{t('admin_cheptel_details.subvention_modal.update')}</button>
+                            <div className="pt-4 flex flex-col-reverse sm:flex-row justify-end gap-2.5 sm:gap-3 border-t border-slate-100">
+                                <button type="button" onClick={() => setShowSubventionModal(false)} className="btn-premium-secondary w-full sm:w-auto">{t('admin_cheptel_details.subvention_modal.cancel')}</button>
+                                <button type="submit" disabled={subventionProcessing} className="btn-premium w-full sm:w-auto">{t('admin_cheptel_details.subvention_modal.update')}</button>
                             </div>
                         </form>
                     </div>

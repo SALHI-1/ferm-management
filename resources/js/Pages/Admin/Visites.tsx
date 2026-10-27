@@ -88,7 +88,7 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <div>
                     <h2 className="text-xl font-bold text-forest">{t('admin_visites.subtitle')}</h2>
-                    <p className="text-sm text-slate-500">{t('admin_visites.description')}</p>
+                    <p className="text-xs sm:text-sm text-slate-500">{t('admin_visites.description')}</p>
                 </div>
                 <div className="relative w-full sm:w-72">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -119,19 +119,19 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
 
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-slate-100">
+                    <table className="min-w-full min-w-[560px] divide-y divide-slate-100">
                         <thead className="bg-slate-50">
                             <tr>
-                                <th scope="col" className="py-3.5 pl-6 pr-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="py-3.5 pl-4 sm:pl-6 pr-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                                     {t('admin_visites.table.client')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                                     {t('admin_visites.table.date_time')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                                     {t('admin_visites.table.status')}
                                 </th>
-                                <th scope="col" className="relative py-3.5 pl-3 pr-6 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                                     {t('admin_visites.table.actions')}
                                 </th>
                             </tr>
@@ -212,14 +212,14 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
             </div>
 
             <Modal show={isRejectModalOpen} onClose={() => setIsRejectModalOpen(false)} maxWidth="md">
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                     <div className="flex items-center justify-between mb-5">
-                        <h3 className="text-lg font-bold text-slate-900">
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900">
                             {selectedVisite?.statut === 'refusee' ? t('admin_visites.modal.reason_title') : t('admin_visites.modal.reject_title')}
                         </h3>
                         <button
                             onClick={() => setIsRejectModalOpen(false)}
-                            className="text-slate-400 hover:text-slate-500 transition-colors"
+                            className="text-slate-400 hover:text-slate-500 transition-colors p-1"
                         >
                             <XCircle className="w-5 h-5" />
                         </button>
@@ -244,7 +244,7 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
                             <div className="mt-6 flex justify-end">
                                 <button
                                     onClick={() => setIsRejectModalOpen(false)}
-                                    className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors"
+                                    className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors"
                                 >
                                     {t('admin_visites.modal.close')}
                                 </button>
@@ -288,18 +288,18 @@ export default function AdminVisites({ visites }: { visites: any[] }) {
                                 {errors.commentaire_refus && <p className="mt-1 text-sm text-red-600">{errors.commentaire_refus}</p>}
                             </div>
 
-                            <div className="mt-6 flex justify-end gap-3">
+                            <div className="mt-6 flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3">
                                 <button
                                     type="button"
                                     onClick={() => setIsRejectModalOpen(false)}
-                                    className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors"
+                                    className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors"
                                 >
                                     {t('admin_visites.modal.cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors disabled:opacity-50"
+                                    className="w-full sm:w-auto inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors disabled:opacity-50"
                                 >
                                     {processing ? t('admin_visites.modal.rejecting') : t('admin_visites.modal.confirm_reject')}
                                 </button>

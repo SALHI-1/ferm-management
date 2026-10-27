@@ -53,53 +53,53 @@ export default function CheptelDetails({ vache }: Props) {
             <Head title={t('cheptel_details.head_title', { ticket: vache.numero_ticket })} />
             <div className="space-y-8">
                 {/* Header */}
-                <div className="card-premium flex flex-col md:flex-row items-start gap-6">
-                    <div className="w-28 h-28 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
+                <div className="card-premium flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+                    <div className="w-20 h-20 sm:w-28 sm:h-28 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
                         {vache.image ? <ImageWithLoader src={vache.image} alt={vache.numero_ticket} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-sm">{t('cheptel_details.no_photo')}</span>}
                     </div>
-                    <div className="flex-1">
-                        <h1 className="text-xl font-bold text-forest font-display flex items-center gap-3 mb-2">
-                            {t('cheptel_details.ticket')} {vache.numero_ticket}
+                    <div className="flex-1 min-w-0">
+                        <h1 className="text-lg sm:text-xl font-bold text-forest font-display flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                            <span>{t('cheptel_details.ticket')} {vache.numero_ticket}</span>
                             {isSold && <span className="badge-danger">{t('cheptel_details.sold_badge')}</span>}
                         </h1>
                         {isSold && vache.prix_vente && (
-                            <div className="mb-2 text-sm text-slate-600 font-medium bg-red-50 text-red-700 px-3 py-1.5 rounded-lg inline-flex items-center gap-2">
+                            <div className="mb-2 text-xs sm:text-sm text-slate-600 font-medium bg-red-50 text-red-700 px-3 py-1.5 rounded-lg inline-flex items-center gap-2">
                                 {t('cheptel_details.sold_info', {
                                     price: String(vache.prix_vente),
                                     date: new Date(vache.date_vente!).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-FR')
                                 })}
                             </div>
                         )}
-                        <div className="space-y-2 mb-3">{healthBadge(vache.statut_sante)}
+                        <div className="space-y-1.5 sm:space-y-2 mb-3">{healthBadge(vache.statut_sante)}
                             {vache.date_naissance && (
-                                <p className="text-slate-500 text-sm">
+                                <p className="text-slate-500 text-xs sm:text-sm">
                                     <strong>{t('cheptel_details.born_date')}</strong> {new Date(vache.date_naissance).toLocaleDateString(locale === 'en' ? 'en-US' : 'fr-FR')}
                                     {vache.age !== null ? ` (${t('cheptel_details.years_old', { age: String(vache.age) })})` : ''}
                                 </p>
                             )}
-                            <p className="text-slate-500 text-sm">
+                            <p className="text-slate-500 text-xs sm:text-sm">
                                 <strong>{t('cheptel_details.origin_label')}</strong> {vache.origine === 'ne_sur_ferme' ? t('cheptel_details.origin_farm') : t('cheptel_details.origin_purchased')}
                             </p>
                             {vache.prix_achat && (
-                                <p className="text-slate-500 text-sm">
+                                <p className="text-slate-500 text-xs sm:text-sm">
                                     <strong>{t('cheptel_details.purchase_price_label')}</strong> {vache.prix_achat} DH
                                 </p>
                             )}
                             {vache.fichier_documents && (
-                                <p className="text-slate-500 text-sm mt-2">
+                                <p className="text-slate-500 text-xs sm:text-sm mt-2">
                                     <strong>{t('cheptel_details.file_label')}</strong>{' '}
                                     <a href={vache.fichier_documents} target="_blank" rel="noreferrer" className="text-brand-600 hover:text-brand-800 underline">{t('cheptel_details.view_document')}</a>
                                 </p>
                             )}
                         </div>
                         <div>
-                            <h3 className="text-sm font-semibold text-slate-600 mb-1">{t('cheptel_details.owners_label')}</h3>
+                            <h3 className="text-xs sm:text-sm font-semibold text-slate-600 mb-1">{t('cheptel_details.owners_label')}</h3>
                             {vache.clients.length > 0 ? (
-                                <ul className="text-sm text-slate-600 space-y-0.5">
+                                <ul className="text-xs sm:text-sm text-slate-600 space-y-0.5">
                                     {vache.clients.map(c => <li key={c.id}>• {c.user?.nom} {c.user?.prenom} ({(c.pivot.part_possedee * 100).toFixed(0)}%)</li>)}
                                 </ul>
                             ) : (
-                                <p className="text-slate-400 text-sm">{t('cheptel_details.owned_by_farm')}</p>
+                                <p className="text-slate-400 text-xs sm:text-sm">{t('cheptel_details.owned_by_farm')}</p>
                             )}
                         </div>
                     </div>
@@ -108,13 +108,14 @@ export default function CheptelDetails({ vache }: Props) {
                 {/* Monthly Benefits */}
                 {vache.sexe !== 'male' && (
                     <div className="card-premium">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
-                            <h2 className="text-lg font-bold text-forest font-display flex items-center gap-2">
-                                <TrendingUp className="h-5 w-5 text-brand-500" /> {t('cheptel_details.monthly_profitability')}
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                            <h2 className="text-base sm:text-lg font-bold text-forest font-display flex flex-wrap items-center gap-2">
+                                <TrendingUp className="h-5 w-5 text-brand-500 flex-shrink-0" /> 
+                                <span>{t('cheptel_details.monthly_profitability')}</span>
                                 <select
                                     value={selectedYear}
                                     onChange={(e) => setSelectedYear(e.target.value)}
-                                    className="ml-2 select-premium py-1 px-3 text-sm bg-white border-slate-200"
+                                    className="select-premium py-1 px-3 text-xs sm:text-sm bg-white border-slate-200 w-auto"
                                 >
                                     {availableYears.map(year => (
                                         <option key={year} value={year}>{year}</option>
@@ -122,15 +123,15 @@ export default function CheptelDetails({ vache }: Props) {
                                 </select>
                             </h2>
                             <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
-                                <span className="text-sm font-semibold text-slate-600">{t('cheptel_details.liter_price_label')}</span>
-                                <span className="text-sm font-bold text-brand-600">{t('cheptel_details.liter_price_value')}</span>
+                                <span className="text-xs sm:text-sm font-semibold text-slate-600">{t('cheptel_details.liter_price_label')}</span>
+                                <span className="text-xs sm:text-sm font-bold text-brand-600">{t('cheptel_details.liter_price_value')}</span>
                             </div>
                         </div>
-                        <p className="text-slate-500 text-sm mb-4">
+                        <p className="text-slate-500 text-xs sm:text-sm mb-4 leading-relaxed">
                             {t('cheptel_details.net_profit_prefix')} <strong>{t('cheptel_details.net_profit_formula')}</strong>. {t('cheptel_details.net_profit_middle')} <strong>{((partPossedee * clientNetMultiplier) * 100).toFixed(0)}%</strong> {t('cheptel_details.net_profit_suffix')}
                         </p>
-                        <div className="overflow-x-auto">
-                            <table className="table-premium">
+                        <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                            <table className="table-premium min-w-[750px]">
                                 <thead>
                                     <tr>
                                         <th>{t('cheptel_details.table.month')}</th>

@@ -105,50 +105,50 @@ export default function StaffIndex({ staff }: Props) {
         <AppLayout title={t('staff_management.app_layout_title')}>
             <Head title={t('staff_management.head_title')} />
 
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
                 <div className="card-premium">
-                    <div className="flex justify-between items-center mb-8 border-b border-slate-100 pb-4">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8 border-b border-slate-100 pb-4">
                         <div className="flex items-center space-x-3">
-                            <div className="bg-brand-100 p-2 rounded-lg">
+                            <div className="bg-brand-100 p-2 rounded-lg flex-shrink-0">
                                 <Shield className="h-6 w-6 text-brand-600" />
                             </div>
-                            <h2 className="text-2xl font-bold text-forest tracking-tight">{t('staff_management.section_title')}</h2>
+                            <h2 className="text-xl sm:text-2xl font-bold text-forest tracking-tight">{t('staff_management.section_title')}</h2>
                         </div>
-                        <button onClick={() => openModal()} className="btn-premium flex items-center gap-2">
+                        <button onClick={() => openModal()} className="btn-premium flex items-center justify-center gap-2 w-full sm:w-auto">
                             <Plus className="w-5 h-5" />
                             {t('staff_management.new_member_button')}
                         </button>
                     </div>
 
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                    <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                        <table className="w-full min-w-[600px] text-left border-collapse">
                             <thead>
                                 <tr className="bg-slate-50 border-y border-slate-100 text-slate-500 uppercase tracking-wider text-xs font-bold">
-                                    <th className="p-4 rounded-tl-lg">{t('staff_management.table.full_name')}</th>
-                                    <th className="p-4">{t('staff_management.table.role')}</th>
-                                    <th className="p-4">{t('staff_management.table.email')}</th>
-                                    <th className="p-4">{t('staff_management.table.phone')}</th>
-                                    <th className="p-4 text-right rounded-tr-lg">{t('staff_management.table.actions')}</th>
+                                    <th className="p-3 sm:p-4 rounded-tl-lg whitespace-nowrap">{t('staff_management.table.full_name')}</th>
+                                    <th className="p-3 sm:p-4 whitespace-nowrap">{t('staff_management.table.role')}</th>
+                                    <th className="p-3 sm:p-4 whitespace-nowrap">{t('staff_management.table.email')}</th>
+                                    <th className="p-3 sm:p-4 whitespace-nowrap">{t('staff_management.table.phone')}</th>
+                                    <th className="p-3 sm:p-4 text-right rounded-tr-lg whitespace-nowrap">{t('staff_management.table.actions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                                 {staff.length > 0 ? staff.map(member => (
                                     <tr key={member.id} className="hover:bg-slate-50/50 transition-colors duration-200">
-                                        <td className="p-4 font-semibold text-slate-800">
+                                        <td className="p-3 sm:p-4 font-semibold text-slate-800 whitespace-nowrap">
                                             {member.prenom} {member.nom}
                                             {member.id === auth.user.id && <span className="ml-2 text-xs text-slate-400 font-normal">{t('staff_management.you')}</span>}
                                         </td>
-                                        <td className="p-4">
+                                        <td className="p-3 sm:p-4 whitespace-nowrap">
                                             {getRoleBadge(member.userable_type, member.userable.role)}
                                         </td>
-                                        <td className="p-4 text-slate-600">{member.email}</td>
-                                        <td className="p-4 text-slate-600">{member.telephone || '-'}</td>
-                                        <td className="p-4 text-right space-x-3">
-                                            <button onClick={() => openModal(member)} className="text-brand-600 hover:text-brand-800 transition-colors">
+                                        <td className="p-3 sm:p-4 text-slate-600 whitespace-nowrap">{member.email}</td>
+                                        <td className="p-3 sm:p-4 text-slate-600 whitespace-nowrap">{member.telephone || '-'}</td>
+                                        <td className="p-3 sm:p-4 text-right space-x-3 whitespace-nowrap">
+                                            <button onClick={() => openModal(member)} className="text-brand-600 hover:text-brand-800 transition-colors p-1">
                                                 <Edit2 className="w-5 h-5 inline" />
                                             </button>
                                             {member.id !== auth.user.id && (
-                                                <button onClick={() => handleDelete(member.id)} className="text-red-500 hover:text-red-700 transition-colors">
+                                                <button onClick={() => handleDelete(member.id)} className="text-red-500 hover:text-red-700 transition-colors p-1">
                                                     <Trash2 className="w-5 h-5 inline" />
                                                 </button>
                                             )}
@@ -156,7 +156,7 @@ export default function StaffIndex({ staff }: Props) {
                                     </tr>
                                 )) : (
                                     <tr>
-                                        <td colSpan={5} className="p-12 text-center text-slate-500 font-medium">
+                                        <td colSpan={5} className="p-8 sm:p-12 text-center text-slate-500 font-medium">
                                             {t('staff_management.empty_state')}
                                         </td>
                                     </tr>
@@ -169,19 +169,19 @@ export default function StaffIndex({ staff }: Props) {
 
             {/* Modal */}
             {isModalOpen && createPortal(
-                <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                    <div className="bg-surface rounded-xl shadow-premium w-full max-w-lg overflow-hidden">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
-                            <h3 className="text-xl font-bold text-forest">
+                <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
+                    <div className="bg-surface rounded-xl shadow-premium w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-slate-100">
+                            <h3 className="text-lg sm:text-xl font-bold text-forest">
                                 {editingStaff ? t('staff_management.modal.edit_title') : t('staff_management.modal.add_title')}
                             </h3>
-                            <button onClick={closeModal} className="text-slate-400 hover:text-slate-600 transition-colors">
-                                <X className="w-6 h-6" />
+                            <button onClick={closeModal} className="text-slate-400 hover:text-slate-600 transition-colors p-1">
+                                <X className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                         </div>
 
-                        <form onSubmit={submit} className="p-6 space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
+                        <form onSubmit={submit} className="p-4 sm:p-6 space-y-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-slate-700 mb-1">{t('staff_management.modal.first_name')}</label>
                                     <input type="text" value={data.prenom} onChange={e => setData('prenom', e.target.value)} className="w-full rounded-lg border-slate-200 focus:ring-brand-500 focus:border-brand-500" required />
@@ -230,7 +230,7 @@ export default function StaffIndex({ staff }: Props) {
                                     </p>
                                 )}
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-semibold text-slate-700 mb-1">
                                             {editingStaff ? t('staff_management.modal.new_password') : t('staff_management.modal.password')} {editingStaff ? '' : <span className="text-red-500">*</span>}
@@ -259,11 +259,11 @@ export default function StaffIndex({ staff }: Props) {
                                 </div>
                             </div>
 
-                            <div className="flex justify-end gap-3 mt-8">
-                                <button type="button" onClick={closeModal} className="btn-premium-secondary">
+                            <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 mt-6 sm:mt-8 pt-4 border-t border-slate-100">
+                                <button type="button" onClick={closeModal} className="btn-premium-secondary w-full sm:w-auto">
                                     {t('staff_management.modal.cancel')}
                                 </button>
-                                <button type="submit" className="btn-premium">
+                                <button type="submit" className="btn-premium w-full sm:w-auto">
                                     {editingStaff ? t('staff_management.modal.update_button') : t('staff_management.modal.create_button')}
                                 </button>
                             </div>

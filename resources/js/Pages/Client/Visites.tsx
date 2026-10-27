@@ -57,14 +57,14 @@ export default function Visites({ visites }: { visites: any[] }) {
         <AppLayout title={t('visites.app_layout_title')}>
             <Head title={t('visites.head_title')} />
 
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3.5 mb-6">
                 <div>
                     <h2 className="text-xl font-bold text-forest">{t('visites.subtitle')}</h2>
-                    <p className="text-sm text-slate-500">{t('visites.description')}</p>
+                    <p className="text-xs sm:text-sm text-slate-500">{t('visites.description')}</p>
                 </div>
                 <button
                     onClick={() => setIsFormOpen(true)}
-                    className="inline-flex items-center justify-center rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 transition-all"
+                    className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-500 transition-all"
                 >
                     <Calendar className="w-4 h-4 mr-2" />
                     {t('visites.book_visit_button')}
@@ -86,19 +86,19 @@ export default function Visites({ visites }: { visites: any[] }) {
 
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-slate-100">
+                    <table className="min-w-full min-w-[500px] divide-y divide-slate-100">
                         <thead className="bg-slate-50">
                             <tr>
-                                <th scope="col" className="py-3.5 pl-6 pr-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="py-3.5 pl-4 sm:pl-6 pr-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                                     {t('visites.table.date')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                                     {t('visites.table.time')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                                     {t('visites.table.status')}
                                 </th>
-                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap">
                                     {t('visites.table.details_reason')}
                                 </th>
                             </tr>
