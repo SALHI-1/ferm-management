@@ -1,5 +1,5 @@
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { ArrowRight, Shield, BarChart3, Users, Globe, Check } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Shield, BarChart3, Users, Globe, Check } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import { useTrans } from '@/Hooks/useTrans';
 import Dropdown from '@/Components/Dropdown';
@@ -13,10 +13,10 @@ import PrimaryButton from '@/Components/PrimaryButton';
 export default function Login({ auth, status, canResetPassword }: any) {
     const { locale } = usePage().props as any;
     const { t } = useTrans();
-    
+
     const toggleLocale = locale === 'en' ? 'fr' : 'en';
     const toggleLabel = locale === 'en' ? 'FR' : 'EN';
-    
+
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -40,7 +40,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
         <>
             <Head title={t('login.title')} />
             <div className="min-h-screen bg-cream-50 font-sans flex flex-col md:flex-row relative">
-                
+
                 {/* Left Side - Info & Branding */}
                 <div className="w-full md:w-1/2 lg:w-7/12 relative overflow-hidden flex flex-col p-5 sm:p-8 md:p-16 justify-between bg-ink">
                     {/* Background Video */}
@@ -80,30 +80,28 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                         <Globe className="h-4 w-4 sm:h-5 sm:w-5" />
                                     </button>
                                 </Dropdown.Trigger>
-                                <Dropdown.Content 
-                                    align="right" 
+                                <Dropdown.Content
+                                    align="right"
                                     width="32"
                                     containerClasses="rounded-2xl border border-white/40 shadow-[0_24px_40px_-12px_rgba(0,0,0,0.15)] bg-white/80 backdrop-blur-2xl"
                                     contentClasses="p-1.5 space-y-1"
                                 >
                                     <a
                                         href={route('language.switch', { locale: 'fr' })}
-                                        className={`group relative flex items-center justify-between w-full px-3 py-2 text-sm font-bold tracking-widest transition-all duration-300 rounded-xl ${
-                                            locale === 'fr' 
-                                                ? 'bg-forest/10 text-forest shadow-[inset_0_1px_1px_rgba(255,255,255,0.7)]' 
+                                        className={`group relative flex items-center justify-between w-full px-3 py-2 text-sm font-bold tracking-widest transition-all duration-300 rounded-xl ${locale === 'fr'
+                                                ? 'bg-forest/10 text-forest shadow-[inset_0_1px_1px_rgba(255,255,255,0.7)]'
                                                 : 'text-ink/60 hover:bg-white/60 hover:text-ink'
-                                        }`}
+                                            }`}
                                     >
                                         <span>FR</span>
                                         {locale === 'fr' && <Check className="h-4 w-4 text-forest drop-shadow-sm" />}
                                     </a>
                                     <a
                                         href={route('language.switch', { locale: 'en' })}
-                                        className={`group relative flex items-center justify-between w-full px-3 py-2 text-sm font-bold tracking-widest transition-all duration-300 rounded-xl ${
-                                            locale === 'en' 
-                                                ? 'bg-forest/10 text-forest shadow-[inset_0_1px_1px_rgba(255,255,255,0.7)]' 
+                                        className={`group relative flex items-center justify-between w-full px-3 py-2 text-sm font-bold tracking-widest transition-all duration-300 rounded-xl ${locale === 'en'
+                                                ? 'bg-forest/10 text-forest shadow-[inset_0_1px_1px_rgba(255,255,255,0.7)]'
                                                 : 'text-ink/60 hover:bg-white/60 hover:text-ink'
-                                        }`}
+                                            }`}
                                     >
                                         <span>EN</span>
                                         {locale === 'en' && <Check className="h-4 w-4 text-forest drop-shadow-sm" />}
@@ -233,6 +231,16 @@ export default function Login({ auth, status, canResetPassword }: any) {
                                     >
                                         {t('login.submit')}
                                     </PrimaryButton>
+
+                                    <div className="text-center">
+                                        <Link
+                                            href="/"
+                                            className="text-[11px] sm:text-xs text-stone-400 hover:text-stone-700 transition-colors inline-flex items-center gap-1"
+                                        >
+                                            <ArrowLeft className="h-3 w-3" />
+                                            <span>{locale === 'en' ? 'Back to home' : 'Retour à l\'accueil'}</span>
+                                        </Link>
+                                    </div>
                                 </form>
                             </>
                         )}

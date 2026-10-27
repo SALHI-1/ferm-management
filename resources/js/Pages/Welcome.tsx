@@ -5,11 +5,11 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useTrans } from '@/Hooks/useTrans';
-import { 
-    Globe, Check, AlertCircle, CheckCircle2, TrendingUp, ShieldCheck, 
-    Activity, Award, Users, ChevronRight, Sparkles, Sliders, Calendar, 
+import {
+    Globe, Check, AlertCircle, CheckCircle2, TrendingUp, ShieldCheck,
+    Activity, Award, Users, ChevronRight, Sparkles, Sliders, Calendar,
     ArrowRight, Phone, Mail, MapPin, Eye, Zap, Lock, Star, ChevronDown,
-    Menu, X
+    Menu, X, Coins, BarChart3
 } from 'lucide-react';
 import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
@@ -17,24 +17,24 @@ import VideoWithLoader from '@/Components/VideoWithLoader';
 
 /* ── Luxury Organic Palette & Brand Tokens ── */
 const C = {
-    cream:     '#f8f4ec',       // Warm organic parchment
-    cream50:   '#fdfcf9',       // Pure warm surface
-    cream100:  '#eee7d7',       // Refined borders
-    ink:       '#221d19',       // Obsidian deep warm text
-    ink900:    '#171411',       // Pure dark footer
-    forest:    '#25382a',       // Deep Moroccan racing forest green
+    cream: '#f8f4ec',       // Warm organic parchment
+    cream50: '#fdfcf9',       // Pure warm surface
+    cream100: '#eee7d7',       // Refined borders
+    ink: '#221d19',       // Obsidian deep warm text
+    ink900: '#171411',       // Pure dark footer
+    forest: '#25382a',       // Deep Moroccan racing forest green
     forestHover: '#2e4534',
     forestSurface: '#1f2e23',
-    copper:    '#b45d34',       // Terracotta copper accent
+    copper: '#b45d34',       // Terracotta copper accent
     copperHover: '#9e4e29',
     copper300: '#cf8f6a',
     copperLight: 'rgba(180, 93, 52, 0.1)',
-    gold:      '#d4a259',       // Moroccan amber gold
+    gold: '#d4a259',       // Moroccan amber gold
     goldLight: 'rgba(212, 162, 89, 0.15)',
-    muted:     '#5c5348',       // Secondary warm text
-    muted400:  '#8f8679',       // Subtle captions
-    muted500:  '#73695c',       // Muted text
-    onForest:  '#c5cfc0',
+    muted: '#5c5348',       // Secondary warm text
+    muted400: '#8f8679',       // Subtle captions
+    muted500: '#73695c',       // Muted text
+    onForest: '#c5cfc0',
     onForest2: '#dce3d9',
 };
 
@@ -68,6 +68,90 @@ const STYLES = `
 .cf-rise { animation: cfRise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .cf-rise-2 { animation: cfRise 0.8s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .cf-pulse-dot { animation: cfPulseDot 2s infinite ease-in-out; }
+
+/* ── Modern Scroll Reveal Animation System ── */
+.cf-reveal,
+.cf-reveal-up,
+.cf-reveal-left,
+.cf-reveal-right,
+.cf-reveal-scale {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cf-reveal,
+.cf-reveal-up {
+    transform: translateY(32px);
+}
+
+.cf-reveal-left {
+    transform: translateX(-32px);
+}
+
+.cf-reveal-right {
+    transform: translateX(32px);
+}
+
+.cf-reveal-scale {
+    transform: scale(0.93) translateY(20px);
+}
+
+/* Revealed active state (triggered by IntersectionObserver or in-viewport check) */
+.cf-reveal.is-revealed,
+.cf-reveal-up.is-revealed,
+.cf-reveal-left.is-revealed,
+.cf-reveal-right.is-revealed,
+.cf-reveal-scale.is-revealed {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
+}
+
+/* Stagger delay classes for organic reveal rhythm */
+.cf-delay-100 { transition-delay: 100ms; }
+.cf-delay-150 { transition-delay: 150ms; }
+.cf-delay-200 { transition-delay: 200ms; }
+.cf-delay-250 { transition-delay: 250ms; }
+.cf-delay-300 { transition-delay: 300ms; }
+.cf-delay-350 { transition-delay: 350ms; }
+.cf-delay-400 { transition-delay: 400ms; }
+
+/* Progressive Enhancement with CSS Scroll-Driven Animations */
+@media (prefers-reduced-motion: no-preference) {
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+        @keyframes cfScrollRevealKeyframe {
+            from {
+                opacity: 0;
+                transform: translateY(32px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .cf-scroll-native {
+            animation: cfScrollRevealKeyframe linear both;
+            animation-timeline: view();
+            animation-range: entry 10% cover 30%;
+        }
+    }
+}
+
+/* Respect user's motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .cf-reveal,
+    .cf-reveal-up,
+    .cf-reveal-left,
+    .cf-reveal-right,
+    .cf-reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
 
 /* Smooth scrolling */
 html {
@@ -229,6 +313,49 @@ export default function Welcome({ auth }: any) {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // ── High-Performance Scroll Reveal IntersectionObserver ──
+    useEffect(() => {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const revealElements = document.querySelectorAll<HTMLElement>(
+            '.cf-reveal, .cf-reveal-up, .cf-reveal-left, .cf-reveal-right, .cf-reveal-scale'
+        );
+
+        if (prefersReducedMotion) {
+            revealElements.forEach((el) => el.classList.add('is-revealed'));
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px',
+            }
+        );
+
+        revealElements.forEach((el) => {
+            const rect = el.getBoundingClientRect();
+            // If already inside or above viewport on mount, reveal immediately
+            if (rect.top < window.innerHeight - 40) {
+                el.classList.add('is-revealed');
+            } else {
+                observer.observe(el);
+            }
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
+
     const { data, setData, post, processing, errors, reset } = useForm({
         nom: '',
         prenom: '',
@@ -238,9 +365,9 @@ export default function Welcome({ auth }: any) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('investment.store'), { 
+        post(route('investment.store'), {
             preserveScroll: true,
-            onSuccess: () => reset() 
+            onSuccess: () => reset()
         });
     };
 
@@ -254,23 +381,23 @@ export default function Welcome({ auth }: any) {
     const monthlyMilkEst = Math.round(milkAnnualEst / 12);
 
     const steps = [
-        { 
-            n: '01', 
+        {
+            n: '01',
             icon: ShieldCheck,
-            t: t('welcome.model_step_1_title'), 
-            d: t('welcome.model_step_1_desc') 
+            t: t('welcome.model_step_1_title'),
+            d: t('welcome.model_step_1_desc')
         },
-        { 
-            n: '02', 
+        {
+            n: '02',
             icon: Activity,
-            t: t('welcome.model_step_2_title'), 
-            d: t('welcome.model_step_2_desc') 
+            t: t('welcome.model_step_2_title'),
+            d: t('welcome.model_step_2_desc')
         },
-        { 
-            n: '03', 
+        {
+            n: '03',
             icon: TrendingUp,
-            t: t('welcome.model_step_3_title'), 
-            d: t('welcome.model_step_3_desc') 
+            t: t('welcome.model_step_3_title'),
+            d: t('welcome.model_step_3_desc')
         },
     ];
 
@@ -281,51 +408,143 @@ export default function Welcome({ auth }: any) {
         { v: '27–31', u: t('welcome.hero_stat_3_unit'), l: t('welcome.hero_stat_3_label') },
     ];
 
-    const marketPoints = [
-        { 
-            v: '32 M+', 
-            l: locale === 'en' 
-                ? 'Liters produced annually across partner farms — continuous local demand growth.' 
-                : "Litres produits annuellement dans les fermes partenaires — demande locale en croissance constante." 
+    const detailedReturnMetrics = [
+        {
+            tag: locale === 'en' ? 'Tangible Asset' : 'Actif Tangible',
+            icon: ShieldCheck,
+            v: t('welcome.hero_stat_1_val'),
+            u: t('welcome.hero_stat_1_unit'),
+            title: locale === 'en' ? 'Capital Per Cow' : 'Capital par Vache',
+            desc: locale === 'en'
+                ? 'Acquisition of a registered pregnant Holstein heifer with proven high genetics.'
+                : "Acquisition d'une génisse Holstein gestante à haut potentiel laitier certifié.",
+            highlight: false,
+            meta: locale === 'en' ? '100% MAMDA & ONSSA covered' : '100% assurée MAMDA & pucée ONSSA',
+            badgeBg: 'rgba(180, 93, 52, 0.12)',
+            badgeColor: C.copper,
         },
-        { 
-            v: '×2.6',  
+        {
+            tag: locale === 'en' ? 'Annual Net Yield' : 'Performance Annuelle',
+            icon: TrendingUp,
+            v: '~19.5',
+            u: '% CAGR',
+            title: locale === 'en' ? 'Estimated Net Annual Return' : 'Rendement Net Estimé',
+            desc: locale === 'en'
+                ? 'Distributed quarterly from daily milk revenue + annual calf sale valuation.'
+                : 'Dividendes trimestriels sur le lait vendu + plus-value annuelle sur le veau.',
+            highlight: true,
+            meta: locale === 'en' ? '~19,000 MAD / yr cashflow' : '~19 000 MAD / an de cashflow net',
+            badgeBg: 'rgba(212, 162, 89, 0.22)',
+            badgeColor: C.gold,
+        },
+        {
+            tag: locale === 'en' ? '5-Year Compound' : 'Projection sur 5 ans',
+            icon: Sparkles,
+            v: t('welcome.hero_stat_2_val'),
+            u: t('welcome.hero_stat_2_unit'),
+            title: locale === 'en' ? 'Total 5-Year Return' : 'Multiplicateur Global',
+            desc: locale === 'en'
+                ? 'Projected ~93,600 MAD in cumulative cashflow and residual cow equity.'
+                : 'Projection de ~93 600 MAD de valeur totale cumulée par unité investie.',
+            highlight: false,
+            meta: locale === 'en' ? 'Capital amortized & doubled' : 'Capital amorti et plus que doublé',
+            badgeBg: 'rgba(37, 56, 42, 0.1)',
+            badgeColor: C.forest,
+        },
+        {
+            tag: locale === 'en' ? 'Payback Velocity' : 'Seuil d’Amortissement',
+            icon: Calendar,
+            v: '27–31',
+            u: t('welcome.hero_stat_3_unit'),
+            title: locale === 'en' ? 'Capital Recovery Period' : 'Délai de Récupération',
+            desc: locale === 'en'
+                ? 'Initial capital fully returned in under 3 lactation cycles, followed by 100% net surplus.'
+                : 'Remboursement intégral du capital initial en moins de 3 ans de lactation.',
+            highlight: false,
+            meta: locale === 'en' ? 'Distributed every 3 months' : 'Dividendes versés tous les 3 mois',
+            badgeBg: 'rgba(180, 93, 52, 0.12)',
+            badgeColor: C.copper,
+        },
+    ];
+
+    const benchmarkComparisons = [
+        {
+            name: 'CoFarm Dairy Partners',
+            subtitle: locale === 'en' ? 'Real Agri-Tech Co-Investment' : 'Co-Investissement Cheptel Réel',
+            cagr: '~19.5%',
+            period: locale === 'en' ? 'Quarterly' : 'Trimestriel',
+            backing: locale === 'en' ? 'Tangible biological asset (MAMDA Insured)' : 'Actif biologique réel assuré (MAMDA)',
+            liquidity: locale === 'en' ? 'Annual cycle renewal or exit' : 'Cycle annuel renouvelable / cessible',
+            inflation: locale === 'en' ? 'Natural hedge (milk price tracks costs)' : 'Forte protection (lait indexé)',
+            featured: true,
+        },
+        {
+            name: locale === 'en' ? 'Rental Real Estate' : 'Immobilier Locatif (Appartement)',
+            subtitle: locale === 'en' ? 'Urban Residential in Morocco' : 'Résidentiel urbain moyen au Maroc',
+            cagr: '5% – 7%',
+            period: locale === 'en' ? 'Monthly (with vacancy risk)' : 'Mensuel (avec aléas & vacance)',
+            backing: locale === 'en' ? 'Physical property (7% notary fees + taxes)' : 'Béton (frais notaire 7% + charges)',
+            liquidity: locale === 'en' ? 'Very low (months to sell)' : 'Très faible (mois ou années pour vendre)',
+            inflation: locale === 'en' ? 'Moderate (rents often lag)' : 'Moyenne (loyers souvent figés)',
+            featured: false,
+        },
+        {
+            name: locale === 'en' ? 'Bank Term Deposit (DAT)' : 'Dépôt à Terme / Épargne Bancaire',
+            subtitle: locale === 'en' ? 'Standard Moroccan Bank Rates' : 'Taux bancaire standard au Maroc',
+            cagr: '3.0% – 3.8%',
+            period: locale === 'en' ? 'At maturity / Annual' : 'À terme ou annuel',
+            backing: locale === 'en' ? 'Bank debt liability' : 'Créance bancaire simple',
+            liquidity: locale === 'en' ? 'Locked capital' : 'Capital bloqué pendant la durée',
+            inflation: locale === 'en' ? 'Negative real return vs CPI inflation' : 'Négatif en terme réel (érodé par l’inflation)',
+            featured: false,
+        },
+    ];
+
+    const marketPoints = [
+        {
+            v: '32 M+',
+            l: locale === 'en'
+                ? 'Liters produced annually across partner farms — continuous local demand growth.'
+                : "Litres produits annuellement dans les fermes partenaires — demande locale en croissance constante."
+        },
+        {
+            v: '×2.6',
             l: locale === 'en'
                 ? 'Average farmgate milk price increase in Morocco over the last decade.'
-                : 'Hausse du prix moyen du lait au Maroc sur les 10 dernières années.' 
+                : 'Hausse du prix moyen du lait au Maroc sur les 10 dernières années.'
         },
-        { 
-            v: '< 5 %', 
+        {
+            v: '< 5 %',
             l: locale === 'en'
                 ? 'National dairy self-sufficiency — large structural deficit to bridge.'
-                : 'Auto-suffisance laitière nationale — fort déficit structurel à combler.' 
+                : 'Auto-suffisance laitière nationale — fort déficit structurel à combler.'
         },
     ];
 
     const faqs = [
-        { 
-            q: locale === 'en' ? 'What happens if a cow falls ill?' : 'Que se passe-t-il si la vache tombe malade ?', 
-            a: locale === 'en' 
-                ? "Every cow is fully covered by comprehensive livestock insurance included in the investment amount. In the event of total loss, the replacement indemnity is paid directly." 
-                : "Chaque vache est couverte par une assurance bétail complète incluse dans le montant de participation. En cas de perte totale, la valeur de remplacement de l'animal est garantie." 
+        {
+            q: locale === 'en' ? 'What happens if a cow falls ill?' : 'Que se passe-t-il si la vache tombe malade ?',
+            a: locale === 'en'
+                ? "Every cow is fully covered by comprehensive livestock insurance included in the investment amount. In the event of total loss, the replacement indemnity is paid directly."
+                : "Chaque vache est couverte par une assurance bétail complète incluse dans le montant de participation. En cas de perte totale, la valeur de remplacement de l'animal est garantie."
         },
-        { 
-            q: locale === 'en' ? 'Can I physically visit the farm?' : 'Puis-je visiter la ferme ?', 
-            a: locale === 'en' 
-                ? "Yes, absolutely. We organize quarterly on-site visits for our co-investors in Chaouia. Furthermore, you receive a detailed monthly digital report with photos, weights, and daily milk yields." 
-                : "Oui, tout à fait. Nous organisons des visites trimestrielles pour nos investisseurs dans la région de la Chaouia. De plus, vous recevez un rapport mensuel illustré avec les données réelles de production." 
+        {
+            q: locale === 'en' ? 'Can I physically visit the farm?' : 'Puis-je visiter la ferme ?',
+            a: locale === 'en'
+                ? "Yes, absolutely. We organize quarterly on-site visits for our co-investors in Chaouia. Furthermore, you receive a detailed monthly digital report with photos, weights, and daily milk yields."
+                : "Oui, tout à fait. Nous organisons des visites trimestrielles pour nos investisseurs dans la région de la Chaouia. De plus, vous recevez un rapport mensuel illustré avec les données réelles de production."
         },
-        { 
-            q: locale === 'en' ? 'What is the minimum commitment period?' : "Quelle est la durée minimum d'engagement ?", 
-            a: locale === 'en' 
-                ? "12 months minimum. Beyond that cycle, you can choose to renew, withdraw, or assign your share through our internal marketplace." 
-                : "12 mois minimum. À l'issue de chaque cycle annuel, vous pouvez choisir de renouveler, de percevoir votre capital ou de céder votre part à un autre investisseur." 
+        {
+            q: locale === 'en' ? 'What is the minimum commitment period?' : "Quelle est la durée minimum d'engagement ?",
+            a: locale === 'en'
+                ? "12 months minimum. Beyond that cycle, you can choose to renew, withdraw, or assign your share through our internal marketplace."
+                : "12 mois minimum. À l'issue de chaque cycle annuel, vous pouvez choisir de renouveler, de percevoir votre capital ou de céder votre part à un autre investisseur."
         },
-        { 
-            q: locale === 'en' ? 'How and when are profits distributed?' : 'Comment et quand sont versés les dividendes ?', 
-            a: locale === 'en' 
-                ? "Milk dividends are audited and distributed quarterly directly to your bank account. The calf sale proceeds are distributed at the close of each annual cycle." 
-                : "Les dividendes issus de la vente quotidienne du lait sont versés trimestriellement sur votre compte bancaire. La plus-value de la vente du veau est versée à la clôture de chaque cycle annuel." 
+        {
+            q: locale === 'en' ? 'How and when are profits distributed?' : 'Comment et quand sont versés les dividendes ?',
+            a: locale === 'en'
+                ? "Milk dividends are audited and distributed quarterly directly to your bank account. The calf sale proceeds are distributed at the close of each annual cycle."
+                : "Les dividendes issus de la vente quotidienne du lait sont versés trimestriellement sur votre compte bancaire. La plus-value de la vente du veau est versée à la clôture de chaque cycle annuel."
         },
     ];
 
@@ -334,21 +553,21 @@ export default function Welcome({ auth }: any) {
             name: t('welcome.testi_1_name'),
             role: t('welcome.testi_1_role'),
             text: t('welcome.testi_1_text'),
-            cows: '2 vaches',
+            cows: locale === 'en' ? '2 cows' : '2 vaches',
             initials: 'KB',
         },
         {
             name: t('welcome.testi_2_name'),
             role: t('welcome.testi_2_role'),
             text: t('welcome.testi_2_text'),
-            cows: '3 vaches',
+            cows: locale === 'en' ? '3 cows' : '3 vaches',
             initials: 'SE',
         },
         {
             name: t('welcome.testi_3_name'),
             role: t('welcome.testi_3_role'),
             text: t('welcome.testi_3_text'),
-            cows: '5 vaches',
+            cows: locale === 'en' ? '5 cows' : '5 vaches',
             initials: 'YM',
         },
     ];
@@ -368,30 +587,28 @@ export default function Welcome({ auth }: any) {
             <style>{STYLES}</style>
             <Head title={t('welcome.title')} />
 
-            <div className="cf-sans min-h-screen relative overflow-x-hidden selection:bg-amber-100 selection:text-amber-900" 
-                 style={{ background: C.cream, color: C.ink }}>
+            <div className="cf-sans min-h-screen relative overflow-x-hidden selection:bg-amber-100 selection:text-amber-900"
+                style={{ background: C.cream, color: C.ink }}>
 
                 {/* Subtle Ambient Radial Glows */}
                 <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
                     <div className="absolute -top-40 -right-40 h-[450px] w-[450px] sm:h-[600px] sm:w-[600px] rounded-full opacity-30 blur-[100px]"
-                         style={{ background: 'radial-gradient(circle, #e9c996 0%, rgba(233,201,150,0) 70%)' }} />
+                        style={{ background: 'radial-gradient(circle, #e9c996 0%, rgba(233,201,150,0) 70%)' }} />
                     <div className="absolute top-[40%] -left-32 h-[350px] w-[350px] sm:h-[500px] sm:w-[500px] rounded-full opacity-20 blur-[90px]"
-                         style={{ background: 'radial-gradient(circle, #8ea38a 0%, rgba(142,163,138,0) 70%)' }} />
+                        style={{ background: 'radial-gradient(circle, #8ea38a 0%, rgba(142,163,138,0) 70%)' }} />
                 </div>
 
                 {/* ── FIXED SITE HEADER (HEADROOM: SHOW ON SCROLL UP, HIDE ON SCROLL DOWN) ── */}
-                <header 
+                <header
                     id="site-header"
-                    className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 ease-in-out ${
-                        isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
-                    }`}
+                    className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-300 ease-in-out ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
+                        }`}
                 >
                     {/* Top Announcement Bar (Collapses cleanly when scrolled) */}
-                    <aside 
-                        aria-label="Announcement" 
-                        className={`transition-all duration-300 text-[11px] sm:text-xs font-medium border-b border-white/20 ${
-                            isScrolled ? 'max-h-0 py-0 opacity-0 overflow-hidden' : 'max-h-12 py-2 px-3 sm:px-4 opacity-100'
-                        }`}
+                    <aside
+                        aria-label="Announcement"
+                        className={`transition-all duration-300 text-[11px] sm:text-xs font-medium border-b border-white/20 ${isScrolled ? 'max-h-0 py-0 opacity-0 overflow-hidden' : 'max-h-12 py-2 px-3 sm:px-4 opacity-100'
+                            }`}
                         style={{ background: C.forestSurface, color: C.onForest2 }}
                     >
                         <div className="mx-auto flex max-w-[1180px] items-center justify-between gap-2">
@@ -418,19 +635,19 @@ export default function Welcome({ auth }: any) {
                     </aside>
 
                     {/* Main Navigation Bar */}
-                    <nav 
+                    <nav
                         style={{ background: `${C.cream}f8`, borderBottom: `1px solid ${C.ink}14` }}
                         className="backdrop-blur-md shadow-[0_2px_15px_-4px_rgba(34,29,25,0.06)]"
                     >
                         <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
-                            
+
                             {/* Left: Mobile Menu Button (lg:hidden) + Logo */}
                             <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-1">
                                 {/* Mobile Hamburger Button on the Left */}
                                 <button
                                     type="button"
                                     onClick={() => setMobileMenuOpen(true)}
-                                    aria-label="Ouvrir le menu de navigation"
+                                    aria-label={locale === 'en' ? 'Open navigation menu' : 'Ouvrir le menu de navigation'}
                                     aria-expanded={mobileMenuOpen}
                                     className="lg:hidden p-1.5 sm:p-2 rounded-xl text-stone-700 hover:bg-stone-200/60 border border-stone-300/50 transition-colors flex items-center justify-center shrink-0"
                                 >
@@ -453,116 +670,111 @@ export default function Welcome({ auth }: any) {
                                 </a>
                             </div>
 
-                        {/* Desktop Navigation Links */}
-                        <div className="hidden items-center gap-7 lg:flex">
-                            {[
-                                ['#simulation', t('welcome.nav_simulation')],
-                                ['#fonctionnement', t('welcome.nav_how_it_works')],
-                                ['#ferme', t('welcome.nav_immersion')],
-                                ['#rendements', t('welcome.nav_returns')],
-                                ['#avis', t('welcome.nav_testimonials')],
-                                ['#faq', t('welcome.nav_faq')],
-                            ].map(([href, label]) => (
-                                <a key={href} href={href} className="nav-link">
-                                    {label}
-                                </a>
-                            ))}
-                        </div>
-
-                        {/* Right CTA, Lang & Mobile Menu Button */}
-                        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-                            <Dropdown>
-                                <Dropdown.Trigger>
-                                    <button
-                                        type="button"
-                                        aria-label="Changer de langue"
-                                        className="inline-flex items-center gap-1 rounded-full px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-bold text-stone-700 hover:bg-stone-200/50 border border-stone-300/70 transition-all duration-200"
-                                    >
-                                        <Globe className="h-3.5 w-3.5 text-stone-500" />
-                                        <span>{locale === 'en' ? 'EN' : 'FR'}</span>
-                                        <ChevronDown className="h-3 w-3 text-stone-400" />
-                                    </button>
-                                </Dropdown.Trigger>
-                                <Dropdown.Content 
-                                    align="right" 
-                                    width="32"
-                                    containerClasses="rounded-2xl border border-white/60 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] bg-white/95 backdrop-blur-2xl"
-                                    contentClasses="p-1.5 space-y-1"
-                                >
-                                    <a
-                                        href={route('language.switch', { locale: 'fr' })}
-                                        className={`group relative flex items-center justify-between w-full px-3 py-2 text-xs font-bold tracking-wider transition-all duration-200 rounded-xl ${
-                                            locale === 'fr' 
-                                                ? 'bg-forest/10 text-forest font-black' 
-                                                : 'text-stone-600 hover:bg-stone-100'
-                                        }`}
-                                    >
-                                        <span>Français (FR)</span>
-                                        {locale === 'fr' && <Check className="h-3.5 w-3.5 text-forest" />}
+                            {/* Desktop Navigation Links */}
+                            <div className="hidden items-center gap-7 lg:flex">
+                                {[
+                                    ['#simulation', t('welcome.nav_simulation')],
+                                    ['#fonctionnement', t('welcome.nav_how_it_works')],
+                                    ['#ferme', t('welcome.nav_immersion')],
+                                    ['#rendements', t('welcome.nav_returns')],
+                                    ['#avis', t('welcome.nav_testimonials')],
+                                    ['#faq', t('welcome.nav_faq')],
+                                ].map(([href, label]) => (
+                                    <a key={href} href={href} className="nav-link">
+                                        {label}
                                     </a>
-                                    <a
-                                        href={route('language.switch', { locale: 'en' })}
-                                        className={`group relative flex items-center justify-between w-full px-3 py-2 text-xs font-bold tracking-wider transition-all duration-200 rounded-xl ${
-                                            locale === 'en' 
-                                                ? 'bg-forest/10 text-forest font-black' 
-                                                : 'text-stone-600 hover:bg-stone-100'
-                                        }`}
-                                    >
-                                        <span>English (EN)</span>
-                                        {locale === 'en' && <Check className="h-3.5 w-3.5 text-forest" />}
-                                    </a>
-                                </Dropdown.Content>
-                            </Dropdown>
+                                ))}
+                            </div>
 
-                            {/* Direct button on sm+ */}
-                            {auth.user ? (
-                                <Link href={route('dashboard')}
-                                      className="hidden sm:inline-flex rounded-full px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg items-center gap-1.5"
-                                      style={{ background: C.forest, color: C.cream50, boxShadow: `0 4px 14px ${C.forest}30` }}>
-                                    <Users className="h-3.5 w-3.5" />
-                                    <span>{t('welcome.nav_dashboard')}</span>
-                                </Link>
-                            ) : (
-                                <Link href={route('login')}
-                                      className="hidden sm:inline-flex rounded-full px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg border border-stone-800/10"
-                                      style={{ background: C.forest, color: C.cream50, boxShadow: `0 4px 14px ${C.forest}30` }}>
-                                    {t('welcome.nav_login')}
-                                </Link>
-                            )}
+                            {/* Right CTA, Lang & Mobile Menu Button */}
+                            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <button
+                                            type="button"
+                                            aria-label={locale === 'en' ? 'Change language' : 'Changer de langue'}
+                                            className="inline-flex items-center gap-1 rounded-full px-2 py-1 sm:px-3 sm:py-1.5 text-xs font-bold text-stone-700 hover:bg-stone-200/50 border border-stone-300/70 transition-all duration-200"
+                                        >
+                                            <Globe className="h-3.5 w-3.5 text-stone-500" />
+                                            <span>{locale === 'en' ? 'EN' : 'FR'}</span>
+                                            <ChevronDown className="h-3 w-3 text-stone-400" />
+                                        </button>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content
+                                        align="right"
+                                        width="32"
+                                        containerClasses="rounded-2xl border border-white/60 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)] bg-white/95 backdrop-blur-2xl"
+                                        contentClasses="p-1.5 space-y-1"
+                                    >
+                                        <a
+                                            href={route('language.switch', { locale: 'fr' })}
+                                            className={`group relative flex items-center justify-between w-full px-3 py-2 text-xs font-bold tracking-wider transition-all duration-200 rounded-xl ${locale === 'fr'
+                                                ? 'bg-forest/10 text-forest font-black'
+                                                : 'text-stone-600 hover:bg-stone-100'
+                                                }`}
+                                        >
+                                            <span>Français (FR)</span>
+                                            {locale === 'fr' && <Check className="h-3.5 w-3.5 text-forest" />}
+                                        </a>
+                                        <a
+                                            href={route('language.switch', { locale: 'en' })}
+                                            className={`group relative flex items-center justify-between w-full px-3 py-2 text-xs font-bold tracking-wider transition-all duration-200 rounded-xl ${locale === 'en'
+                                                ? 'bg-forest/10 text-forest font-black'
+                                                : 'text-stone-600 hover:bg-stone-100'
+                                                }`}
+                                        >
+                                            <span>English (EN)</span>
+                                            {locale === 'en' && <Check className="h-3.5 w-3.5 text-forest" />}
+                                        </a>
+                                    </Dropdown.Content>
+                                </Dropdown>
+
+                                {/* Direct button on sm+ */}
+                                {auth.user ? (
+                                    <Link href={route('dashboard')}
+                                        className="hidden sm:inline-flex rounded-full px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg items-center gap-1.5"
+                                        style={{ background: C.forest, color: C.cream50, boxShadow: `0 4px 14px ${C.forest}30` }}>
+                                        <Users className="h-3.5 w-3.5" />
+                                        <span>{t('welcome.nav_dashboard')}</span>
+                                    </Link>
+                                ) : (
+                                    <Link href={route('login')}
+                                        className="hidden sm:inline-flex rounded-full px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg border border-stone-800/10"
+                                        style={{ background: C.forest, color: C.cream50, boxShadow: `0 4px 14px ${C.forest}30` }}>
+                                        {t('welcome.nav_login')}
+                                    </Link>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                </nav>
-            </header>
+                    </nav>
+                </header>
 
                 {/* ── MOBILE SLIDE-OVER MODAL (LEFT SIDE, ~3/4 WIDTH, FIXED ON SCROLL) ── */}
-                <div 
-                    className={`fixed inset-0 z-50 lg:hidden transition-all duration-300 ${
-                        mobileMenuOpen ? 'visible' : 'invisible delay-300 pointer-events-none'
-                    }`}
+                <div
+                    className={`fixed inset-0 z-50 lg:hidden transition-all duration-300 ${mobileMenuOpen ? 'visible' : 'invisible delay-300 pointer-events-none'
+                        }`}
                     aria-modal="true"
                     role="dialog"
                 >
                     {/* Dark Blurred Backdrop covering remaining width (on the right) and background */}
-                    <div 
-                        className={`fixed inset-0 bg-stone-950/60 backdrop-blur-xs transition-opacity duration-300 ${
-                            mobileMenuOpen ? 'opacity-100' : 'opacity-0'
-                        }`}
+                    <div
+                        className={`fixed inset-0 bg-stone-950/60 backdrop-blur-xs transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0'
+                            }`}
                         onClick={() => setMobileMenuOpen(false)}
                         aria-hidden="true"
                     />
 
                     {/* Left Slide-over Modal (Takes ~78% width, strictly fixed on scroll) */}
-                    <div 
-                        className={`fixed inset-y-0 left-0 z-50 w-[78%] sm:w-[340px] max-w-[360px] bg-stone-50 border-r border-stone-200/90 shadow-2xl flex flex-col justify-between transform transition-transform duration-300 ease-out ${
-                            mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-                        }`}
+                    <div
+                        className={`fixed inset-y-0 left-0 z-50 w-[78%] sm:w-[340px] max-w-[360px] bg-stone-50 border-r border-stone-200/90 shadow-2xl flex flex-col justify-between transform transition-transform duration-300 ease-out ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+                            }`}
                         style={{ height: '100dvh' }}
                     >
                         {/* Drawer Header */}
                         <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-stone-200/80 bg-white/90 backdrop-blur-sm shrink-0">
                             <div className="flex items-center gap-2.5">
                                 <div className="flex h-8 w-8 items-center justify-center rounded-lg shadow-xs"
-                                     style={{ background: C.forest, color: C.gold }}>
+                                    style={{ background: C.forest, color: C.gold }}>
                                     <ShieldCheck className="h-4 w-4" />
                                 </div>
                                 <div>
@@ -570,15 +782,15 @@ export default function Welcome({ auth }: any) {
                                         CoFarm
                                     </span>
                                     <span className="text-[9px] font-semibold uppercase tracking-wider block text-stone-500">
-                                        Menu Navigation
+                                        {locale === 'en' ? 'Navigation Menu' : 'Menu Navigation'}
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <button
                                 type="button"
                                 onClick={() => setMobileMenuOpen(false)}
-                                aria-label="Fermer le menu"
+                                aria-label={locale === 'en' ? 'Close menu' : 'Fermer le menu'}
                                 className="p-1.5 rounded-lg text-stone-500 hover:text-stone-900 hover:bg-stone-200/70 border border-stone-200 transition-colors"
                             >
                                 <X className="h-5 w-5" />
@@ -590,7 +802,7 @@ export default function Welcome({ auth }: any) {
                             {/* Account Action (Dashboard / Login) */}
                             <div className="pb-3 border-b border-stone-200/80">
                                 {auth.user ? (
-                                    <Link 
+                                    <Link
                                         href={route('dashboard')}
                                         onClick={() => setMobileMenuOpen(false)}
                                         className="w-full flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold text-white shadow-xs transition-all hover:brightness-110"
@@ -600,7 +812,7 @@ export default function Welcome({ auth }: any) {
                                         <span>{t('welcome.nav_dashboard')}</span>
                                     </Link>
                                 ) : (
-                                    <Link 
+                                    <Link
                                         href={route('login')}
                                         onClick={() => setMobileMenuOpen(false)}
                                         className="w-full flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold text-white shadow-xs transition-all hover:brightness-110"
@@ -658,7 +870,7 @@ export default function Welcome({ auth }: any) {
                                 <span>{t('welcome.hero_btn_invest')}</span>
                             </button>
                             <p className="text-[10px] text-center text-stone-500 font-medium">
-                                Places limitées • Contrat notarié garanti
+                                {locale === 'en' ? 'Limited allocations • Notarized contract guaranteed' : 'Places limitées • Contrat notarié garanti'}
                             </p>
                         </div>
                     </div>
@@ -667,20 +879,26 @@ export default function Welcome({ auth }: any) {
                 {/* ── HERO SECTION ── */}
                 <section id="top" className="relative z-10 pt-28 sm:pt-36 lg:pt-40 pb-12 sm:pb-20 lg:pb-24">
                     <div className="mx-auto grid w-full max-w-[1180px] items-center gap-8 sm:gap-12 px-4 sm:px-6 lg:grid-cols-12">
-                        
+
                         {/* Left Column (7 cols) */}
                         <div className="cf-rise lg:col-span-7">
-                            
-                            {/* Live Cohort Badge */}
-                            <div className="inline-flex items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 mb-5 sm:mb-6 border shadow-xs max-w-full flex-wrap"
-                                 style={{ background: C.cream50, borderColor: `${C.copper}40` }}>
-                                <span className="flex h-2 w-2 rounded-full bg-emerald-500 cf-pulse-dot shrink-0" />
-                                <span className="cf-eyebrow text-[10px] sm:text-[11px] font-bold" style={{ color: C.copper }}>
-                                    {t('welcome.hero_eyebrow')}
+
+                            {/* Live Cohort Badge (Responsive: single-line, perfectly centered, never wraps or distorts) */}
+                            <div 
+                                className="inline-flex items-center gap-1.5 xs:gap-2 sm:gap-2.5 rounded-full px-3 sm:px-4 py-1.5 mb-5 sm:mb-6 border shadow-xs max-w-full whitespace-nowrap transition-all"
+                                style={{ background: C.cream50, borderColor: `${C.copper}40` }}
+                            >
+                                <span className="relative flex h-2 w-2 shrink-0">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                                 </span>
-                                <span className="hidden sm:inline text-stone-300">|</span>
-                                <span className="text-[11px] sm:text-xs font-semibold text-stone-600">
-                                    30 Vaches / Cohorte
+                                <span className="cf-eyebrow text-[9.5px] xs:text-[10.5px] sm:text-[11px] font-bold tracking-wider sm:tracking-widest shrink-0" style={{ color: C.copper }}>
+                                    <span className="sm:hidden">{locale === 'en' ? 'CO-INVESTMENT 2026' : 'CO-INVESTISSEMENT 2026'}</span>
+                                    <span className="hidden sm:inline">{t('welcome.hero_eyebrow')}</span>
+                                </span>
+                                <span className="text-stone-300 text-[11px] sm:text-xs shrink-0">•</span>
+                                <span className="text-[10.5px] xs:text-[11px] sm:text-xs font-semibold text-stone-600 truncate shrink-0">
+                                    30 {locale === 'en' ? 'Cows' : 'Vaches'} <span className="hidden xs:inline">{locale === 'en' ? '/ Cohort' : '/ Cohorte'}</span>
                                 </span>
                             </div>
 
@@ -698,40 +916,40 @@ export default function Welcome({ auth }: any) {
 
                             {/* Quote with Luxury Card Style */}
                             <div className="mb-6 sm:mb-9 rounded-2xl p-4 sm:p-5 border shadow-xs relative overflow-hidden"
-                                 style={{ background: `${C.cream50}cc`, borderColor: `${C.copper}30` }}>
+                                style={{ background: `${C.cream50}cc`, borderColor: `${C.copper}30` }}>
                                 <div className="absolute top-0 left-0 bottom-0 w-1.5" style={{ background: C.copper }} />
                                 <p className="italic text-stone-700 text-[14.5px] sm:text-[16px] pl-2 font-medium">
                                     "{t('welcome.hero_quote')}"
                                 </p>
                                 <div className="mt-2 pl-2 flex flex-col xs:flex-row xs:items-center justify-between text-xs font-semibold gap-1">
-                                    <span style={{ color: C.copper }}>— Y. Manyani, Fondateur</span>
-                                    <span className="text-stone-400">Ferme Pilote Chaouia</span>
+                                    <span style={{ color: C.copper }}>— Y. Manyani, {locale === 'en' ? 'Founder' : 'Fondateur'}</span>
+                                    <span className="text-stone-400">{locale === 'en' ? 'Chaouia Pilot Farm' : 'Ferme Pilote Chaouia'}</span>
                                 </div>
                             </div>
 
                             {/* Action Buttons */}
                             <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4">
                                 <a href="#demande"
-                                   className="group flex items-center justify-center gap-2.5 rounded-full px-6 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[16px] font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl text-center"
-                                   style={{ 
-                                       background: `linear-gradient(135deg, ${C.copper} 0%, #c96e3e 100%)`, 
-                                       color: C.cream50, 
-                                       boxShadow: '0 8px 25px rgba(180,93,52,0.35)' 
-                                   }}>
+                                    className="group flex items-center justify-center gap-2.5 rounded-full px-6 sm:px-8 py-3.5 sm:py-4 text-[15px] sm:text-[16px] font-bold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl text-center"
+                                    style={{
+                                        background: `linear-gradient(135deg, ${C.copper} 0%, #c96e3e 100%)`,
+                                        color: C.cream50,
+                                        boxShadow: '0 8px 25px rgba(180,93,52,0.35)'
+                                    }}>
                                     <span>{t('welcome.hero_btn_invest')}</span>
                                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                                 </a>
 
                                 <button onClick={() => scrollToSection('simulation')}
-                                   className="flex items-center justify-center gap-2 rounded-full px-5 sm:px-6 py-3.5 sm:py-4 text-[14.5px] sm:text-[15.5px] font-semibold transition-all hover:bg-stone-200/60"
-                                   style={{ border: `1.5px solid ${C.forest}55`, color: C.forest }}>
+                                    className="flex items-center justify-center gap-2 rounded-full px-5 sm:px-6 py-3.5 sm:py-4 text-[14.5px] sm:text-[15.5px] font-semibold transition-all hover:bg-stone-200/60"
+                                    style={{ border: `1.5px solid ${C.forest}55`, color: C.forest }}>
                                     <Sliders className="h-4 w-4 text-emerald-700" />
                                     <span>{locale === 'en' ? 'Simulate Returns' : 'Simuler mes rendements'}</span>
                                 </button>
                             </div>
 
                             {/* Key Performance Indicators */}
-                            <div className="mt-8 sm:mt-12 grid grid-cols-3 gap-2 sm:gap-5 border-t pt-6 sm:pt-8" style={{ borderColor: `${C.ink}18` }}>
+                            <div className="mt-8 sm:mt-12 grid grid-cols-3 gap-2 sm:gap-5 border-t pt-6 sm:pt-8 cf-reveal cf-delay-200" style={{ borderColor: `${C.ink}18` }}>
                                 {[
                                     { v: t('welcome.hero_stat_1_val'), u: t('welcome.hero_stat_1_unit'), l: t('welcome.hero_stat_1_label') },
                                     { v: t('welcome.hero_stat_2_val'), u: t('welcome.hero_stat_2_unit'), l: t('welcome.hero_stat_2_label'), accent: true },
@@ -742,7 +960,7 @@ export default function Welcome({ auth }: any) {
                                             {v}
                                             {u && (
                                                 <span className="ml-1 text-[11px] sm:text-[14px] font-bold tracking-normal"
-                                                      style={{ color: accent ? C.copper : C.muted400 }}>
+                                                    style={{ color: accent ? C.copper : C.muted400 }}>
                                                     {u}
                                                 </span>
                                             )}
@@ -771,13 +989,15 @@ export default function Welcome({ auth }: any) {
                                     <Award className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 shrink-0" />
                                     <div>
                                         <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-stone-800">ONSSA &amp; MAMDA</div>
-                                        <div className="text-[9px] sm:text-[11px] text-stone-600">Cheptel 100% certifié</div>
+                                        <div className="text-[9px] sm:text-[11px] text-stone-600">
+                                            {locale === 'en' ? '100% Certified Herd' : 'Cheptel 100% certifié'}
+                                        </div>
                                     </div>
                                 </div>
 
                                 {/* Bottom Floating Card: Real Asset (no negative margin on mobile!) */}
                                 <div className="absolute left-3 sm:left-4 bottom-3 sm:bottom-6 max-w-[calc(100%-24px)] sm:max-w-[240px] rounded-xl sm:rounded-2xl border px-3.5 py-3 sm:px-5 sm:py-4 shadow-xl backdrop-blur-md"
-                                     style={{ background: 'rgba(253, 251, 247, 0.94)', borderColor: `${C.ink}15` }}>
+                                    style={{ background: 'rgba(253, 251, 247, 0.94)', borderColor: `${C.ink}15` }}>
                                     <div className="flex items-center gap-1.5 mb-1">
                                         <ShieldCheck className="h-3.5 w-3.5" style={{ color: C.copper }} />
                                         <p className="cf-eyebrow text-[9.5px] sm:text-[10.5px] font-bold" style={{ color: C.copper }}>
@@ -788,8 +1008,8 @@ export default function Welcome({ auth }: any) {
                                         {t('welcome.hero_badge_desc')}
                                     </p>
                                     <div className="mt-2 pt-1.5 border-t border-stone-200/80 flex items-center justify-between text-[10px] sm:text-[11px] text-stone-500">
-                                        <span>Rendement moyen</span>
-                                        <strong className="text-emerald-700">31.4 L / jour</strong>
+                                        <span>{locale === 'en' ? 'Average yield' : 'Rendement moyen'}</span>
+                                        <strong className="text-emerald-700">31.4 L / {locale === 'en' ? 'day' : 'jour'}</strong>
                                     </div>
                                 </div>
                             </div>
@@ -800,13 +1020,13 @@ export default function Welcome({ auth }: any) {
 
                 {/* ── INTERACTIVE ROI SIMULATOR SECTION ── */}
                 <section id="simulation" className="relative z-10 py-14 sm:py-20 border-y"
-                         style={{ background: C.cream50, borderColor: `${C.ink}10` }}>
+                    style={{ background: C.cream50, borderColor: `${C.ink}10` }}>
                     <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6">
-                        
+
                         {/* Section Header */}
-                        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+                        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14 cf-reveal">
                             <span className="cf-eyebrow inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-3 text-[10px] sm:text-xs"
-                                  style={{ background: C.copperLight, color: C.copper }}>
+                                style={{ background: C.copperLight, color: C.copper }}>
                                 <Sparkles className="h-3.5 w-3.5" />
                                 {t('welcome.sim_eyebrow')}
                             </span>
@@ -820,15 +1040,15 @@ export default function Welcome({ auth }: any) {
                         </div>
 
                         {/* Interactive Calculator Card */}
-                        <div className="rounded-[22px] sm:rounded-[28px] border shadow-xl overflow-hidden bg-white"
-                             style={{ borderColor: `${C.ink}14` }}>
-                            
+                        <div className="rounded-[22px] sm:rounded-[28px] border shadow-xl overflow-hidden bg-white cf-reveal-scale cf-delay-150"
+                            style={{ borderColor: `${C.ink}14` }}>
+
                             <div className="grid lg:grid-cols-12">
-                                
+
                                 {/* Left Side: Controls & Sliders (7 cols) */}
                                 <div className="p-5 sm:p-8 lg:p-12 lg:col-span-7 flex flex-col justify-between"
-                                     style={{ background: C.cream50 }}>
-                                    
+                                    style={{ background: C.cream50 }}>
+
                                     <div>
                                         <div className="flex items-center justify-between mb-3 sm:mb-4">
                                             <span className="text-xs font-bold uppercase tracking-wider text-stone-500">
@@ -857,27 +1077,28 @@ export default function Welcome({ auth }: any) {
                                                 className="cf-slider"
                                             />
                                             <div className="flex justify-between text-[10.5px] sm:text-xs font-semibold text-stone-400 mt-2">
-                                                <span>1 vache</span>
+                                                <span>1 {locale === 'en' ? 'cow' : 'vache'}</span>
                                                 <span>3</span>
                                                 <span>5</span>
                                                 <span>7</span>
-                                                <span>10 max</span>
+                                                <span>10 {locale === 'en' ? 'max' : 'max'}</span>
                                             </div>
                                         </div>
 
                                         {/* Quick Pick Buttons */}
                                         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-8 sm:mb-10">
-                                            <span className="text-xs font-semibold text-stone-400 mr-1 hidden xs:inline">Raccourcis :</span>
+                                            <span className="text-xs font-semibold text-stone-400 mr-1 hidden xs:inline">
+                                                {locale === 'en' ? 'Shortcuts:' : 'Raccourcis :'}
+                                            </span>
                                             {[1, 2, 3, 5, 10].map((num) => (
                                                 <button
                                                     key={num}
                                                     type="button"
                                                     onClick={() => setCowsCount(num)}
-                                                    className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all duration-200 ${
-                                                        cowsCount === num
-                                                            ? 'shadow-xs text-white'
-                                                            : 'bg-stone-200/70 text-stone-700 hover:bg-stone-300'
-                                                    }`}
+                                                    className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all duration-200 ${cowsCount === num
+                                                        ? 'shadow-xs text-white'
+                                                        : 'bg-stone-200/70 text-stone-700 hover:bg-stone-300'
+                                                        }`}
                                                     style={{
                                                         background: cowsCount === num ? C.forest : undefined,
                                                     }}
@@ -896,7 +1117,9 @@ export default function Welcome({ auth }: any) {
                                                 <div className="cf-serif text-[20px] sm:text-[24px] font-bold mt-0.5 sm:mt-1" style={{ color: C.ink }}>
                                                     {capitalInvested.toLocaleString()} <span className="text-[11px] sm:text-xs font-semibold text-stone-500">MAD</span>
                                                 </div>
-                                                <div className="text-[10px] sm:text-[11px] text-stone-400 mt-0.5">39 000 MAD / unité</div>
+                                                <div className="text-[10px] sm:text-[11px] text-stone-400 mt-0.5">
+                                                    39 000 MAD / {locale === 'en' ? 'unit' : 'unité'}
+                                                </div>
                                             </div>
 
                                             <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-stone-200/60 shadow-xs">
@@ -907,7 +1130,7 @@ export default function Welcome({ auth }: any) {
                                                     +{milkAnnualEst.toLocaleString()} <span className="text-[11px] sm:text-xs font-semibold text-stone-500">MAD</span>
                                                 </div>
                                                 <div className="text-[10px] sm:text-[11px] text-emerald-600 font-medium mt-0.5">
-                                                    ~{monthlyMilkEst.toLocaleString()} MAD / mois
+                                                    ~{monthlyMilkEst.toLocaleString()} MAD / {locale === 'en' ? 'month' : 'mois'}
                                                 </div>
                                             </div>
 
@@ -918,7 +1141,9 @@ export default function Welcome({ auth }: any) {
                                                 <div className="cf-serif text-[20px] sm:text-[24px] font-bold mt-0.5 sm:mt-1" style={{ color: C.copper }}>
                                                     +{calfAnnualEst.toLocaleString()} <span className="text-[11px] sm:text-xs font-semibold text-stone-500">MAD</span>
                                                 </div>
-                                                <div className="text-[10px] sm:text-[11px] text-stone-400 mt-0.5">Partage 50/50 à la vente</div>
+                                                <div className="text-[10px] sm:text-[11px] text-stone-400 mt-0.5">
+                                                    {locale === 'en' ? '50/50 profit share upon sale' : 'Partage 50/50 à la vente'}
+                                                </div>
                                             </div>
 
                                             <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-stone-200/60 shadow-xs">
@@ -926,9 +1151,11 @@ export default function Welcome({ auth }: any) {
                                                     {t('welcome.sim_total_annual')}
                                                 </div>
                                                 <div className="cf-serif text-[20px] sm:text-[24px] font-bold mt-0.5 sm:mt-1" style={{ color: C.forest }}>
-                                                    ~{totalAnnualCashflow.toLocaleString()} <span className="text-[11px] sm:text-xs font-semibold text-stone-500">MAD / an</span>
+                                                    ~{totalAnnualCashflow.toLocaleString()} <span className="text-[11px] sm:text-xs font-semibold text-stone-500">MAD / {locale === 'en' ? 'yr' : 'an'}</span>
                                                 </div>
-                                                <div className="text-[10px] sm:text-[11px] text-stone-400 mt-0.5">Lait + Veaux cumulés</div>
+                                                <div className="text-[10px] sm:text-[11px] text-stone-400 mt-0.5">
+                                                    {locale === 'en' ? 'Milk + Calves combined' : 'Lait + Veaux cumulés'}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -936,15 +1163,19 @@ export default function Welcome({ auth }: any) {
                                     {/* Security guarantee line */}
                                     <div className="mt-6 sm:mt-8 flex items-center gap-2 text-[11px] sm:text-xs text-stone-500">
                                         <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
-                                        <span>Couverture bétail totale &amp; traçabilité ONSSA incluse pour chaque animal.</span>
+                                        <span>
+                                            {locale === 'en'
+                                                ? 'Comprehensive livestock insurance & ONSSA traceability included for each animal.'
+                                                : 'Couverture bétail totale & traçabilité ONSSA incluse pour chaque animal.'}
+                                        </span>
                                     </div>
 
                                 </div>
 
                                 {/* Right Side: 5-Year Return Synthesis (5 cols) */}
                                 <div className="p-6 sm:p-8 lg:p-12 lg:col-span-5 flex flex-col justify-between text-white"
-                                     style={{ background: `linear-gradient(145deg, ${C.forest} 0%, ${C.forestSurface} 100%)` }}>
-                                    
+                                    style={{ background: `linear-gradient(145deg, ${C.forest} 0%, ${C.forestSurface} 100%)` }}>
+
                                     <div>
                                         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6 bg-white/10 text-amber-300">
                                             <Award className="h-3.5 w-3.5" />
@@ -961,25 +1192,25 @@ export default function Welcome({ auth }: any) {
 
                                         <div className="mt-4 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white/10 border border-white/10 space-y-2 text-xs text-white/80">
                                             <div className="flex justify-between items-center">
-                                                <span>Rendement estimé :</span>
+                                                <span>{locale === 'en' ? 'Estimated return:' : 'Rendement estimé :'}</span>
                                                 <strong className="text-amber-300 font-bold">~19.5% CAGR</strong>
                                             </div>
                                             <div className="flex justify-between items-center">
-                                                <span>Retour capital :</span>
-                                                <strong className="text-white font-semibold">27 à 31 mois</strong>
+                                                <span>{locale === 'en' ? 'Capital payback:' : 'Retour capital :'}</span>
+                                                <strong className="text-white font-semibold">{locale === 'en' ? '27 to 31 months' : '27 à 31 mois'}</strong>
                                             </div>
                                             <div className="flex justify-between items-center">
-                                                <span>Fréquence gains :</span>
-                                                <strong className="text-white font-semibold">Trimestrielle</strong>
+                                                <span>{locale === 'en' ? 'Payout frequency:' : 'Fréquence gains :'}</span>
+                                                <strong className="text-white font-semibold">{locale === 'en' ? 'Quarterly' : 'Trimestrielle'}</strong>
                                             </div>
                                         </div>
 
                                         {/* Visual Progress Payback Bar (Clean compact on mobile) */}
                                         <div className="mt-5 sm:mt-6">
                                             <div className="flex justify-between text-[10px] sm:text-[11px] text-white/60 mb-1.5 font-medium">
-                                                <span>Mois 0</span>
-                                                <span className="text-amber-300 font-bold">Mois 27 (Seuil)</span>
-                                                <span>Année 5</span>
+                                                <span>{locale === 'en' ? 'Month 0' : 'Mois 0'}</span>
+                                                <span className="text-amber-300 font-bold">{locale === 'en' ? 'Month 27 (Breakeven)' : 'Mois 27 (Seuil)'}</span>
+                                                <span>{locale === 'en' ? 'Year 5' : 'Année 5'}</span>
                                             </div>
                                             <div className="h-2 sm:h-2.5 w-full bg-white/20 rounded-full overflow-hidden p-0.5">
                                                 <div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-emerald-400 w-[55%]" />
@@ -998,7 +1229,7 @@ export default function Welcome({ auth }: any) {
                                             <ArrowRight className="h-4 w-4" />
                                         </button>
                                         <p className="text-center text-[10.5px] sm:text-[11px] text-white/50 mt-2">
-                                            Sans aucun paiement en ligne • Réservation prioritaire
+                                            {locale === 'en' ? 'No online payment required • Priority reservation' : 'Sans aucun paiement en ligne • Réservation prioritaire'}
                                         </p>
                                     </div>
 
@@ -1014,7 +1245,7 @@ export default function Welcome({ auth }: any) {
                 {/* ── HOW IT WORKS ── */}
                 <section id="fonctionnement" style={{ background: C.cream, borderBottom: `1px solid ${C.ink}10` }}>
                     <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6 py-14 sm:py-20 lg:py-24">
-                        <div className="max-w-2xl mb-10 sm:mb-14">
+                        <div className="max-w-2xl mb-10 sm:mb-14 cf-reveal">
                             <p className="cf-eyebrow mb-2 sm:mb-3" style={{ color: C.copper }}>{t('welcome.model_eyebrow')}</p>
                             <h2 className="cf-serif mb-3 sm:mb-4 text-[28px] xs:text-[34px] sm:text-[44px] font-bold leading-tight tracking-tight"
                                 style={{ color: C.ink }}>
@@ -1026,15 +1257,16 @@ export default function Welcome({ auth }: any) {
                         </div>
 
                         <div className="grid gap-5 sm:gap-6 md:grid-cols-3">
-                            {steps.map((s) => {
+                            {steps.map((s, idx) => {
                                 const Icon = s.icon;
+                                const delayClass = idx === 0 ? 'cf-delay-100' : idx === 1 ? 'cf-delay-200' : 'cf-delay-300';
                                 return (
-                                    <div key={s.n} 
-                                         className="group rounded-[20px] sm:rounded-[24px] border p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl bg-white"
-                                         style={{ borderColor: `${C.ink}14` }}>
+                                    <div key={s.n}
+                                        className={`group rounded-[20px] sm:rounded-[24px] border p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl bg-white cf-reveal-up ${delayClass}`}
+                                        style={{ borderColor: `${C.ink}14` }}>
                                         <div className="flex items-center justify-between mb-6 sm:mb-8">
                                             <div className="cf-serif flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl text-sm sm:text-base font-bold shadow-xs transition-transform group-hover:scale-110"
-                                                 style={{ background: C.forest, color: C.cream }}>
+                                                style={{ background: C.forest, color: C.cream }}>
                                                 {s.n}
                                             </div>
                                             <div className="p-2.5 rounded-xl bg-stone-100 text-stone-600 group-hover:bg-amber-100 group-hover:text-amber-800 transition-colors">
@@ -1052,7 +1284,7 @@ export default function Welcome({ auth }: any) {
                             })}
                         </div>
 
-                        <p className="cf-serif mt-8 sm:mt-10 max-w-[48em] text-[13px] sm:text-[14px] italic leading-relaxed text-stone-500">
+                        <p className="cf-serif mt-8 sm:mt-10 max-w-[48em] text-[13px] sm:text-[14px] italic leading-relaxed text-stone-500 cf-reveal cf-delay-200">
                             {t('welcome.model_disclaimer')}
                         </p>
                     </div>
@@ -1061,9 +1293,9 @@ export default function Welcome({ auth }: any) {
                 {/* ── IMMERSION & HIGH-TECH FARM GALLERY ── */}
                 <section id="ferme" className="py-14 sm:py-20 lg:py-24 relative" style={{ background: C.cream50 }}>
                     <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6">
-                        
+
                         {/* Section Header */}
-                        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-5 sm:gap-6">
+                        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-5 sm:gap-6 cf-reveal">
                             <div className="max-w-2xl">
                                 <span className="cf-eyebrow inline-block mb-2 sm:mb-3" style={{ color: C.copper }}>
                                     {t('welcome.immersion_eyebrow')}
@@ -1076,55 +1308,52 @@ export default function Welcome({ auth }: any) {
                                     {t('welcome.immersion_desc')}
                                 </p>
                             </div>
-
+...
                             {/* Responsive Tabs (Grid on mobile, flex on desktop) */}
                             <div className="w-full sm:w-auto grid grid-cols-3 sm:flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-2xl bg-stone-200/60 border border-stone-300/60">
                                 <button
                                     type="button"
                                     onClick={() => setImmersionTab('herd')}
-                                    className={`px-2.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all text-center ${
-                                        immersionTab === 'herd'
-                                            ? 'bg-white shadow-xs text-stone-900'
-                                            : 'text-stone-600 hover:text-stone-900'
-                                    }`}
+                                    className={`px-2.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all text-center ${immersionTab === 'herd'
+                                        ? 'bg-white shadow-xs text-stone-900'
+                                        : 'text-stone-600 hover:text-stone-900'
+                                        }`}
                                 >
-                                    <span>🐄 </span>
+                                    <span></span>
                                     <span className="hidden sm:inline">{t('welcome.immersion_tab_1')}</span>
-                                    <span className="sm:hidden">Cheptel</span>
+                                    <span className="sm:hidden">{locale === 'en' ? 'Herd' : 'Cheptel'}</span>
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setImmersionTab('iot')}
-                                    className={`px-2.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all text-center ${
-                                        immersionTab === 'iot'
-                                            ? 'bg-white shadow-xs text-stone-900'
-                                            : 'text-stone-600 hover:text-stone-900'
-                                    }`}
+                                    className={`px-2.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all text-center ${immersionTab === 'iot'
+                                        ? 'bg-white shadow-xs text-stone-900'
+                                        : 'text-stone-600 hover:text-stone-900'
+                                        }`}
                                 >
-                                    <span>📡 </span>
+                                    <span></span>
                                     <span className="hidden sm:inline">{t('welcome.immersion_tab_2')}</span>
                                     <span className="sm:hidden">IoT Tech</span>
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setImmersionTab('market')}
-                                    className={`px-2.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all text-center ${
-                                        immersionTab === 'market'
-                                            ? 'bg-white shadow-xs text-stone-900'
-                                            : 'text-stone-600 hover:text-stone-900'
-                                    }`}
+                                    className={`px-2.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all text-center ${immersionTab === 'market'
+                                        ? 'bg-white shadow-xs text-stone-900'
+                                        : 'text-stone-600 hover:text-stone-900'
+                                        }`}
                                 >
-                                    <span>🥛 </span>
+                                    <span></span>
                                     <span className="hidden sm:inline">{t('welcome.immersion_tab_3')}</span>
-                                    <span className="sm:hidden">Laiterie</span>
+                                    <span className="sm:hidden">{locale === 'en' ? 'Dairy' : 'Laiterie'}</span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Interactive Tab Content Display */}
-                        <div className="rounded-[22px] sm:rounded-[28px] overflow-hidden border shadow-xl bg-white grid lg:grid-cols-12"
-                             style={{ borderColor: `${C.ink}14` }}>
-                            
+                        <div className="rounded-[22px] sm:rounded-[28px] overflow-hidden border shadow-xl bg-white grid lg:grid-cols-12 cf-reveal-scale cf-delay-150"
+                            style={{ borderColor: `${C.ink}14` }}>
+
                             {/* Visual Asset Side (7 cols) */}
                             <div className="lg:col-span-7 relative aspect-[16/11] sm:aspect-[16/10] lg:aspect-auto overflow-hidden bg-stone-100 min-h-[220px] sm:min-h-[340px]">
                                 {immersionTab === 'herd' && (
@@ -1143,7 +1372,7 @@ export default function Welcome({ auth }: any) {
                                 )}
                                 {immersionTab === 'market' && (
                                     <div className="h-full w-full relative min-h-[260px] sm:min-h-[360px] flex items-center justify-center p-6 sm:p-8 text-white"
-                                         style={{ background: `linear-gradient(135deg, ${C.forest} 0%, #152018 100%)` }}>
+                                        style={{ background: `linear-gradient(135deg, ${C.forest} 0%, #152018 100%)` }}>
                                         <div className="text-center max-w-md">
                                             <div className="inline-flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white/10 text-amber-300 mb-4 sm:mb-6">
                                                 <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8" />
@@ -1156,7 +1385,7 @@ export default function Welcome({ auth }: any) {
                                             </p>
                                             <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 text-[11px] sm:text-xs font-semibold">
                                                 <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
-                                                <span>Enlèvement quotidien réfrigéré garanti</span>
+                                                <span>{locale === 'en' ? 'Guaranteed refrigerated daily collection' : 'Enlèvement quotidien réfrigéré garanti'}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -1164,16 +1393,16 @@ export default function Welcome({ auth }: any) {
 
                                 {/* Overlay Badge on Image */}
                                 <div className="absolute bottom-3 left-3 sm:bottom-5 sm:left-5 cf-glass rounded-xl px-3 py-1.5 sm:px-4 sm:py-2.5 shadow-md border border-white/60 text-[10.5px] sm:text-xs font-semibold text-stone-800">
-                                    📍 Chaouia-Ouardigha, Maroc
+                                    📍 Chaouia-Ouardigha, {locale === 'en' ? 'Morocco' : 'Maroc'}
                                 </div>
                             </div>
 
                             {/* Informational Text Side (5 cols) */}
                             <div className="p-6 sm:p-8 lg:p-10 lg:col-span-5 flex flex-col justify-between"
-                                 style={{ background: C.cream50 }}>
+                                style={{ background: C.cream50 }}>
                                 <div>
                                     <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4"
-                                         style={{ color: C.copper }}>
+                                        style={{ color: C.copper }}>
                                         <Zap className="h-3.5 w-3.5" />
                                         {immersionTab === 'herd' && t('welcome.immersion_tab_1')}
                                         {immersionTab === 'iot' && t('welcome.immersion_tab_2')}
@@ -1196,15 +1425,15 @@ export default function Welcome({ auth }: any) {
                                     <div className="space-y-2.5 sm:space-y-3 pt-5 sm:pt-6 border-t border-stone-200 text-xs font-semibold text-stone-700">
                                         <div className="flex items-center gap-2">
                                             <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                                            <span>Alimentation saine &amp; locale (luzerne, ensilage)</span>
+                                            <span>{locale === 'en' ? 'Healthy & local feed (alfalfa, corn silage)' : 'Alimentation saine & locale (luzerne, ensilage)'}</span>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                                            <span>Rapports photographiques &amp; métriques chaque mois</span>
+                                            <span>{locale === 'en' ? 'Monthly photo reports & digital yield metrics' : 'Rapports photographiques & métriques chaque mois'}</span>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                                            <span>Visites guidées trimestrielles pour investisseurs</span>
+                                            <span>{locale === 'en' ? 'Quarterly guided on-site visits for co-investors' : 'Visites guidées trimestrielles pour investisseurs'}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1214,7 +1443,7 @@ export default function Welcome({ auth }: any) {
                                         href="#demande"
                                         className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-stone-900 hover:text-amber-800 transition-colors"
                                     >
-                                        <span>Participer à cette exploitation</span>
+                                        <span>{locale === 'en' ? 'Invest in this facility' : 'Participer à cette exploitation'}</span>
                                         <ArrowRight className="h-4 w-4" />
                                     </a>
                                 </div>
@@ -1225,63 +1454,362 @@ export default function Welcome({ auth }: any) {
                     </div>
                 </section>
 
-                {/* ── RETURNS & MACRO MARKET STATS ── */}
-                <section id="rendements" style={{ background: C.cream }}>
-                    <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6 py-14 sm:py-20 lg:py-24">
-                        <div className="max-w-2xl mb-10 sm:mb-12">
-                            <p className="cf-eyebrow mb-2 sm:mb-3" style={{ color: C.copper }}>{t('welcome.returns_eyebrow')}</p>
-                            <h2 className="cf-serif mb-3 sm:mb-4 text-[28px] xs:text-[34px] sm:text-[44px] font-bold leading-tight tracking-tight"
-                                style={{ color: C.ink }}>
-                                {t('welcome.returns_title')}
-                            </h2>
-                            <p className="text-[16px] sm:text-[18px] text-stone-600">
-                                {t('welcome.returns_desc')}
-                            </p>
-                        </div>
+                {/* ── RETURNS & MACRO MARKET STATS (RESTYLED LUXURY FINTECH) ── */}
+                <section id="rendements" className="relative py-16 sm:py-24 border-t overflow-hidden"
+                    style={{ background: 'linear-gradient(180deg, #fdfbf7 0%, #f7f2e7 100%)', borderColor: `${C.ink}10` }}>
 
-                        <div className="grid gap-4 sm:gap-5 grid-cols-1 xs:grid-cols-2 lg:grid-cols-4">
-                            {returnCards.map((c) => (
-                                <div key={c.l} 
-                                     className="group rounded-2xl p-6 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" 
-                                     style={{ background: C.forest, color: C.cream }}>
-                                    <div className="cf-serif text-[32px] sm:text-[36px] font-bold leading-none tracking-tight">
-                                        {c.v}
-                                        {c.u && (
-                                            <span className="text-[13px] sm:text-[14px] font-medium ml-1" style={{ color: C.onForest }}>
-                                                {c.u}
-                                            </span>
-                                        )}
+                    {/* Ambient subtle decorative background glows */}
+                    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+                        <div className="absolute top-1/4 -right-48 h-96 w-96 rounded-full opacity-15 blur-[100px]"
+                            style={{ background: C.gold }} />
+                        <div className="absolute bottom-10 -left-48 h-96 w-96 rounded-full opacity-10 blur-[100px]"
+                            style={{ background: C.copper }} />
+                    </div>
+
+                    <div className="relative z-10 mx-auto w-full max-w-[1180px] px-4 sm:px-6">
+
+                        {/* Section Header */}
+                        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-6 cf-reveal">
+                            <div className="max-w-2xl">
+                                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-3.5 text-xs font-bold uppercase tracking-wider shadow-xs border"
+                                    style={{ background: `${C.copperLight}`, color: C.copper, borderColor: `${C.copper}30` }}>
+                                    <TrendingUp className="h-3.5 w-3.5" />
+                                    <span>{t('welcome.returns_eyebrow')}</span>
+                                    <span className="text-stone-300">•</span>
+                                    <span className="text-[11px] font-semibold text-stone-600 lowercase tracking-normal">
+                                        {locale === 'en' ? 'quarterly audited cashflow' : 'dividendes trimestriels audités'}
+                                    </span>
+                                </div>
+                                <h2 className="cf-serif text-[30px] xs:text-[36px] sm:text-[46px] font-bold leading-[1.12] tracking-tight text-stone-900"
+                                    style={{ color: C.ink }}>
+                                    {t('welcome.returns_title')}
+                                </h2>
+                                <p className="mt-3 text-[16px] sm:text-[18px] leading-relaxed text-stone-600 max-w-xl">
+                                    {t('welcome.returns_desc')}
+                                </p>
+                            </div>
+
+                            {/* Floating Transparency Badge */}
+                            <div className="flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl bg-white/80 backdrop-blur-md border border-stone-200/80 shadow-xs self-start md:self-auto shrink-0">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 shrink-0">
+                                    <ShieldCheck className="h-5 w-5" />
+                                </div>
+                                <div className="text-left text-xs">
+                                    <div className="font-bold text-stone-900">
+                                        {locale === 'en' ? 'Audited Production Data' : 'Données Réelles & Certifiées'}
                                     </div>
-                                    <div className="mt-2.5 sm:mt-3 text-[13px] sm:text-[14px] font-medium leading-snug" style={{ color: C.onForest2 }}>
-                                        {c.l}
+                                    <div className="text-[11px] text-stone-500 font-medium">
+                                        {locale === 'en' ? 'Chaouia Pilot Farm Registry' : 'Cheptel Chaouia & ONSSA'}
                                     </div>
                                 </div>
-                            ))}
+                            </div>
                         </div>
+
+                        {/* ── 4 Bespoke Redesigned Return Cards ── */}
+                        <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-14 sm:mb-20">
+                            {detailedReturnMetrics.map((card, idx) => {
+                                const IconComponent = card.icon;
+                                const delayClass = idx === 0 ? 'cf-delay-100' : idx === 1 ? 'cf-delay-200' : idx === 2 ? 'cf-delay-300' : 'cf-delay-400';
+
+                                if (card.highlight) {
+                                    /* Featured Star Card (Forest & Amber Glow) */
+                                    return (
+                                        <div
+                                            key={card.title}
+                                            className={`relative rounded-[24px] p-6 sm:p-7 flex flex-col justify-between shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cf-reveal-scale ${delayClass} overflow-hidden group`}
+                                            style={{
+                                                background: `linear-gradient(145deg, ${C.forest} 0%, #16241a 100%)`,
+                                                color: C.cream,
+                                                boxShadow: '0 20px 45px -10px rgba(37, 56, 42, 0.45)',
+                                                border: '1.5px solid rgba(212, 162, 89, 0.4)'
+                                            }}
+                                        >
+                                            {/* Top Accent Ribbon */}
+                                            <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500" />
+
+                                            <div>
+                                                <div className="flex items-center justify-between gap-2 mb-5">
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                                                        <Sparkles className="h-3 w-3 text-amber-300" />
+                                                        {card.tag}
+                                                    </span>
+                                                    <div className="p-2 rounded-xl bg-white/10 text-amber-300 group-hover:scale-110 transition-transform">
+                                                        <IconComponent className="h-4 w-4" />
+                                                    </div>
+                                                </div>
+
+                                                <div className="mb-2">
+                                                    <span className="cf-serif text-[40px] sm:text-[46px] font-black text-white leading-none tracking-tight">
+                                                        {card.v}
+                                                    </span>
+                                                    <span className="ml-1.5 text-base sm:text-lg font-bold text-amber-300">
+                                                        {card.u}
+                                                    </span>
+                                                </div>
+
+                                                <h3 className="cf-serif text-lg font-bold text-white mb-2 leading-snug">
+                                                    {card.title}
+                                                </h3>
+                                                <p className="text-xs sm:text-[13px] leading-relaxed text-stone-300">
+                                                    {card.desc}
+                                                </p>
+                                            </div>
+
+                                            <div className="mt-6 pt-4 border-t border-white/15 flex items-center justify-between text-xs">
+                                                <span className="text-amber-200/90 font-semibold">{card.meta}</span>
+                                                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                                            </div>
+                                        </div>
+                                    );
+                                }
+
+                                /* Standard Elegant Luxury Cards */
+                                return (
+                                    <div
+                                        key={card.title}
+                                        className={`group rounded-[24px] p-6 sm:p-7 bg-white border flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cf-reveal-scale ${delayClass}`}
+                                        style={{ borderColor: `${C.ink}15`, boxShadow: '0 4px 20px -2px rgba(34,29,25,0.04)' }}
+                                    >
+                                        <div>
+                                            <div className="flex items-center justify-between gap-2 mb-5">
+                                                <span
+                                                    className="inline-flex items-center px-3 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-wider"
+                                                    style={{ background: card.badgeBg, color: card.badgeColor }}
+                                                >
+                                                    {card.tag}
+                                                </span>
+                                                <div className="p-2 rounded-xl bg-stone-100 text-stone-600 group-hover:bg-stone-200 group-hover:text-stone-900 transition-colors">
+                                                    <IconComponent className="h-4 w-4" />
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-2">
+                                                <span className="cf-serif text-[36px] sm:text-[42px] font-black text-stone-900 leading-none tracking-tight">
+                                                    {card.v}
+                                                </span>
+                                                <span className="ml-1.5 text-sm sm:text-base font-bold text-stone-500">
+                                                    {card.u}
+                                                </span>
+                                            </div>
+
+                                            <h3 className="cf-serif text-lg font-bold text-stone-900 mb-2 leading-snug">
+                                                {card.title}
+                                            </h3>
+                                            <p className="text-xs sm:text-[13px] leading-relaxed text-stone-600">
+                                                {card.desc}
+                                            </p>
+                                        </div>
+
+                                        <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between text-xs">
+                                            <span className="text-stone-500 font-medium truncate pr-1">{card.meta}</span>
+                                            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* ── Comprehensive Asset Benchmark: CoFarm vs Traditional Assets ── */}
+                        <div className="rounded-[24px] sm:rounded-[30px] border shadow-xl bg-white overflow-hidden cf-reveal mb-12 sm:mb-16"
+                            style={{ borderColor: `${C.ink}14` }}>
+
+                            {/* Banner Top Bar */}
+                            <div className="px-6 py-5 sm:px-8 sm:py-6 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                                style={{ background: C.cream50, borderColor: `${C.ink}10` }}>
+                                <div>
+                                    <span className="cf-eyebrow text-[10px] sm:text-xs font-bold uppercase tracking-wider text-amber-800">
+                                        {locale === 'en' ? 'Comparative Analysis' : 'Benchmark Comparatif'}
+                                    </span>
+                                    <h3 className="cf-serif text-xl sm:text-2xl font-bold text-stone-900 tracking-tight mt-0.5">
+                                        {locale === 'en' ? 'Agri-Tech Co-Investment vs. Traditional Assets' : "L'Agri-Tech Laitier face aux Placements Classiques"}
+                                    </h3>
+                                </div>
+                                <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600 bg-white px-3 py-1.5 rounded-full border border-stone-200/80 shadow-xs self-start sm:self-auto">
+                                    <Award className="h-3.5 w-3.5 text-amber-600" />
+                                    <span>{locale === 'en' ? 'Audit verified metrics' : 'Données certifiées au Maroc'}</span>
+                                </div>
+                            </div>
+
+                            {/* Comparison 3 Columns */}
+                            <div className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-stone-200/80">
+                                {benchmarkComparisons.map((item) => (
+                                    <div
+                                        key={item.name}
+                                        className={`p-6 sm:p-8 flex flex-col justify-between transition-colors ${
+                                            item.featured
+                                                ? 'bg-emerald-50/40 relative'
+                                                : 'bg-white'
+                                        }`}
+                                    >
+                                        {item.featured && (
+                                            <div className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-700 text-white shadow-xs">
+                                                <Star className="h-2.5 w-2.5 fill-white" />
+                                                <span>{locale === 'en' ? 'Recommended' : 'Recommandé'}</span>
+                                            </div>
+                                        )}
+
+                                        <div>
+                                            <h4 className="cf-serif text-lg sm:text-xl font-bold text-stone-900">
+                                                {item.name}
+                                            </h4>
+                                            <p className="text-xs text-stone-500 mb-6 font-medium">
+                                                {item.subtitle}
+                                            </p>
+
+                                            {/* Big Yield Number */}
+                                            <div className="mb-6 p-4 rounded-2xl border"
+                                                style={{
+                                                    background: item.featured ? '#ffffff' : '#f9f9f8',
+                                                    borderColor: item.featured ? 'rgba(37, 56, 42, 0.2)' : 'rgba(0,0,0,0.06)'
+                                                }}>
+                                                <div className="text-[11px] font-bold uppercase tracking-wider text-stone-400">
+                                                    {locale === 'en' ? 'Net Annualized Return' : 'Rendement Net Annuel'}
+                                                </div>
+                                                <div className={`cf-serif text-3xl sm:text-4xl font-extrabold mt-1 ${
+                                                    item.featured ? 'text-emerald-800' : 'text-stone-800'
+                                                }`}>
+                                                    {item.cagr}
+                                                </div>
+                                                <div className="text-[11px] text-stone-500 font-medium mt-1">
+                                                    {locale === 'en' ? 'Distribution: ' : 'Distribution : '} <strong>{item.period}</strong>
+                                                </div>
+                                            </div>
+
+                                            {/* Feature Rows */}
+                                            <div className="space-y-3 text-xs text-stone-700">
+                                                <div className="flex items-start gap-2.5">
+                                                    <CheckCircle2 className={`h-4 w-4 mt-0.5 shrink-0 ${
+                                                        item.featured ? 'text-emerald-600' : 'text-stone-400'
+                                                    }`} />
+                                                    <div>
+                                                        <strong className="block text-stone-900">
+                                                            {locale === 'en' ? 'Underlying Collateral' : 'Garantie sous-jacente'}
+                                                        </strong>
+                                                        <span className="text-stone-600">{item.backing}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-start gap-2.5">
+                                                    <CheckCircle2 className={`h-4 w-4 mt-0.5 shrink-0 ${
+                                                        item.featured ? 'text-emerald-600' : 'text-stone-400'
+                                                    }`} />
+                                                    <div>
+                                                        <strong className="block text-stone-900">
+                                                            {locale === 'en' ? 'Liquidity & Exit' : 'Liquidité & Sortie'}
+                                                        </strong>
+                                                        <span className="text-stone-600">{item.liquidity}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-start gap-2.5">
+                                                    <CheckCircle2 className={`h-4 w-4 mt-0.5 shrink-0 ${
+                                                        item.featured ? 'text-emerald-600' : 'text-stone-400'
+                                                    }`} />
+                                                    <div>
+                                                        <strong className="block text-stone-900">
+                                                            {locale === 'en' ? 'Inflation Protection' : 'Protection Inflation'}
+                                                        </strong>
+                                                        <span className="text-stone-600">{item.inflation}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {item.featured ? (
+                                            <div className="mt-8 pt-5 border-t border-emerald-200/80">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => scrollToSection('simulation')}
+                                                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold text-white shadow-md transition-all duration-200 hover:brightness-110 cursor-pointer"
+                                                    style={{ background: C.copper }}
+                                                >
+                                                    <Sliders className="h-4 w-4" />
+                                                    <span>{locale === 'en' ? 'Simulate with my capital' : 'Calculer mes rendements exacts'}</span>
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="mt-8 pt-5 border-t border-stone-200/80 text-[11px] text-stone-400 italic text-center">
+                                                {locale === 'en' ? 'Standard baseline benchmark' : 'Indicateur moyen de référence'}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* ── Cashflow Distribution Ribbon: How profits flow to you ── */}
+                        <div className="p-6 sm:p-8 rounded-[24px] border shadow-xs bg-white cf-reveal flex flex-col md:flex-row items-center justify-between gap-6"
+                            style={{ borderColor: `${C.ink}12` }}>
+                            <div className="max-w-md">
+                                <span className="cf-eyebrow text-[10px] sm:text-xs font-bold uppercase tracking-wider" style={{ color: C.copper }}>
+                                    {locale === 'en' ? 'Payout Cadence' : 'Circuit de Distribution'}
+                                </span>
+                                <h4 className="cf-serif text-lg sm:text-xl font-bold text-stone-900 mt-1">
+                                    {locale === 'en' ? 'How and when are your earnings distributed?' : 'Comment vos dividendes sont-ils versés ?'}
+                                </h4>
+                                <p className="text-xs sm:text-sm text-stone-600 mt-1.5 leading-relaxed">
+                                    {locale === 'en'
+                                        ? 'Daily milk collections are audited, aggregated, and transferred directly to your bank account every quarter.'
+                                        : 'La vente quotidienne du lait est auditée puis virée chaque trimestre. La vente annuelle du veau est versée à la clôture du cycle.'}
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full md:w-auto shrink-0">
+                                {[
+                                    {
+                                        step: '01',
+                                        title: locale === 'en' ? 'Daily Yield' : 'Traite Quotidienne',
+                                        desc: locale === 'en' ? 'Delivered to partner dairy' : 'Livrée à la laiterie locale',
+                                    },
+                                    {
+                                        step: '02',
+                                        title: locale === 'en' ? 'Quarterly Payout' : 'Dividende Trimestriel',
+                                        desc: locale === 'en' ? 'Direct bank transfer (RIB)' : 'Virement direct sur votre RIB',
+                                    },
+                                    {
+                                        step: '03',
+                                        title: locale === 'en' ? 'Annual Bonus' : 'Vente Veau Annuelle',
+                                        desc: locale === 'en' ? '50/50 net sharing + exit' : 'Partage 50/50 ou réinvestissement',
+                                    },
+                                ].map((item) => (
+                                    <div key={item.step} className="p-3.5 sm:p-4 rounded-xl bg-stone-50 border border-stone-200/70 text-left">
+                                        <div className="text-[10px] font-bold text-amber-700">{item.step}</div>
+                                        <div className="font-bold text-xs sm:text-sm text-stone-900 mt-0.5">{item.title}</div>
+                                        <div className="text-[11px] text-stone-500 mt-0.5">{item.desc}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
                     </div>
                 </section>
 
                 {/* ── MOROCCAN MARKET CONTEXT ── */}
                 <section id="marche" style={{ background: C.forest, color: C.cream }}>
                     <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6 py-14 sm:py-20 lg:py-24">
-                        <p className="cf-eyebrow mb-2 sm:mb-3" style={{ color: C.gold }}>{t('welcome.market_eyebrow')}</p>
-                        <h2 className="cf-serif mb-3 sm:mb-4 max-w-[18em] text-[28px] xs:text-[34px] sm:text-[44px] font-bold leading-tight tracking-tight">
-                            {t('welcome.market_title')}
-                        </h2>
-                        <p className="mb-10 sm:mb-14 max-w-[38em] text-[16px] sm:text-[18px]" style={{ color: C.onForest2 }}>
-                            {t('welcome.market_desc')}
-                        </p>
+                        <div className="cf-reveal">
+                            <p className="cf-eyebrow mb-2 sm:mb-3" style={{ color: C.gold }}>{t('welcome.market_eyebrow')}</p>
+                            <h2 className="cf-serif mb-3 sm:mb-4 max-w-[18em] text-[28px] xs:text-[34px] sm:text-[44px] font-bold leading-tight tracking-tight">
+                                {t('welcome.market_title')}
+                            </h2>
+                            <p className="mb-10 sm:mb-14 max-w-[38em] text-[16px] sm:text-[18px]" style={{ color: C.onForest2 }}>
+                                {t('welcome.market_desc')}
+                            </p>
+                        </div>
                         <div className="grid gap-6 sm:gap-8 md:grid-cols-3">
-                            {marketPoints.map((pt) => (
-                                <div key={pt.v} className="border-t-2 pt-5 sm:pt-6" style={{ borderColor: `${C.gold}70` }}>
-                                    <div className="cf-serif mb-2 sm:mb-3 text-[38px] sm:text-[46px] font-bold leading-none" style={{ color: C.gold }}>
-                                        {pt.v}
+                            {marketPoints.map((pt, idx) => {
+                                const delayClass = idx === 0 ? 'cf-delay-100' : idx === 1 ? 'cf-delay-200' : 'cf-delay-300';
+                                return (
+                                    <div key={pt.v} className={`border-t-2 pt-5 sm:pt-6 cf-reveal-up ${delayClass}`} style={{ borderColor: `${C.gold}70` }}>
+                                        <div className="cf-serif mb-2 sm:mb-3 text-[38px] sm:text-[46px] font-bold leading-none" style={{ color: C.gold }}>
+                                            {pt.v}
+                                        </div>
+                                        <p className="text-[14.5px] sm:text-[15.5px] leading-relaxed" style={{ color: C.onForest2 }}>
+                                            {pt.l}
+                                        </p>
                                     </div>
-                                    <p className="text-[14.5px] sm:text-[15.5px] leading-relaxed" style={{ color: C.onForest2 }}>
-                                        {pt.l}
-                                    </p>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </section>
@@ -1289,7 +1817,7 @@ export default function Welcome({ auth }: any) {
                 {/* ── TRUST & INVESTOR PROTECTION PILLARS ── */}
                 <section id="securite" className="py-14 sm:py-20 lg:py-24 border-b" style={{ background: C.cream50, borderColor: `${C.ink}10` }}>
                     <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6">
-                        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+                        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14 cf-reveal">
                             <span className="cf-eyebrow inline-block mb-2 sm:mb-3" style={{ color: C.copper }}>
                                 {t('welcome.trust_eyebrow')}
                             </span>
@@ -1322,10 +1850,11 @@ export default function Welcome({ auth }: any) {
                                 },
                             ].map((pillar, i) => {
                                 const Icon = pillar.icon;
+                                const delayClass = i === 0 ? 'cf-delay-100' : i === 1 ? 'cf-delay-200' : i === 2 ? 'cf-delay-300' : 'cf-delay-400';
                                 return (
-                                    <div key={i} className="p-5 sm:p-7 rounded-[18px] sm:rounded-[22px] bg-white border border-stone-200/80 shadow-xs hover:shadow-md transition-shadow">
+                                    <div key={i} className={`p-5 sm:p-7 rounded-[18px] sm:rounded-[22px] bg-white border border-stone-200/80 shadow-xs hover:shadow-md transition-shadow cf-reveal-scale ${delayClass}`}>
                                         <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-5"
-                                             style={{ background: C.copperLight, color: C.copper }}>
+                                            style={{ background: C.copperLight, color: C.copper }}>
                                             <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                                         </div>
                                         <h3 className="cf-serif text-[18px] sm:text-[19px] font-bold text-stone-900 mb-2 leading-snug">
@@ -1344,7 +1873,7 @@ export default function Welcome({ auth }: any) {
                 {/* ── TESTIMONIALS / CO-INVESTOR REVIEWS ── */}
                 <section id="avis" className="py-14 sm:py-20 lg:py-24" style={{ background: C.cream }}>
                     <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6">
-                        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+                        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14 cf-reveal">
                             <span className="cf-eyebrow inline-block mb-2 sm:mb-3" style={{ color: C.copper }}>
                                 {t('welcome.testimonials_eyebrow')}
                             </span>
@@ -1357,40 +1886,43 @@ export default function Welcome({ auth }: any) {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-                            {testimonials.map((item, idx) => (
-                                <div key={idx} 
-                                     className="rounded-[20px] sm:rounded-[22px] p-6 sm:p-8 bg-white border shadow-xs flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-md"
-                                     style={{ borderColor: `${C.ink}12` }}>
-                                    <div>
-                                        {/* Stars */}
-                                        <div className="flex items-center gap-1 text-amber-500 mb-4 sm:mb-5">
-                                            {[...Array(5)].map((_, s) => (
-                                                <Star key={s} className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-amber-400 text-amber-400" />
-                                            ))}
+                            {testimonials.map((item, idx) => {
+                                const delayClass = idx === 0 ? 'cf-delay-100' : idx === 1 ? 'cf-delay-200' : 'cf-delay-300';
+                                return (
+                                    <div key={idx}
+                                        className={`rounded-[20px] sm:rounded-[22px] p-6 sm:p-8 bg-white border shadow-xs flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-md cf-reveal-up ${delayClass}`}
+                                        style={{ borderColor: `${C.ink}12` }}>
+                                        <div>
+                                            {/* Stars */}
+                                            <div className="flex items-center gap-1 text-amber-500 mb-4 sm:mb-5">
+                                                {[...Array(5)].map((_, s) => (
+                                                    <Star key={s} className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-amber-400 text-amber-400" />
+                                                ))}
+                                            </div>
+
+                                            <p className="text-[14px] sm:text-[15px] leading-relaxed text-stone-700 italic mb-5 sm:mb-6">
+                                                "{item.text}"
+                                            </p>
                                         </div>
 
-                                        <p className="text-[14px] sm:text-[15px] leading-relaxed text-stone-700 italic mb-5 sm:mb-6">
-                                            "{item.text}"
-                                        </p>
-                                    </div>
-
-                                    <div className="pt-4 sm:pt-5 border-t border-stone-100 flex items-center justify-between gap-3">
-                                        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full flex items-center justify-center font-bold text-xs shadow-xs shrink-0"
-                                                 style={{ background: C.forest, color: C.cream }}>
-                                                {item.initials}
+                                        <div className="pt-4 sm:pt-5 border-t border-stone-100 flex items-center justify-between gap-3">
+                                            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                                                <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full flex items-center justify-center font-bold text-xs shadow-xs shrink-0"
+                                                    style={{ background: C.forest, color: C.cream }}>
+                                                    {item.initials}
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <div className="text-xs sm:text-sm font-bold text-stone-900 truncate">{item.name}</div>
+                                                    <div className="text-[11px] text-stone-500 truncate">{item.role}</div>
+                                                </div>
                                             </div>
-                                            <div className="min-w-0">
-                                                <div className="text-xs sm:text-sm font-bold text-stone-900 truncate">{item.name}</div>
-                                                <div className="text-[11px] text-stone-500 truncate">{item.role}</div>
-                                            </div>
+                                            <span className="shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-bold bg-stone-100 text-stone-700 border border-stone-200/60">
+                                                {item.cows}
+                                            </span>
                                         </div>
-                                        <span className="shrink-0 whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-bold bg-stone-100 text-stone-700 border border-stone-200/60">
-                                            {item.cows}
-                                        </span>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </section>
@@ -1398,23 +1930,26 @@ export default function Welcome({ auth }: any) {
                 {/* ── FAQ ── */}
                 <section id="faq" style={{ background: C.cream50, borderBottom: `1px solid ${C.ink}10` }}>
                     <div className="mx-auto w-full max-w-[880px] px-4 sm:px-6 py-14 sm:py-20 lg:py-24">
-                        <p className="cf-eyebrow mb-2 sm:mb-3 text-center" style={{ color: C.copper }}>{t('welcome.faq_eyebrow')}</p>
-                        <h2 className="cf-serif mb-8 sm:mb-12 text-center text-[28px] xs:text-[34px] sm:text-[42px] font-bold leading-tight tracking-tight"
-                            style={{ color: C.ink }}>
-                            {t('welcome.faq_title')}
-                        </h2>
+                        <div className="cf-reveal">
+                            <p className="cf-eyebrow mb-2 sm:mb-3 text-center" style={{ color: C.copper }}>{t('welcome.faq_eyebrow')}</p>
+                            <h2 className="cf-serif mb-8 sm:mb-12 text-center text-[28px] xs:text-[34px] sm:text-[42px] font-bold leading-tight tracking-tight"
+                                style={{ color: C.ink }}>
+                                {t('welcome.faq_title')}
+                            </h2>
+                        </div>
                         <div className="flex flex-col gap-3 sm:gap-3.5">
                             {faqs.map((item, i) => {
                                 const isOpen = openFaq === i;
+                                const delayClass = i === 0 ? 'cf-delay-100' : i === 1 ? 'cf-delay-150' : i === 2 ? 'cf-delay-200' : 'cf-delay-250';
                                 return (
-                                    <div key={i} className="overflow-hidden rounded-[16px] sm:rounded-[18px] border bg-white transition-all shadow-xs"
-                                         style={{ borderColor: isOpen ? `${C.copper}40` : `${C.ink}12` }}>
+                                    <div key={i} className={`overflow-hidden rounded-[16px] sm:rounded-[18px] border bg-white transition-all shadow-xs cf-reveal-up ${delayClass}`}
+                                        style={{ borderColor: isOpen ? `${C.copper}40` : `${C.ink}12` }}>
                                         <button type="button" onClick={() => setOpenFaq(isOpen ? -1 : i)}
-                                                className="flex w-full cursor-pointer items-center justify-between gap-3 sm:gap-4 px-5 py-4 sm:px-7 sm:py-6 text-left"
-                                                style={{ color: C.ink }}>
+                                            className="flex w-full cursor-pointer items-center justify-between gap-3 sm:gap-4 px-5 py-4 sm:px-7 sm:py-6 text-left"
+                                            style={{ color: C.ink }}>
                                             <span className="cf-serif text-[16.5px] sm:text-[19px] font-bold tracking-tight">{item.q}</span>
-                                            <span className="cf-serif shrink-0 text-[22px] sm:text-[26px] leading-none transition-transform duration-200" 
-                                                  style={{ color: C.copper }}>
+                                            <span className="cf-serif shrink-0 text-[22px] sm:text-[26px] leading-none transition-transform duration-200"
+                                                style={{ color: C.copper }}>
                                                 {isOpen ? '−' : '+'}
                                             </span>
                                         </button>
@@ -1433,8 +1968,8 @@ export default function Welcome({ auth }: any) {
                 {/* ── INVESTMENT REQUEST FORM (FINTECH LUXE RELOOKING) ── */}
                 <section id="demande" style={{ background: C.cream }}>
                     <div className="mx-auto w-full max-w-[1020px] px-4 sm:px-6 py-14 sm:py-20 lg:py-24">
-                        
-                        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12">
+
+                        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-12 cf-reveal">
                             <p className="cf-eyebrow mb-2 sm:mb-3" style={{ color: C.copper }}>{t('welcome.invest_eyebrow')}</p>
                             <h2 className="cf-serif mb-2 sm:mb-3 text-[28px] xs:text-[34px] sm:text-[44px] font-bold leading-tight tracking-tight"
                                 style={{ color: C.ink }}>
@@ -1445,16 +1980,16 @@ export default function Welcome({ auth }: any) {
                             </p>
                         </div>
 
-                        <div className="overflow-hidden rounded-[22px] sm:rounded-[26px] border shadow-2xl md:flex bg-white"
-                             style={{ borderColor: `${C.ink}14`, boxShadow: '0 30px 70px rgba(34,29,25,0.12)' }}>
+                        <div className="overflow-hidden rounded-[22px] sm:rounded-[26px] border shadow-2xl md:flex bg-white cf-reveal-scale cf-delay-150"
+                            style={{ borderColor: `${C.ink}14`, boxShadow: '0 30px 70px rgba(34,29,25,0.12)' }}>
 
                             {/* Left panel */}
                             <div className="flex flex-col justify-between p-6 sm:p-8 md:p-10 md:w-5/12"
-                                 style={{ background: `linear-gradient(155deg, ${C.forest} 0%, #1a271e 100%)`, color: C.cream }}>
+                                style={{ background: `linear-gradient(155deg, ${C.forest} 0%, #1a271e 100%)`, color: C.cream }}>
                                 <div>
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-5 sm:mb-6 bg-white/10 text-amber-300">
                                         <Lock className="h-3 w-3" />
-                                        Dossier Confidentiel
+                                        {locale === 'en' ? 'Confidential Application' : 'Dossier Confidentiel'}
                                     </div>
 
                                     <h3 className="cf-serif mb-3 sm:mb-4 text-[22px] sm:text-[26px] font-bold text-white leading-snug">
@@ -1469,39 +2004,43 @@ export default function Welcome({ auth }: any) {
                                     {[t('welcome.invest_point_1'), t('welcome.invest_point_2'), t('welcome.invest_point_3')].map((point) => (
                                         <div key={point} className="flex items-center gap-2.5 sm:gap-3">
                                             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold"
-                                                  style={{ background: C.copper, color: C.cream }}>✓</span>
+                                                style={{ background: C.copper, color: C.cream }}>✓</span>
                                             <span className="font-medium text-white/90">{point}</span>
                                         </div>
                                     ))}
                                 </div>
 
                                 <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-white/10 text-xs text-white/60">
-                                    Réponse personnalisée assurée par notre équipe sous 24h ouvrées.
+                                    {locale === 'en'
+                                        ? 'Personalized response guaranteed by our team within 24 business hours.'
+                                        : 'Réponse personnalisée assurée par notre équipe sous 24h ouvrées.'}
                                 </div>
                             </div>
 
                             {/* Right panel — Form */}
                             <div className="p-6 sm:p-8 md:p-10 md:w-7/12" style={{ background: C.cream50 }}>
-                                
+
                                 {/* Notification of selected simulation context */}
                                 <div className="mb-5 sm:mb-6 p-3 sm:p-3.5 rounded-xl border flex flex-col xs:flex-row xs:items-center justify-between gap-2 text-xs"
-                                     style={{ background: '#fdf8f4', borderColor: `${C.copper}30`, color: C.ink }}>
+                                    style={{ background: '#fdf8f4', borderColor: `${C.copper}30`, color: C.ink }}>
                                     <div className="flex items-center gap-2 truncate">
                                         <Sliders className="h-4 w-4 shrink-0" style={{ color: C.copper }} />
-                                        <span className="truncate">Quota simulé : <strong>{cowsCount} {cowsCount > 1 ? 'vaches' : 'vache'}</strong> (~{(cowsCount * 39000).toLocaleString()} MAD)</span>
+                                        <span className="truncate">
+                                            {locale === 'en' ? 'Simulated allocation:' : 'Quota simulé :'} <strong>{cowsCount} {cowsCount > 1 ? (locale === 'en' ? 'cows' : 'vaches') : (locale === 'en' ? 'cow' : 'vache')}</strong> (~{(cowsCount * 39000).toLocaleString()} MAD)
+                                        </span>
                                     </div>
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => scrollToSection('simulation')}
                                         className="font-bold underline text-amber-800 hover:text-amber-950 shrink-0 self-end xs:self-auto"
                                     >
-                                        Modifier
+                                        {locale === 'en' ? 'Modify' : 'Modifier'}
                                     </button>
                                 </div>
 
                                 {errors.email && (
                                     <div className="mb-5 sm:mb-6 rounded-[14px] p-3.5 sm:p-4 flex items-start gap-3 border shadow-xs"
-                                         style={{ background: '#fdf4f4', borderColor: '#fca5a5', color: '#991b1b' }}>
+                                        style={{ background: '#fdf4f4', borderColor: '#fca5a5', color: '#991b1b' }}>
                                         <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" style={{ color: '#ef4444' }} />
                                         <div className="text-[13.5px] sm:text-[14px] font-medium leading-relaxed">
                                             {t(errors.email)}
@@ -1552,9 +2091,8 @@ export default function Welcome({ auth }: any) {
                                             type="email"
                                             name="email"
                                             value={data.email}
-                                            className={`w-full rounded-xl border-stone-300 text-stone-900 shadow-xs focus:border-[#b45d34] focus:ring-2 focus:ring-[#b45d34]/20 py-2.5 px-3.5 text-sm ${
-                                                errors.email ? '!border-red-400 bg-red-50/30' : ''
-                                            }`}
+                                            className={`w-full rounded-xl border-stone-300 text-stone-900 shadow-xs focus:border-[#b45d34] focus:ring-2 focus:ring-[#b45d34]/20 py-2.5 px-3.5 text-sm ${errors.email ? '!border-red-400 bg-red-50/30' : ''
+                                                }`}
                                             onChange={(e) => setData('email', e.target.value)}
                                             required
                                         />
@@ -1581,7 +2119,7 @@ export default function Welcome({ auth }: any) {
                                         type="submit"
                                         disabled={processing}
                                         className="w-full flex items-center justify-center gap-2 rounded-xl py-3.5 sm:py-4 text-sm sm:text-base font-bold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 mt-4 cursor-pointer"
-                                        style={{ 
+                                        style={{
                                             background: `linear-gradient(135deg, ${C.copper} 0%, #cb703f 100%)`,
                                             boxShadow: '0 8px 24px rgba(180, 93, 52, 0.3)'
                                         }}
@@ -1593,10 +2131,10 @@ export default function Welcome({ auth }: any) {
                                     <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2 text-[10.5px] sm:text-[11px] text-stone-500 font-medium text-center">
                                         <span className="flex items-center gap-1">
                                             <Lock className="h-3 w-3 text-stone-400" />
-                                            Chiffrement 256-bit
+                                            {locale === 'en' ? '256-bit Encryption' : 'Chiffrement 256-bit'}
                                         </span>
                                         <span className="hidden xs:inline">•</span>
-                                        <span>Sans engagement immédiat</span>
+                                        <span>{locale === 'en' ? 'No immediate commitment' : 'Sans engagement immédiat'}</span>
                                     </div>
                                 </form>
 
@@ -1609,9 +2147,9 @@ export default function Welcome({ auth }: any) {
                 {/* ── FOOTER ── */}
                 <footer style={{ background: C.ink900, color: '#c9c1b4' }}>
                     <div className="mx-auto w-full max-w-[1180px] px-4 sm:px-6 pt-12 sm:pt-16 pb-10 sm:pb-12">
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 pb-10 sm:pb-12 border-b border-white/10">
-                            
+
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 pb-10 sm:pb-12 border-b border-white/10 cf-reveal">
+
                             {/* Brand Info (5 cols) */}
                             <div className="md:col-span-5">
                                 <div className="flex items-center gap-2.5 sm:gap-3 mb-4">
@@ -1623,7 +2161,9 @@ export default function Welcome({ auth }: any) {
                                     </span>
                                 </div>
                                 <p className="text-xs sm:text-sm text-stone-400 leading-relaxed max-w-sm mb-5">
-                                    Plateforme d'investissement participatif dans le cheptel laitier au Maroc. Connecter les investisseurs à l'économie agricole réelle avec transparence et rigueur.
+                                    {locale === 'en'
+                                        ? "Co-investment platform in Morocco's dairy livestock. Connecting investors directly to the real agricultural economy with transparency and rigor."
+                                        : "Plateforme d'investissement participatif dans le cheptel laitier au Maroc. Connecter les investisseurs à l'économie agricole réelle avec transparence et rigueur."}
                                 </p>
                                 <div className="cf-serif italic text-sm sm:text-base text-stone-300">
                                     "{t('welcome.footer_quote')}"
@@ -1632,23 +2172,27 @@ export default function Welcome({ auth }: any) {
 
                             {/* Quick Navigation (3 cols) */}
                             <div className="md:col-span-3">
-                                <h4 className="cf-eyebrow text-[11px] sm:text-xs font-bold text-amber-400 mb-3 sm:mb-4">Navigation</h4>
+                                <h4 className="cf-eyebrow text-[11px] sm:text-xs font-bold text-amber-400 mb-3 sm:mb-4">
+                                    {locale === 'en' ? 'Navigation' : 'Navigation'}
+                                </h4>
                                 <ul className="space-y-2 text-xs sm:text-sm text-stone-400">
-                                    <li><a href="#simulation" className="hover:text-white transition-colors">Simulateur de Rendement</a></li>
-                                    <li><a href="#fonctionnement" className="hover:text-white transition-colors">Modèle de Co-Investissement</a></li>
-                                    <li><a href="#ferme" className="hover:text-white transition-colors">La Ferme &amp; Traçabilité</a></li>
-                                    <li><a href="#securite" className="hover:text-white transition-colors">Garanties &amp; Assurance</a></li>
-                                    <li><a href="#faq" className="hover:text-white transition-colors">Foire Aux Questions</a></li>
+                                    <li><a href="#simulation" className="hover:text-white transition-colors">{locale === 'en' ? 'ROI Simulator' : 'Simulateur de Rendement'}</a></li>
+                                    <li><a href="#fonctionnement" className="hover:text-white transition-colors">{locale === 'en' ? 'Co-Investment Model' : 'Modèle de Co-Investissement'}</a></li>
+                                    <li><a href="#ferme" className="hover:text-white transition-colors">{locale === 'en' ? 'The Farm & Traceability' : 'La Ferme & Traçabilité'}</a></li>
+                                    <li><a href="#securite" className="hover:text-white transition-colors">{locale === 'en' ? 'Guarantees & Insurance' : 'Garanties & Assurance'}</a></li>
+                                    <li><a href="#faq" className="hover:text-white transition-colors">{locale === 'en' ? 'Frequently Asked Questions' : 'Foire Aux Questions'}</a></li>
                                 </ul>
                             </div>
 
                             {/* Contact & Legal (4 cols) */}
                             <div className="md:col-span-4">
-                                <h4 className="cf-eyebrow text-[11px] sm:text-xs font-bold text-amber-400 mb-3 sm:mb-4">Contact &amp; Établissement</h4>
+                                <h4 className="cf-eyebrow text-[11px] sm:text-xs font-bold text-amber-400 mb-3 sm:mb-4">
+                                    {locale === 'en' ? 'Contact & Headquarters' : 'Contact & Établissement'}
+                                </h4>
                                 <div className="space-y-2.5 text-xs sm:text-sm text-stone-400">
                                     <div className="flex items-start gap-2.5">
                                         <MapPin className="h-4 w-4 text-stone-400 mt-0.5 shrink-0" />
-                                        <span>Ferme Chaouia • Siège Casablanca, Maroc</span>
+                                        <span>{locale === 'en' ? 'Chaouia Farm • Casablanca HQ, Morocco' : 'Ferme Chaouia • Siège Casablanca, Maroc'}</span>
                                     </div>
                                     <div className="flex items-center gap-2.5">
                                         <Mail className="h-4 w-4 text-stone-400 shrink-0" />
@@ -1662,10 +2206,10 @@ export default function Welcome({ auth }: any) {
 
                                 <div className="mt-5 flex items-center gap-2.5">
                                     <Link href={route('login')} className="text-xs font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors">
-                                        Espace Client
+                                        {locale === 'en' ? 'Investor Portal' : 'Espace Client'}
                                     </Link>
                                     <Link href={route('admin.login')} className="text-xs font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-white/5 hover:bg-white/10 text-stone-400 hover:text-white transition-colors">
-                                        Accès Staff
+                                        {locale === 'en' ? 'Staff Access' : 'Accès Staff'}
                                     </Link>
                                 </div>
                             </div>
@@ -1678,11 +2222,11 @@ export default function Welcome({ auth }: any) {
                                 {t('welcome.footer_rights', { year: new Date().getFullYear() })}
                             </div>
                             <div className="flex flex-wrap items-center justify-center gap-3 text-stone-500">
-                                <span>Protection ONSSA</span>
+                                <span>{locale === 'en' ? 'ONSSA Certified' : 'Protection ONSSA'}</span>
                                 <span>•</span>
-                                <span>Assurance MAMDA</span>
+                                <span>{locale === 'en' ? 'MAMDA Insured' : 'Assurance MAMDA'}</span>
                                 <span>•</span>
-                                <span>Transparence Totale</span>
+                                <span>{locale === 'en' ? 'Total Transparency' : 'Transparence Totale'}</span>
                             </div>
                         </div>
 
@@ -1690,15 +2234,14 @@ export default function Welcome({ auth }: any) {
                 </footer>
 
                 {/* ── STICKY QUICK-BAR AT BOTTOM UPON SCROLLING ── */}
-                <div className={`fixed bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-[680px] transition-all duration-500 ${
-                    showStickyBar ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12 pointer-events-none'
-                }`}>
+                <div className={`fixed bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-[680px] transition-all duration-500 ${showStickyBar ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12 pointer-events-none'
+                    }`}>
                     <div className="cf-glass rounded-full px-3.5 sm:px-5 py-2.5 sm:py-3 shadow-2xl border border-white/70 flex items-center justify-between gap-2 sm:gap-4">
                         <div className="flex items-center gap-2 sm:gap-3 truncate">
                             <span className="flex h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-emerald-500 cf-pulse-dot shrink-0" />
                             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 truncate">
                                 <span className="text-[11.5px] sm:text-xs font-bold text-stone-900 truncate">
-                                    39 000 MAD <span className="font-normal text-stone-500">/ vache</span>
+                                    39 000 MAD <span className="font-normal text-stone-500">/ {locale === 'en' ? 'cow' : 'vache'}</span>
                                 </span>
                                 <span className="hidden sm:inline text-stone-400">•</span>
                                 <span className="text-[10.5px] sm:text-[11px] font-semibold text-emerald-700">
@@ -1714,7 +2257,7 @@ export default function Welcome({ auth }: any) {
                                 className="hidden md:inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-full text-stone-700 hover:bg-stone-200/60 transition-colors"
                             >
                                 <Sliders className="h-3 w-3" />
-                                <span>Simuler</span>
+                                <span>{locale === 'en' ? 'Simulate' : 'Simuler'}</span>
                             </button>
                             <a
                                 href="#demande"
