@@ -238,7 +238,7 @@ export default function Login({ auth, status, canResetPassword }: any) {
                         <div className="bg-white border border-stone-200/90 rounded-2xl sm:rounded-3xl shadow-xl p-5 xs:p-7 sm:p-9 transition-all">
                             
                             {/* Card Header */}
-                            <div className="mb-6 sm:mb-8 text-center sm:text-left">
+                            <div className="mb-6 sm:mb-8 text-center flex flex-col items-center">
                                 <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 border border-emerald-200/70 text-emerald-800 mb-4 shadow-xs">
                                     <Users className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-700" />
                                 </div>
