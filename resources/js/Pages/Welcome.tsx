@@ -1363,7 +1363,11 @@ export default function Welcome({ auth }: any) {
                             style={{ borderColor: `${C.ink}14` }}>
 
                             {/* Visual Asset Side (7 cols) */}
-                            <div className="lg:col-span-7 relative aspect-[16/11] sm:aspect-[16/10] lg:aspect-auto overflow-hidden bg-stone-100 min-h-[220px] sm:min-h-[340px]">
+                            <div className={`lg:col-span-7 relative overflow-hidden bg-stone-100 flex flex-col justify-center ${
+                                immersionTab === 'market'
+                                    ? 'min-h-[350px] xs:min-h-[370px] sm:min-h-[400px] lg:min-h-full'
+                                    : 'aspect-[16/11] sm:aspect-[16/10] lg:aspect-auto min-h-[220px] sm:min-h-[340px]'
+                            }`}>
                                 {immersionTab === 'herd' && (
                                     <img
                                         src="/images/modern_dairy_farm.jpg"
@@ -1379,28 +1383,49 @@ export default function Welcome({ auth }: any) {
                                     />
                                 )}
                                 {immersionTab === 'market' && (
-                                    <div className="h-full w-full relative min-h-[260px] sm:min-h-[360px] flex items-center justify-center p-6 sm:p-8 text-white"
-                                        style={{ background: `linear-gradient(135deg, ${C.forest} 0%, #152018 100%)` }}>
-                                        <div className="text-center max-w-md">
-                                            <div className="inline-flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-white/10 text-amber-300 mb-4 sm:mb-6">
-                                                <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8" />
+                                    <div
+                                        className="h-full w-full relative min-h-[350px] xs:min-h-[370px] sm:min-h-[400px] flex items-center justify-center p-5 xs:p-6 sm:p-8 text-white overflow-hidden"
+                                        style={{
+                                            background: `radial-gradient(circle at 50% 25%, rgba(212, 162, 89, 0.14) 0%, transparent 65%), linear-gradient(145deg, ${C.forest} 0%, #111a13 100%)`
+                                        }}
+                                    >
+                                        {/* Subtle ambient lighting effects */}
+                                        <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-amber-400/10 blur-3xl pointer-events-none" />
+                                        <div className="absolute -bottom-16 -left-16 w-44 h-44 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
+
+                                        {/* Top Header Tag for Market Tab */}
+                                        <div className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-20 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 sm:px-3 sm:py-1.5 bg-emerald-500/15 backdrop-blur-md border border-emerald-400/25 text-[10.5px] sm:text-xs font-semibold text-emerald-300 shadow-xs">
+                                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                            <span>{locale === 'en' ? 'Active Offtake' : 'Débouché Actif'}</span>
+                                        </div>
+
+                                        <div className="relative z-10 text-center max-w-md mx-auto pt-8 pb-3 sm:pt-4 sm:pb-4 flex flex-col items-center">
+                                            <div className="inline-flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-amber-400/10 border border-amber-400/25 text-amber-300 mb-3 sm:mb-4 shadow-inner">
+                                                <TrendingUp className="h-5 w-5 sm:h-7 sm:w-7" />
                                             </div>
-                                            <h3 className="cf-serif text-[22px] sm:text-[28px] font-bold mb-2 sm:mb-3">
+
+                                            <h3 className="cf-serif text-[20px] xs:text-[22px] sm:text-[28px] font-bold text-white mb-2 sm:mb-3 leading-snug tracking-tight px-1">
                                                 {t('welcome.immersion_tab_3_title')}
                                             </h3>
-                                            <p className="text-xs sm:text-sm text-white/80 leading-relaxed mb-4 sm:mb-6">
+
+                                            <p className="text-xs sm:text-sm text-stone-200/90 leading-relaxed mb-4 sm:mb-6 max-w-sm sm:max-w-md mx-auto px-1">
                                                 {t('welcome.immersion_tab_3_desc')}
                                             </p>
-                                            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 text-[11px] sm:text-xs font-semibold">
+
+                                            <div className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 text-[10.5px] xs:text-[11px] sm:text-xs font-semibold text-emerald-200 shadow-xs max-w-full">
                                                 <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
-                                                <span>{locale === 'en' ? 'Guaranteed refrigerated daily collection' : 'Enlèvement quotidien réfrigéré garanti'}</span>
+                                                <span className="text-center leading-tight">{locale === 'en' ? 'Guaranteed refrigerated daily collection' : 'Enlèvement quotidien réfrigéré garanti'}</span>
                                             </div>
                                         </div>
                                     </div>
                                 )}
 
-                                {/* Overlay Badge on Image */}
-                                <div className="absolute bottom-3 left-3 sm:bottom-5 sm:left-5 cf-glass rounded-xl px-3 py-1.5 sm:px-4 sm:py-2.5 shadow-md border border-white/60 text-[10.5px] sm:text-xs font-semibold text-stone-800">
+                                {/* Overlay Location Badge */}
+                                <div className={`absolute rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2.5 shadow-md border text-[10.5px] sm:text-xs font-semibold z-20 transition-all ${
+                                    immersionTab === 'market'
+                                        ? 'top-3.5 left-3.5 sm:top-5 sm:left-5 bg-black/40 backdrop-blur-md border-white/15 text-stone-200'
+                                        : 'bottom-3 left-3 sm:bottom-5 sm:left-5 cf-glass border-white/60 text-stone-800'
+                                }`}>
                                     📍 Chaouia-Ouardigha, {locale === 'en' ? 'Morocco' : 'Maroc'}
                                 </div>
                             </div>
